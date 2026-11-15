@@ -1,0 +1,19 @@
+{
+  "name": "algemath-uz-startup",
+  "version": "1.0.0",
+  "description": "Matematika va Algebra o'rganish, darajali testlar va Milliy Sertifikat (A+, A, B+, B, C+, C) platformasi",
+  "main": "Server_Asosiy.js",
+  "scripts": {
+    "start": "node Server_Asosiy.js",
+    "test": "node Tekshiruv_Testlari/Loyiha_Tekshiruv_Testlari.js"
+  },
+  "keywords": [
+    "matematika",
+    "algebra",
+    "milliy-sertifikat",
+    "uzbekistan",
+    "edtech"
+  ],
+  "author": "AlgeMath Startup",
+  "license": "MIT"
+}

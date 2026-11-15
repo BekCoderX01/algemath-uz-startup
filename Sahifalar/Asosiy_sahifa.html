@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AlgeMath UZ — Matematika va Algebra O'rganish Platformasi</title>
+  <link rel="stylesheet" href="../Dizayn_va_Uslublar/Asosiy_Dizayn.css" />
+</head>
+<body>
+  <!-- YUQORI NAVIGATSIYA VA MUNDARIJA TUGMASI -->
+  <div id="umumiy-navigatsiya-joyi"></div>
+
+  <!-- ASOSIY SAHIFA MAZMUNI -->
+  <main class="main-container">
+    <!-- 1. BOSH BANNER (HERO) VA RANG-BARANG VEKTORLI RASM -->
+    <section class="hero-banner">
+      <div>
+        <div class="hero-badge" data-i18n="hero_badge">
+          ✨ O'zbekiston Milliy Sertifikat standartiga mos platforma
+        </div>
+        <h1 class="hero-title" data-i18n="hero_title">
+          Matematika va Algebrani o'rganing, misollar yeching va A+ Sertifikat oling!
+        </h1>
+        <p class="hero-subtitle" data-i18n="hero_subtitle">
+          O'quvchilar va ustozlar uchun darajali testlar (C dan A+ gacha), 0 dan o'rganish darslari, har kungi +5 💎 olmos mukofoti va 45 talik Milliy Sertifikat imtihoni.
+        </p>
+        <div class="hero-actions">
+          <a href="Noldan_urganish_sahifasi.html" class="btn btn-white" data-i18n="btn_start_learn">
+            📚 0 dan o'rganishni boshlash
+          </a>
+          <a href="Test_yechish_sahifasi.html" class="btn btn-emerald" data-i18n="btn_start_test">
+            🧮 Bilim darajasini sinash
+          </a>
+          <a href="Sertifikat_olish_sahifasi.html" class="btn btn-amber" data-i18n="btn_get_cert">
+            🏆 45 talik Sertifikat topshirish
+          </a>
+        </div>
+      </div>
+      <div id="hero-svg-joyi"></div>
+    </section>
+
+    <!-- 2. TEZKOR QIDIRUV VA KUNLIK STATISTIKA -->
+    <section class="grid-3" style="margin-bottom:2rem;">
+      <div class="card">
+        <div style="font-size:0.84rem; font-weight:700; color:var(--text-muted);">⏱️ Bugun misol ishlagan vaqtingiz</div>
+        <div style="font-size:1.55rem; font-weight:900; color:var(--success); margin:0.4rem 0;" data-live-study-time>0 soat 15 daqiqa</div>
+        <div style="font-size:0.82rem; color:var(--text-secondary);">Har bir daqiqa va soat real vaqtda hisoblanadi</div>
+      </div>
+
+      <div class="card">
+        <div style="font-size:0.84rem; font-weight:700; color:var(--text-muted);">💎 Profilingizdagi Olmoslar</div>
+        <div style="font-size:1.85rem; font-weight:900; color:#0284c7; margin:0.3rem 0;">
+          <span data-live-diamonds>30</span> 💎
+        </div>
+        <div style="font-size:0.82rem; color:var(--text-secondary);">Har kungi kirishga +5 💎 va test/darslar uchun</div>
+      </div>
+
+      <div class="card">
+        <div style="font-size:0.84rem; font-weight:700; color:var(--text-muted);">🔍 Tezkor Qidiruv</div>
+        <div style="display:flex; gap:0.5rem; margin-top:0.55rem;">
+          <input type="search" id="home-quick-search" class="form-input" data-i18n-placeholder="search_placeholder" placeholder="Mavzu, formula yoki sahifa..." />
+          <a href="Qidiruv_va_Mundarija_sahifasi.html" class="btn btn-primary" style="padding:0.75rem 1rem;">🔍</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3. BARCHA ALOHIDA SAHIFALAR MUNDARIJASI (TEZKOR O'TISH KARTALARI) -->
+    <section style="margin-bottom:1.5rem;">
+      <div class="section-header">
+        <div>
+          <h2 class="section-title">🧭 Sayt Bo'limlari Mundarijasi (Har bir bo'lim alohida sahifada)</h2>
+          <p style="color:var(--text-secondary); font-size:0.93rem;">
+            Kerakli sahifani tanlang va bir bosishda o'ting:
+          </p>
+        </div>
+        <a href="Qidiruv_va_Mundarija_sahifasi.html" class="btn btn-outline">Batafsil Qidiruv va Mundarija →</a>
+      </div>
+
+      <div class="grid-3" id="asosiy-mundarija-kartalari"></div>
+    </section>
+  </main>
+
+  <!-- PASTKI MILLIY SERTIFIKAT BO'LIMI VA FOOTER -->
+  <div id="umumiy-pastki-qism-joyi"></div>
+
+  <script src="../Dizayn_va_Uslublar/Rasmlar_va_Belgilar.js"></script>
+  <script src="../Dastur_Kodlari_JS/Til_va_Tarjimalar.js"></script>
+  <script src="../Dastur_Kodlari_JS/Umumiy_Holat_va_Bazalar.js"></script>
+  <script src="../Dastur_Kodlari_JS/Olmoslar_va_Vaqt_tizimi.js"></script>
+  <script src="../Dastur_Kodlari_JS/Matematika_Savollar_Bazasi.js"></script>
+  <script src="../Dastur_Kodlari_JS/Mundarija_va_Navigatsiya.js"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      MundarijaVaNavigatsiya.navigatsiyaniChizish("home");
+      const heroRasm = document.getElementById("hero-svg-joyi");
+      if (heroRasm && window.RasmlarVaBelgilar) {
+        heroRasm.innerHTML = RasmlarVaBelgilar.heroMatematikaRasmi();
+      }
+      const mundarijaEl = document.getElementById("asosiy-mundarija-kartalari");
+      if (mundarijaEl) {
+        mundarijaEl.innerHTML = MundarijaVaNavigatsiya.sahifalarMundarijasi.map(s => `
+          <a href="${MundarijaVaNavigatsiya.sahifaManziliniOlish(s.fayl)}" class="card card-interactive" style="display:flex; flex-direction:column; justify-content:space-between;">
+            <div>
+              <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:0.65rem;">
+                <span class="mundarija-item-num">${s.raqam}</span>
+                <span style="font-size:1.75rem;">${s.ikonka}</span>
+              </div>
+              <h3 style="font-size:1.08rem; font-weight:800; margin-bottom:0.25rem;">${s.nomi}</h3>
+              <div style="font-size:0.74rem; color:var(--accent-primary); font-weight:700; margin-bottom:0.4rem;">📂 ${s.papka}/${s.fayl}</div>
+              <p style="font-size:0.88rem; color:var(--text-secondary); margin-bottom:1rem;">${s.tavsif}</p>
+            </div>
+            <div style="font-weight:800; font-size:0.85rem; color:var(--accent-primary);">Sahifaga o'tish →</div>
+          </a>
+        `).join("");
+      }
+      const qInput = document.getElementById("home-quick-search");
+      if (qInput) {
+        qInput.addEventListener("keydown", function (e) {
+          if (e.key === "Enter") {
+            window.location.href = "Qidiruv_va_Mundarija_sahifasi.html";
+          }
+        });
+      }
+    });
+  </script>
+</body>
+</html>

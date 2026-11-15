@@ -1,0 +1,325 @@
+{
+  "loyihaNomi": "AlgeMath UZ Startup",
+  "versiya": "1.0.0",
+  "joriyFoydalanuvchi": {
+    "id": "user_default_1",
+    "ism": "Sardorbek",
+    "familiya": "Alimov",
+    "rol": "O'quvchi",
+    "jins": "Erkak",
+    "bio": "Matematika va Algebrani 0 dan A+ Milliy Sertifikat darajasigacha o'rganyapman! Maqsadim — xalqaro olimpiada va grant.",
+    "avatar": "👨‍🎓",
+    "avatarRasmUrl": "",
+    "kirishUsuli": "Telefon raqam (+998 90 123-45-67)",
+    "telefon": "+998 90 123 45 67",
+    "email": "sardorbek@algemath.uz",
+    "instagram": "@sardor_math_uz",
+    "viloyat": "Toshkent shahri",
+    "tanlanganDaraja": "B",
+    "maqsadDaraja": "A+",
+    "olmoslar": 70,
+    "oxirgiKunlikBonusSana": "2026-11-15",
+    "olmoslarTarixi": [
+      {
+        "sana": "2026-11-15 00:34",
+        "miqdor": 5,
+        "sabab": "Kunlik saytga kirish bonusi (+5 💎)"
+      },
+      {
+        "sana": "2026-11-15 09:00",
+        "miqdor": 50,
+        "sabab": "Ro'yxatdan o'tish va boshlang'ich startup rag'bati"
+      },
+      {
+        "sana": "2026-11-15 09:05",
+        "miqdor": 15,
+        "sabab": "Kunlik tashrif va dastlabki faollik bonusi"
+      }
+    ],
+    "ozlashtirilganDarslar": [
+      "dars_c_1"
+    ],
+    "yechilganTestlarSoni": 2,
+    "togriJavoblarSoni": 17,
+    "sertifikatlar": [],
+    "xaridlar": [
+      "item_title_xorazmiy"
+    ],
+    "faolUnvon": "🌟 Al-Xorazmiy izdoshi",
+    "faolRamka": "Oltin ramka",
+    "kunlikZanjirSoni": 5,
+    "haftalikBonusOlindi": false,
+    "obunaTarifi": "Bepul",
+    "obunaTugashSana": "",
+    "qoShilganSinfKodi": "MATH-77",
+    "xatolarDaftari": [
+      {
+        "id": "err_init_1",
+        "savolId": "cert_18",
+        "manba": "Logarifmik tenglamalar (B+/A daraja)",
+        "savol": "log₂(x) + log₄(x) + log₁₆(x) = 7 tenglamaning ildizini toping.",
+        "variantlar": [
+          "16",
+          "8",
+          "32",
+          "4"
+        ],
+        "togriIndex": 0,
+        "tanlanganXatoIndex": 1,
+        "yordam_eslatma": "Xotira qoidasi (Memory): log_(a^k)(x) = (1/k)·log_a(x) asos darajasini oldinga chiqarish formulasidan foydalanib, barcha logarifmlarni 2 asosga keltiring.",
+        "tuzatildi": false
+      },
+      {
+        "id": "err_init_2",
+        "savolId": "cert_19",
+        "manba": "Kublar yig'indisi va Viyet teoremasi (B daraja)",
+        "savol": "x² - 4x + 1 = 0 tenglamaning ildizlari x₁ va x₂ bo'lsa, x₁³ + x₂³ ning qiymatini toping.",
+        "variantlar": [
+          "52",
+          "64",
+          "48",
+          "56"
+        ],
+        "togriIndex": 0,
+        "tanlanganXatoIndex": 1,
+        "yordam_eslatma": "Xotira qoidasi (Memory): x₁³ + x₂³ = (x₁ + x₂)³ - 3·x₁·x₂·(x₁ + x₂) ayniyatga Viyet teoremasi orqali yig'indi va ko'paytmani qo'ying.",
+        "tuzatildi": false
+      }
+    ],
+    "duellarTarixi": [
+      {
+        "sana": "2026-11-15",
+        "raqib": "Algoritm Bot (B daraja)",
+        "hisob": "4 : 3",
+        "natija": "G'alaba",
+        "yutuqOlmos": 20
+      }
+    ]
+  },
+  "tungiRejim": true,
+  "til": "uz",
+  "bugungiIshlanganSekundlar": 1106,
+  "oxirgiVaqtSana": "2026-11-15",
+  "foydalanuvchilarRoyxati": [
+    {
+      "id": "user_default_1",
+      "ism": "Sardorbek",
+      "familiya": "Alimov",
+      "rol": "O'quvchi",
+      "jins": "Erkak",
+      "bio": "Matematika va Algebrani 0 dan A+ Milliy Sertifikat darajasigacha o'rganyapman! Maqsadim — xalqaro olimpiada va grant.",
+      "avatar": "👨‍🎓",
+      "avatarRasmUrl": "",
+      "kirishUsuli": "Telefon raqam (+998 90 123-45-67)",
+      "telefon": "+998 90 123 45 67",
+      "email": "sardorbek@algemath.uz",
+      "instagram": "@sardor_math_uz",
+      "viloyat": "Toshkent shahri",
+      "tanlanganDaraja": "B",
+      "maqsadDaraja": "A+",
+      "olmoslar": 70,
+      "oxirgiKunlikBonusSana": "2026-11-15",
+      "olmoslarTarixi": [
+        {
+          "sana": "2026-11-15 00:34",
+          "miqdor": 5,
+          "sabab": "Kunlik saytga kirish bonusi (+5 💎)"
+        },
+        {
+          "sana": "2026-11-15 09:00",
+          "miqdor": 50,
+          "sabab": "Ro'yxatdan o'tish va boshlang'ich startup rag'bati"
+        },
+        {
+          "sana": "2026-11-15 09:05",
+          "miqdor": 15,
+          "sabab": "Kunlik tashrif va dastlabki faollik bonusi"
+        }
+      ],
+      "ozlashtirilganDarslar": [
+        "dars_c_1"
+      ],
+      "yechilganTestlarSoni": 2,
+      "togriJavoblarSoni": 17,
+      "sertifikatlar": [],
+      "xaridlar": [
+        "item_title_xorazmiy"
+      ],
+      "faolUnvon": "🌟 Al-Xorazmiy izdoshi",
+      "faolRamka": "Oltin ramka",
+      "kunlikZanjirSoni": 5,
+      "haftalikBonusOlindi": false,
+      "obunaTarifi": "Bepul",
+      "obunaTugashSana": "",
+      "qoShilganSinfKodi": "MATH-77",
+      "xatolarDaftari": [
+        {
+          "id": "err_init_1",
+          "savolId": "cert_18",
+          "manba": "Logarifmik tenglamalar (B+/A daraja)",
+          "savol": "log₂(x) + log₄(x) + log₁₆(x) = 7 tenglamaning ildizini toping.",
+          "variantlar": [
+            "16",
+            "8",
+            "32",
+            "4"
+          ],
+          "togriIndex": 0,
+          "tanlanganXatoIndex": 1,
+          "yordam_eslatma": "Xotira qoidasi (Memory): log_(a^k)(x) = (1/k)·log_a(x) asos darajasini oldinga chiqarish formulasidan foydalanib, barcha logarifmlarni 2 asosga keltiring.",
+          "tuzatildi": false
+        },
+        {
+          "id": "err_init_2",
+          "savolId": "cert_19",
+          "manba": "Kublar yig'indisi va Viyet teoremasi (B daraja)",
+          "savol": "x² - 4x + 1 = 0 tenglamaning ildizlari x₁ va x₂ bo'lsa, x₁³ + x₂³ ning qiymatini toping.",
+          "variantlar": [
+            "52",
+            "64",
+            "48",
+            "56"
+          ],
+          "togriIndex": 0,
+          "tanlanganXatoIndex": 1,
+          "yordam_eslatma": "Xotira qoidasi (Memory): x₁³ + x₂³ = (x₁ + x₂)³ - 3·x₁·x₂·(x₁ + x₂) ayniyatga Viyet teoremasi orqali yig'indi va ko'paytmani qo'ying.",
+          "tuzatildi": false
+        }
+      ],
+      "duellarTarixi": [
+        {
+          "sana": "2026-11-15",
+          "raqib": "Algoritm Bot (B daraja)",
+          "hisob": "4 : 3",
+          "natija": "G'alaba",
+          "yutuqOlmos": 20
+        }
+      ]
+    },
+    {
+      "id": "user_2",
+      "ism": "Dilnoza",
+      "familiya": "Karimova",
+      "rol": "Ustoz",
+      "jins": "Ayol",
+      "viloyat": "Samarqand viloyati",
+      "bio": "Oliy toifali matematika ustozi, A+ Milliy Sertifikat sohibasi (96 ball).",
+      "avatar": "👩‍🏫",
+      "kirishUsuli": "Google (dilnoza.math@gmail.com)",
+      "olmoslar": 240,
+      "kunlikZanjirSoni": 14,
+      "tanlanganDaraja": "A+",
+      "faolUnvon": "👑 A+ Milliy Sertifikat Ustozi",
+      "obunaTarifi": "Ustoz Ekspert PRO"
+    },
+    {
+      "id": "user_3",
+      "ism": "Javohir",
+      "familiya": "Tursunov",
+      "rol": "O'quvchi",
+      "jins": "Erkak",
+      "viloyat": "Farg'ona viloyati",
+      "bio": "Algebra va sonlar nazariyasi ishqibozi.",
+      "avatar": "🚀",
+      "kirishUsuli": "Instagram (@javohir_algebra)",
+      "olmoslar": 165,
+      "kunlikZanjirSoni": 9,
+      "tanlanganDaraja": "A",
+      "faolUnvon": "⚔️ Matematik Duel Chempioni",
+      "obunaTarifi": "O'quvchi PRO"
+    },
+    {
+      "id": "user_4",
+      "ism": "Madina",
+      "familiya": "Rustamova",
+      "rol": "O'quvchi",
+      "jins": "Ayol",
+      "viloyat": "Buxoro viloyati",
+      "bio": "0 dan B+ darajagacha barcha darslarni tugatdim!",
+      "avatar": "👩‍🎓",
+      "kirishUsuli": "Email (madina@mail.uz)",
+      "olmoslar": 130,
+      "kunlikZanjirSoni": 7,
+      "tanlanganDaraja": "B+",
+      "faolUnvon": "🔥 7 Kunlik Zanjir Sohibasi",
+      "obunaTarifi": "Bepul"
+    },
+    {
+      "id": "user_admin",
+      "ism": "Ulug'bek",
+      "familiya": "Mirzayev",
+      "rol": "Admin",
+      "jins": "Erkak",
+      "viloyat": "Toshkent shahri",
+      "bio": "AlgeMath UZ platformasi bosh administratori va metodisti.",
+      "avatar": "🛡️",
+      "kirishUsuli": "Email (admin@algemath.uz)",
+      "email": "admin@algemath.uz",
+      "olmoslar": 300,
+      "kunlikZanjirSoni": 21,
+      "tanlanganDaraja": "A+",
+      "faolUnvon": "🛡️ Platforma Administratori",
+      "obunaTarifi": "Ustoz Ekspert PRO"
+    }
+  ],
+  "qoshimchaAdminSavollar": [],
+  "berilganSertifikatlarArxivi": [
+    {
+      "sertifikatId": "MS-UZ-2026-1001",
+      "ismFamiliya": "Dilnoza Karimova",
+      "rol": "Ustoz",
+      "daraja": "A+",
+      "togriSoni": 43,
+      "jamiSavol": 45,
+      "foiz": 95.6,
+      "osonTogri": 15,
+      "ortachaTogri": 15,
+      "qiyinTogri": 13,
+      "sana": "2026-11-14"
+    },
+    {
+      "sertifikatId": "MS-UZ-2026-1002",
+      "ismFamiliya": "Javohir Tursunov",
+      "rol": "O'quvchi",
+      "daraja": "A",
+      "togriSoni": 37,
+      "jamiSavol": 45,
+      "foiz": 82.2,
+      "osonTogri": 15,
+      "ortachaTogri": 13,
+      "qiyinTogri": 9,
+      "sana": "2026-11-15"
+    }
+  ],
+  "ustozSinfxonalari": [
+    {
+      "sinfKodi": "MATH-77",
+      "sinfNomi": "A+ Milliy Sertifikat Tayyorlov Guruhi",
+      "ustozIsmi": "Dilnoza Karimova",
+      "daraja": "B+",
+      "vazifaMavzusi": "Kvadrat tenglamalar, Viyet teoremasi va Progressiyalar (10 talik uyga vazifa)",
+      "mukofotOlmos": 25,
+      "muddat": "2026-11-20",
+      "oquvchilarNatijalari": [
+        {
+          "ismFamiliya": "Javohir Tursunov",
+          "holat": "Bajarildi",
+          "ball": "10 / 10 (100%)",
+          "sana": "2026-11-15"
+        },
+        {
+          "ismFamiliya": "Madina Rustamova",
+          "holat": "Bajarildi",
+          "ball": "9 / 10 (90%)",
+          "sana": "2026-11-15"
+        },
+        {
+          "ismFamiliya": "Sardorbek Alimov",
+          "holat": "Kutilmoqda",
+          "ball": "—",
+          "sana": "—"
+        }
+      ]
+    }
+  ]
+}
