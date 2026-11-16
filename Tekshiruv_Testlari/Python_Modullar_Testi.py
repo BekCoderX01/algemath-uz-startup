@@ -7,10 +7,15 @@
 
 import sys
 sys.dont_write_bytecode = True
+import json
 import os
+import threading
 import unittest
+import urllib.error
+import urllib.request
 
 ROOT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+sys.path.insert(0, ROOT_DIR)
 for folder in [
     "Backend_Modullari_Python",
     "1_Olmoslar_Dukoni_Bulimi",
@@ -39,6 +44,7 @@ from Ustoz_sinfxonasi_moduli import sinfxona_yaratish, sinfga_oquvchi_qoshish
 from Xatolar_daftari_moduli import xatoni_tuzatish
 from Sertifikat_tekshirish_moduli import sertifikat_id_boyicha_qidirish
 from Obuna_va_Tolov_moduli import obunani_faollashtirish
+from Server_Asosiy import AlgeMathServerHandler, ReusableTCPServer, ruxsat_etilgan_statik_yolmi
 
 
 class BarchaPythonModullarTesti(unittest.TestCase):
@@ -127,6 +133,72 @@ class BarchaPythonModullarTesti(unittest.TestCase):
         self.assertEqual(len(saralangan), 1)
         natija = test_natijasini_tekshirish(saralangan, {"q1": 0})
         self.assertEqual(natija["foiz"], 100.0)
+
+    def test_python_server_admin_maxfiylik_himoyasi(self):
+        self.assertTrue(ruxsat_etilgan_statik_yolmi("/index.html"))
+        self.assertTrue(ruxsat_etilgan_statik_yolmi("/Sahifalar/Asosiy_sahifa.html"))
+        self.assertFalse(ruxsat_etilgan_statik_yolmi("/.env"))
+        self.assertFalse(ruxsat_etilgan_statik_yolmi("/Malumotlar_Bazasi/Baza_Malumotlari.json"))
+        self.assertFalse(ruxsat_etilgan_statik_yolmi("/Server_Asosiy.py"))
+
+        db_path = os.path.join(ROOT_DIR, "Malumotlar_Bazasi", "Baza_Malumotlari.json")
+        db_backup = None
+        if os.path.exists(db_path):
+            with open(db_path, "r", encoding="utf-8") as rf:
+                db_backup = rf.read()
+        prev_secret = os.environ.get("ADMIN_SECRET")
+
+        server = ReusableTCPServer(("127.0.0.1", 0), AlgeMathServerHandler)
+        port = server.server_address[1]
+        thread = threading.Thread(target=server.serve_forever, daemon=True)
+        thread.start()
+        base = f"http://127.0.0.1:{port}"
+
+        def req(path, method="GET", data=None, headers=None):
+            raw = json.dumps(data).encode("utf-8") if data is not None else None
+            hdrs = dict(headers or {})
+            if raw is not None:
+                hdrs["Content-Type"] = "application/json"
+            r = urllib.request.Request(f"{base}{path}", data=raw, method=method, headers=hdrs)
+            try:
+                with urllib.request.urlopen(r) as resp:
+                    return resp.status, resp.read().decode("utf-8")
+            except urllib.error.HTTPError as err:
+                return err.code, err.read().decode("utf-8")
+
+        try:
+            os.environ["ADMIN_SECRET"] = "py_test_admin_secret"
+            self.assertEqual(req("/.env")[0], 403)
+            self.assertEqual(req("/Malumotlar_Bazasi/Baza_Malumotlari.json")[0], 403)
+            self.assertEqual(req("/api/admin/holat")[0], 403)
+            self.assertEqual(req("/api/tolov/holat")[0], 403)
+
+            st, body = req("/api/holat")
+            self.assertEqual(st, 200)
+            holat = json.loads(body)
+            self.assertNotIn("tolovSorovlari", holat)
+            self.assertNotIn("ishlatilganTranzaksiyalar", holat)
+
+            st_bad, _ = req("/api/admin/kirish", "POST", {"adminKalit": "wrong"})
+            self.assertEqual(st_bad, 403)
+
+            st_ok, login_body = req("/api/admin/kirish", "POST", {"adminKalit": "py_test_admin_secret"})
+            self.assertEqual(st_ok, 200)
+            token = json.loads(login_body)["adminToken"]
+
+            st_adm, adm_body = req("/api/admin/holat", headers={"x-admin-token": token})
+            self.assertEqual(st_adm, 200)
+            self.assertIn("tolovSorovlari", json.loads(adm_body))
+        finally:
+            if prev_secret is None:
+                os.environ.pop("ADMIN_SECRET", None)
+            else:
+                os.environ["ADMIN_SECRET"] = prev_secret
+            if db_backup is not None:
+                with open(db_path, "w", encoding="utf-8") as wf:
+                    wf.write(db_backup)
+            server.shutdown()
+            server.server_close()
 
 
 if __name__ == "__main__":

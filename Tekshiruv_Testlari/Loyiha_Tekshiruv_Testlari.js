@@ -64,21 +64,31 @@ async function test(nomi, fn) {
   }
 }
 
-function httpGet(url) {
+function httpGet(url, extraHeaders = {}) {
   return new Promise((resolve, reject) => {
-    http
-      .get(url, (res) => {
+    const parsed = new URL(url);
+    const req = http.request(
+      {
+        hostname: parsed.hostname,
+        port: parsed.port,
+        path: parsed.pathname + parsed.search,
+        method: "GET",
+        headers: extraHeaders,
+      },
+      (res) => {
         let body = "";
         res.on("data", (c) => {
           body += c;
         });
-        res.on("end", () => resolve({ statusCode: res.statusCode, body }));
-      })
-      .on("error", reject);
+        res.on("end", () => resolve({ statusCode: res.statusCode, headers: res.headers, body }));
+      },
+    );
+    req.on("error", reject);
+    req.end();
   });
 }
 
-function httpPost(url, payload, contentType = "application/json") {
+function httpPost(url, payload, contentType = "application/json", extraHeaders = {}) {
   return new Promise((resolve, reject) => {
     const raw = typeof payload === "string" ? payload : JSON.stringify(payload);
     const parsed = new URL(url);
@@ -91,6 +101,7 @@ function httpPost(url, payload, contentType = "application/json") {
         headers: {
           "Content-Type": contentType,
           "Content-Length": Buffer.byteLength(raw),
+          ...extraHeaders,
         },
       },
       (res) => {
@@ -98,7 +109,7 @@ function httpPost(url, payload, contentType = "application/json") {
         res.on("data", (c) => {
           body += c;
         });
-        res.on("end", () => resolve({ statusCode: res.statusCode, body }));
+        res.on("end", () => resolve({ statusCode: res.statusCode, headers: res.headers, body }));
       },
     );
     req.on("error", reject);
@@ -327,10 +338,22 @@ function httpPost(url, payload, contentType = "application/json") {
       "Bepul",
     );
 
-    // 4) Admin to'lov tushganini tasdiqlagandan keyingina PRO ochiladi (+100 bonus olmos)
+    // 4) Oddiy foydalanuvchi tasdiqlay olmasligi, faqat Admin tasdiqlagandan keyingina PRO ochilishi (+100 bonus olmos)
+    UmumiyHolatVaBazalar.adminSessiyasiniTozalash();
+    const oddiyTasdiqUrinish = ObunaVaTolovMantiqi.tolovniTasdiqlash(
+      sorovRes.sorov.invoysId,
+    );
+    assert.strictEqual(oddiyTasdiqUrinish.muvaffaqiyat, false);
+    assert.strictEqual(
+      UmumiyHolatVaBazalar.holatniYuklash().joriyFoydalanuvchi.obunaTarifi,
+      "Bepul",
+    );
+
+    UmumiyHolatVaBazalar.adminSessiyasiniSaqlash("test-admin-token");
     const tasdiqRes = ObunaVaTolovMantiqi.tolovniTasdiqlash(
       sorovRes.sorov.invoysId,
     );
+    UmumiyHolatVaBazalar.adminSessiyasiniTozalash();
     assert.strictEqual(tasdiqRes.muvaffaqiyat, true);
     assert.strictEqual(
       UmumiyHolatVaBazalar.holatniYuklash().joriyFoydalanuvchi.obunaTarifi,
@@ -569,14 +592,16 @@ function httpPost(url, payload, contentType = "application/json") {
       assert.ok(elements["sozlamalar-asosiy-konteyner"].innerHTML.includes("settings-sec-lang"));
       assert.ok(elements["sozlamalar-asosiy-konteyner"].innerHTML.includes("settings-sec-avatar"));
       assert.ok(elements["sozlamalar-asosiy-konteyner"].innerHTML.includes("settings-sec-profile"));
+      assert.strictEqual(elements["sozlamalar-asosiy-konteyner"].innerHTML.includes('value="Admin"'), false);
 
       SozlamalarVaProfil.profilSahifasiniChizish();
       assert.ok(elements["profil-asosiy-konteyner"].innerHTML.includes("Olmoslar To'planish Tarixi"));
 
       QidiruvBulimi.sahifaniIshgaTushirish();
       assert.ok(elements["qidiruv-va-mundarija-konteyner"].innerHTML.includes("kun-rubric-block"));
+      assert.strictEqual(elements["qidiruv-va-mundarija-konteyner"].innerHTML.includes("Admin_panel_sahifasi.html"), false);
 
-      // Qolgan barcha 12 ta bo'limning Kun.uz uslubida chizilishini tekshirish
+      // Qolgan barcha bo'limlarning Kun.uz uslubida chizilishini tekshirish
       NoldanUrganishBulimi.sahifaniIshgaTushirish();
       assert.ok(elements["noldan-urganish-konteyner"].innerHTML.includes("kun-settings-section-card"));
 
@@ -588,10 +613,24 @@ function httpPost(url, payload, contentType = "application/json") {
 
       KirishVaRoyxatdanUtish.sahifaniIshgaTushirish();
       assert.ok(elements["kirish-asosiy-konteyner"].innerHTML.includes("kun-settings-section-card"));
+      assert.strictEqual(elements["kirish-asosiy-konteyner"].innerHTML.includes('data-demo-login="admin"'), false);
+      assert.strictEqual(elements["kirish-asosiy-konteyner"].innerHTML.includes('value="Admin"'), false);
 
+      // Oddiy foydalanuvchi uchun Admin Panel maxfiy qismlari yopiq bo'lishi shart!
+      UmumiyHolatVaBazalar.adminSessiyasiniTozalash();
+      AdminPaneli.sahifaniIshgaTushirish();
+      assert.ok(elements["admin-asosiy-konteyner"].innerHTML.includes("admin-kirish-oynasi"));
+      assert.strictEqual(elements["admin-asosiy-konteyner"].innerHTML.includes("PRO Obuna To'lovlarini Tasdiqlash"), false);
+      assert.strictEqual(elements["admin-asosiy-konteyner"].innerHTML.includes("admin-rekvizit-formasi"), false);
+      assert.strictEqual(elements["admin-asosiy-konteyner"].innerHTML.includes("dilnoza.math@gmail.com"), false);
+      assert.strictEqual(elements["umumiy-navigatsiya-joyi"].innerHTML.includes("Admin_panel_sahifasi.html"), false);
+
+      // Faqat Admin sessiyasi tasdiqlangandagina Admin Panel boshqaruv bo'limlari ochiladi
+      UmumiyHolatVaBazalar.adminSessiyasiniSaqlash("test-admin-token");
       AdminPaneli.sahifaniIshgaTushirish();
       assert.ok(elements["admin-asosiy-konteyner"].innerHTML.includes("kun-settings-section-card"));
       assert.ok(elements["admin-asosiy-konteyner"].innerHTML.includes("PRO Obuna To'lovlarini Tasdiqlash"));
+      UmumiyHolatVaBazalar.adminSessiyasiniTozalash();
 
       OlmoslarDukoniMantiqi.sahifaniIshgaTushirish();
       assert.ok(elements["olmoslar-dukoni-konteyner"].innerHTML.includes("kun-page-banner"));
@@ -631,6 +670,129 @@ function httpPost(url, payload, contentType = "application/json") {
       }
       delete global.document;
       delete global.window;
+    }
+  });
+
+  // 13. Admin Panel maxfiy ma'lumotlari oddiy foydalanuvchilarga yopiq ekanligini Backend va Frontend da tekshirish
+  await test("13. Admin Panel maxfiy fayllari, API nuqtalari va sessiyasi oddiy foydalanuvchilardan himoyalanganligi", async () => {
+    const dbPath = path.join(ROOT, "Malumotlar_Bazasi", "Baza_Malumotlari.json");
+    const dbBackup = fs.existsSync(dbPath) ? fs.readFileSync(dbPath, "utf8") : null;
+    const prevAdminSecret = process.env.ADMIN_SECRET;
+    delete process.env.ADMIN_SECRET;
+
+    const server = createServerInstance();
+    await new Promise((resolve) => server.listen(0, "127.0.0.1", resolve));
+    const port = server.address().port;
+    const base = `http://127.0.0.1:${port}`;
+
+    try {
+      // 1) Statik maxfiy fayllar (Baza_Malumotlari.json, .env, Server_Asosiy.js, package.json) 403 bilan yopiq
+      for (const maxfiyYol of [
+        "/.env",
+        "/.env.example",
+        "/Malumotlar_Bazasi/Baza_Malumotlari.json",
+        "/Server_Asosiy.js",
+        "/Server_Asosiy.py",
+        "/package.json",
+      ]) {
+        const res = await httpGet(`${base}${maxfiyYol}`);
+        assert.strictEqual(res.statusCode, 403, `${maxfiyYol} 403 qaytarishi kerak`);
+      }
+
+      // 2) ADMIN_SECRET sozlanmagan paytda ham admin API lar ochilib qolmasligi shart (503)
+      const unconfiguredApprove = await httpPost(`${base}/api/tolov/tasdiqlash`, { invoysId: "INV-NONE" });
+      assert.strictEqual(unconfiguredApprove.statusCode, 503);
+      const unconfiguredAdminState = await httpGet(`${base}/api/admin/holat`);
+      assert.strictEqual(unconfiguredAdminState.statusCode, 503);
+
+      // 3) ADMIN_SECRET sozlanganda ham oddiy foydalanuvchi admin API va to'lovlar ro'yxatini ko'ra olmasligi shart
+      process.env.ADMIN_SECRET = "test_maxfiy_admin_kalit_2026";
+      const postSorov = await httpPost(`${base}/api/tolov/sorov`, {
+        invoysId: "INV-SEC-101",
+        foydalanuvchiId: "user_default_1",
+        foydalanuvchiIsmi: "Sardorbek Alimov",
+        tarifId: "plan_student_pro",
+        tolovUsuli: "Payme",
+        kartaYokiTel: "+998901234567",
+      });
+      assert.strictEqual(postSorov.statusCode, 200);
+
+      // Oddiy foydalanuvchi GET /api/holat da tolovSorovlari va boshqa foydalanuvchi email/telefonlarini ko'rmaydi
+      const holatRes = await httpGet(`${base}/api/holat`);
+      assert.strictEqual(holatRes.statusCode, 200);
+      const holatJson = JSON.parse(holatRes.body);
+      assert.strictEqual("tolovSorovlari" in holatJson, false);
+      assert.strictEqual("ishlatilganTranzaksiyalar" in holatJson, false);
+      (holatJson.foydalanuvchilarRoyxati || []).forEach((u) => {
+        assert.notStrictEqual(u.rol, "Admin");
+        assert.strictEqual("email" in u, false);
+        assert.strictEqual("telefon" in u, false);
+        assert.strictEqual("kirishUsuli" in u, false);
+      });
+
+      // Oddiy foydalanuvchi barcha to'lov so'rovlarini filtersiz ola olmaydi (403)
+      const allPaymentsRes = await httpGet(`${base}/api/tolov/holat`);
+      assert.strictEqual(allPaymentsRes.statusCode, 403);
+
+      // Shaxsiy invoys holatida esa karta/telefon raqami maskalangan bo'ladi
+      const maskedRes = await httpGet(`${base}/api/tolov/holat?invoysId=INV-SEC-101`);
+      assert.strictEqual(maskedRes.statusCode, 200);
+      assert.strictEqual(JSON.parse(maskedRes.body).sorov.kartaYokiTel, "****4567");
+
+      // Oddiy foydalanuvchi /api/sinxronlash orqali admin maydonlarini yoki rolini o'zgartira olmaydi
+      const syncRes = await httpPost(`${base}/api/sinxronlash`, {
+        joriyFoydalanuvchi: { id: "user_default_1", ism: "Sardorbek", familiya: "Alimov", rol: "Admin" },
+        tolovRekvizitlari: { kartaRaqami: "0000 0000 0000 0000" },
+        tolovSorovlari: [],
+      });
+      assert.strictEqual(syncRes.statusCode, 200);
+      const dbSyncCheck = JSON.parse(fs.readFileSync(dbPath, "utf8"));
+      assert.notStrictEqual(dbSyncCheck.joriyFoydalanuvchi.rol, "Admin");
+      assert.notStrictEqual(dbSyncCheck.tolovRekvizitlari.kartaRaqami, "0000 0000 0000 0000");
+      assert.ok((dbSyncCheck.tolovSorovlari || []).some((s) => s.invoysId === "INV-SEC-101"));
+
+      // Noto'g'ri admin kalit rad etiladi (403)
+      const badLogin = await httpPost(`${base}/api/admin/kirish`, { adminKalit: "xato_kalit" });
+      assert.strictEqual(badLogin.statusCode, 403);
+
+      // To'g'ri admin kalit bilan sessiya ochiladi va maxfiy admin API ishlaydi
+      const okLogin = await httpPost(`${base}/api/admin/kirish`, { adminKalit: "test_maxfiy_admin_kalit_2026" });
+      assert.strictEqual(okLogin.statusCode, 200);
+      const { adminToken } = JSON.parse(okLogin.body);
+      assert.ok(adminToken && adminToken.length >= 32);
+
+      const adminHolatRes = await httpGet(`${base}/api/admin/holat`, { "x-admin-token": adminToken });
+      assert.strictEqual(adminHolatRes.statusCode, 200);
+      const adminHolatJson = JSON.parse(adminHolatRes.body);
+      assert.ok(Array.isArray(adminHolatJson.tolovSorovlari));
+
+      const adminApprove = await httpPost(
+        `${base}/api/tolov/tasdiqlash`,
+        { invoysId: "INV-SEC-101" },
+        "application/json",
+        { "x-admin-token": adminToken },
+      );
+      assert.strictEqual(adminApprove.statusCode, 200);
+      assert.strictEqual(JSON.parse(adminApprove.body).muvaffaqiyat, true);
+
+      // Chiqishdan keyin eski token bekor qilinadi
+      const logoutRes = await httpPost(`${base}/api/admin/chiqish`, {}, "application/json", { "x-admin-token": adminToken });
+      assert.strictEqual(logoutRes.statusCode, 200);
+      const afterLogout = await httpGet(`${base}/api/admin/holat`, { "x-admin-token": adminToken });
+      assert.strictEqual(afterLogout.statusCode, 403);
+
+      // Frontend localStorage da rol="Admin" soxtalashtirilsa ham AdminPaneli ochilmasligi
+      UmumiyHolatVaBazalar.adminSessiyasiniTozalash();
+      UmumiyHolatVaBazalar.foydalanuvchiniYangilash({ rol: "Admin" });
+      assert.notStrictEqual(UmumiyHolatVaBazalar.holatniYuklash().joriyFoydalanuvchi.rol, "Admin");
+      assert.strictEqual(AdminPaneli.adminRuxsatiBormi(), false);
+    } finally {
+      if (prevAdminSecret === undefined) delete process.env.ADMIN_SECRET;
+      else process.env.ADMIN_SECRET = prevAdminSecret;
+      if (dbBackup !== null) {
+        fs.writeFileSync(dbPath, dbBackup, "utf8");
+      }
+      await new Promise((resolve) => server.close(resolve));
     }
   });
 

@@ -10,7 +10,9 @@
   const QidiruvBulimi = {
     qidiruvIndeksiniYaratish: function () {
       const indeks = [];
-      const mundarija = global.MundarijaVaNavigatsiya.sahifalarMundarijasi || [];
+      const mundarija = typeof global.MundarijaVaNavigatsiya.korinadiganSahifalar === "function"
+        ? global.MundarijaVaNavigatsiya.korinadiganSahifalar()
+        : (global.MundarijaVaNavigatsiya.sahifalarMundarijasi || []).filter(s => !s.faqatAdmin);
       const darajalar = global.MatematikaSavollarBazasi.noldanUrganishDarajalari || [];
       const sertSavollar = global.MatematikaSavollarBazasi.sertifikat45Test || [];
 
@@ -90,7 +92,7 @@
                    placeholder="Mavzu, formula, test yoki sahifani qidiring (masalan: Sozlamalar, Viyet, logarifm, A+, Sertifikat)..." />
             <select id="global-qidiruv-tur" class="form-select" style="width:auto; font-weight:700;">
               <option value="barchasi">📂 Barcha bo'limlar</option>
-              <option value="Sahifa">🧭 17 ta Sahifa va Modullar</option>
+              <option value="Sahifa">🧭 Sahifalar va Modullar</option>
               <option value="0 dan o'rganish">📚 0 dan o'rganish darslari</option>
               <option value="Sertifikat">🏆 45 talik Sertifikat savollari</option>
             </select>
@@ -99,11 +101,11 @@
           <div id="global-qidiruv-natijalari"></div>
         </div>
 
-        <!-- 2. KUN.UZ USLUBIDA 4 TA YO'NALISHGA GURUHLANGAN 17 TA SAHIFA MUNDARIJASI -->
+        <!-- 2. KUN.UZ USLUBIDA 4 TA YO'NALISHGA GURUHLANGAN SAHIFA MUNDARIJASI -->
         <div>
           <div class="section-header">
             <div>
-              <h2 class="section-title">🧭 Saytning To'liq Mundarijasi (4 ta yo'nalish, 17 ta alohida sahifa)</h2>
+              <h2 class="section-title">🧭 Saytning To'liq Mundarijasi (4 ta yo'nalish bo'yicha)</h2>
               <p style="color:var(--text-secondary); font-size:0.94rem; margin-top:0.25rem;">
                 Har bir bo'lim tartib bilan o'z yo'nalishiga ajratilgan — kerakli sahifaga 1 bosishda o'ting:
               </p>

@@ -216,11 +216,12 @@
       i18nKalit: "nav_login",
       qisqaNomi: "Kirish",
       nomi: "Kirish va Ro'yxatdan o'tish (Telefon, Google, Email, Instagram)",
-      tavsif: "Telefon raqam, Google, Email yoki Instagram orqali o'quvchi, ustoz yoki admin sifatida tizimga kirish."
+      tavsif: "Telefon raqam, Google, Email yoki Instagram orqali o'quvchi yoki ustoz sifatida tizimga kirish."
     },
     {
       raqam: "17",
       id: "admin",
+      faqatAdmin: true,
       kategoriyaId: "kabinet",
       kategoriyaNomi: "⚙️ IV. Shaxsiy Kabinet, Sozlamalar va Boshqaruv",
       papka: "Sahifalar",
@@ -252,8 +253,8 @@
     },
     {
       id: "kabinet",
-      sarlavha: "⚙️ IV BO'LIM: SHAXSIY KABINET, SOZLAMALAR, KIRISH VA ADMIN BOSHQARUV",
-      izoh: "Tungi/Kunduzgi rejim, O'zbek/Rus/Ingliz tillari, profil rasmi va BIO, 4 xil login usuli hamda Admin markazi"
+      sarlavha: "⚙️ IV BO'LIM: SHAXSIY KABINET, SOZLAMALAR VA PROFIL",
+      izoh: "Tungi/Kunduzgi rejim, O'zbek/Rus/Ingliz tillari, profil rasmi va BIO, 4 xil login usuli"
     }
   ];
 
@@ -273,6 +274,19 @@
     sahifalarMundarijasi: SAHIFALAR_MUNDARIJASI,
     rubrikalarGuruhi: RUBRIKALAR_GURUHI,
 
+    adminSessiyasiFaolmi: function () {
+      return Boolean(
+        global.UmumiyHolatVaBazalar &&
+        typeof global.UmumiyHolatVaBazalar.adminSessiyasiBormi === "function" &&
+        global.UmumiyHolatVaBazalar.adminSessiyasiBormi()
+      );
+    },
+
+    korinadiganSahifalar: function () {
+      const adminFaol = this.adminSessiyasiFaolmi();
+      return SAHIFALAR_MUNDARIJASI.filter(s => adminFaol || !s.faqatAdmin);
+    },
+
     // Istalgan sahifadan boshqa sahifaga to'g'ri nisbiy manzilni hisoblash
     sahifaManziliniOlish: function (faylYokiNisbiyYol) {
       const topilgan = SAHIFALAR_MUNDARIJASI.find(
@@ -291,11 +305,12 @@
       return ildizdanYol;
     },
 
-    // Barcha 17 ta bo'limni Kun.uz uslubida 4 ta tartibli rubrikaga ajratib HTML qaytarish
+    // Bo'limlarni Kun.uz uslubida 4 ta tartibli rubrikaga ajratib HTML qaytarish
     kategoriyalanganMundarijaHtml: function () {
       const self = this;
+      const korinadiganlar = this.korinadiganSahifalar();
       return RUBRIKALAR_GURUHI.map(rub => {
-        const sahifalar = SAHIFALAR_MUNDARIJASI.filter(s => s.kategoriyaId === rub.id);
+        const sahifalar = korinadiganlar.filter(s => s.kategoriyaId === rub.id);
         return `
           <div class="kun-rubric-block">
             <div class="kun-rubric-header">
@@ -341,6 +356,8 @@
       const joriyTil = global.TilVaTarjimalar.joriyTilniOlish();
       const vaqtMatn = global.OlmoslarVaVaqtTizimi.vaqtniFormatlash(baza.bugungiIshlanganSekundlar || 0);
       const joriySahifa = SAHIFALAR_MUNDARIJASI.find(s => s.id === faolSahifaId) || SAHIFALAR_MUNDARIJASI[0];
+      const adminFaol = this.adminSessiyasiFaolmi();
+      const korinadiganlar = this.korinadiganSahifalar();
 
       // 2-qavatdagi rubrikalar tartibi (eng ko'p ishlatiladigan tartibda)
       const rubrikaTartibi = [
@@ -349,9 +366,9 @@
         "pricing", "verify", "search", "profile", "settings", "login", "admin"
       ];
       const tartiblanganSahifalar = rubrikaTartibi
-        .map(id => SAHIFALAR_MUNDARIJASI.find(s => s.id === id))
+        .map(id => korinadiganlar.find(s => s.id === id))
         .filter(Boolean);
-      const shuRubrikaSahifalari = SAHIFALAR_MUNDARIJASI.filter(
+      const shuRubrikaSahifalari = korinadiganlar.filter(
         s => s.kategoriyaId === joriySahifa.kategoriyaId
       );
 
@@ -422,7 +439,7 @@
                 </button>
 
                 <!-- MUNDARIJA TUGMASI -->
-                <button type="button" class="mundarija-toggle-btn" id="mundarija-ochish-btn" title="Barcha 17 ta sahifa mundarijasi">
+                <button type="button" class="mundarija-toggle-btn" id="mundarija-ochish-btn" title="Barcha bo'limlar mundarijasi">
                   <span>🧭</span>
                   <span data-i18n="btn_mundarija">${global.TilVaTarjimalar.matn("btn_mundarija", joriyTil)}</span>
                 </button>
@@ -456,7 +473,9 @@
                 <span>/</span>
                 <span data-i18n="rubric_${joriySahifa.kategoriyaId}">${global.TilVaTarjimalar.matn("rubric_" + joriySahifa.kategoriyaId, joriyTil)}</span>
                 <span>/</span>
-                <strong>${joriySahifa.ikonka} <span data-i18n="${joriySahifa.i18nKalit}">${global.TilVaTarjimalar.matn(joriySahifa.i18nKalit, joriyTil) || joriySahifa.nomi}</span></strong>
+                ${joriySahifa.faqatAdmin && !adminFaol
+                  ? `<strong>🔒 Cheklangan bo'lim</strong>`
+                  : `<strong>${joriySahifa.ikonka} <span data-i18n="${joriySahifa.i18nKalit}">${global.TilVaTarjimalar.matn(joriySahifa.i18nKalit, joriyTil) || joriySahifa.nomi}</span></strong>`}
               </div>
 
               <div class="kun-rubric-sibling-pills" aria-label="Joriy yo'nalishdagi bo'limlar">
@@ -484,7 +503,7 @@
           <aside class="mundarija-drawer" aria-label="Sayt Mundarijasi">
             <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:1rem; padding-bottom:0.85rem; border-bottom:2px solid var(--border-color);">
               <div>
-                <h2 style="font-size:1.22rem; font-weight:900;">🧭 Barcha Bo'limlar Mundarijasi (17)</h2>
+                <h2 style="font-size:1.22rem; font-weight:900;">🧭 Barcha Bo'limlar Mundarijasi (${korinadiganlar.length})</h2>
                 <div style="font-size:0.8rem; color:var(--text-muted);">Kun.uz uslubida 4 ta yo'nalishga tartiblangan</div>
               </div>
               <button type="button" class="btn btn-outline" id="mundarija-yopish-btn" style="padding:0.45rem 0.85rem;">✕</button>
@@ -496,7 +515,7 @@
 
             <div id="mundarija-royxat-konteyner">
               ${RUBRIKALAR_GURUHI.map(rub => {
-                const guruhSahifalari = SAHIFALAR_MUNDARIJASI.filter(s => s.kategoriyaId === rub.id);
+                const guruhSahifalari = korinadiganlar.filter(s => s.kategoriyaId === rub.id);
                 return `
                   <div class="mundarija-group-section">
                     <div class="mundarija-group-title">${rub.sarlavha}</div>

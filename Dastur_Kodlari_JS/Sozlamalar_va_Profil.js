@@ -256,7 +256,6 @@
                   <select id="set-rol" class="form-select">
                     <option value="O'quvchi" ${u.rol === "O'quvchi" ? "selected" : ""}>🎓 O'quvchi / Abituriyent</option>
                     <option value="Ustoz" ${u.rol === "Ustoz" ? "selected" : ""}>👨‍🏫 Ustoz (O'qituvchi / Repetitor)</option>
-                    <option value="Admin" ${u.rol === "Admin" ? "selected" : ""}>🛡️ Administrator</option>
                   </select>
                 </div>
               </div>
@@ -545,6 +544,7 @@
             <h3 style="font-size:1.1rem; font-weight:800; margin-bottom:0.85rem;">🏅 Eng ko'p Olmos to'plagan foydalanuvchilar</h3>
             <div style="display:flex; flex-direction:column; gap:0.65rem;">
               ${(baza.foydalanuvchilarRoyxati || [])
+                .filter(f => f && f.rol !== "Admin")
                 .slice()
                 .sort((a, b) => (b.olmoslar || 0) - (a.olmoslar || 0))
                 .map((f, i) => `

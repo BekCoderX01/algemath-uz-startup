@@ -99,16 +99,32 @@
     );
   }
 
-  function servergaPostYuborish(endpoint, payload) {
+  function servergaPostYuborish(endpoint, payload, qoshimchaHeaders) {
     try {
       if (httpServerMavjudmi()) {
+        const headers = { "Content-Type": "application/json", ...(qoshimchaHeaders || {}) };
         fetch(endpoint, {
           method: "POST",
-          headers: { "Content-Type": "application/json" },
+          headers,
           body: JSON.stringify(payload)
         }).catch(() => {});
       }
     } catch (e) {}
+  }
+
+  function adminRuxsatiBormi() {
+    return Boolean(
+      global.UmumiyHolatVaBazalar &&
+      typeof global.UmumiyHolatVaBazalar.adminSessiyasiBormi === "function" &&
+      global.UmumiyHolatVaBazalar.adminSessiyasiBormi()
+    );
+  }
+
+  function adminSarlavhalari() {
+    const token = global.UmumiyHolatVaBazalar && typeof global.UmumiyHolatVaBazalar.adminTokeniniOlish === "function"
+      ? global.UmumiyHolatVaBazalar.adminTokeniniOlish()
+      : "";
+    return token ? { "x-admin-token": token } : {};
   }
 
   let tekshiruvIntervalId = null;
@@ -262,6 +278,9 @@
 
     // Admin panelda (va Backend da) to'lov tushganini tasdiqlash -> PRO tarifni faollashtirish
     tolovniTasdiqlash: function (invoysId) {
+      if (!adminRuxsatiBormi()) {
+        return { muvaffaqiyat: false, xabar: "⛔ Ruxsat yo'q: bu amal faqat avtorizatsiyadan o'tgan Admin uchun!" };
+      }
       const baza = global.UmumiyHolatVaBazalar.holatniYuklash();
       if (!Array.isArray(baza.tolovSorovlari)) baza.tolovSorovlari = [];
       const sorov = baza.tolovSorovlari.find(s => s.invoysId === invoysId);
@@ -287,12 +306,15 @@
           sRef.chek = res.chek;
         }
         global.UmumiyHolatVaBazalar.holatniSaqlash(yangiBaza);
-        servergaPostYuborish("/api/tolov/tasdiqlash", { invoysId });
+        servergaPostYuborish("/api/tolov/tasdiqlash", { invoysId }, adminSarlavhalari());
       }
       return res;
     },
 
     tolovniRadEtish: function (invoysId, sabab) {
+      if (!adminRuxsatiBormi()) {
+        return { muvaffaqiyat: false, xabar: "⛔ Ruxsat yo'q: bu amal faqat avtorizatsiyadan o'tgan Admin uchun!" };
+      }
       const baza = global.UmumiyHolatVaBazalar.holatniYuklash();
       if (!Array.isArray(baza.tolovSorovlari)) baza.tolovSorovlari = [];
       const sorov = baza.tolovSorovlari.find(s => s.invoysId === invoysId);
@@ -303,7 +325,7 @@
       sorov.radSababi = sabab || "To'lov hisobga tushmagani aniqlandi";
       sorov.tasdiqlanganSana = new Date().toISOString().replace("T", " ").slice(0, 16);
       global.UmumiyHolatVaBazalar.holatniSaqlash(baza);
-      servergaPostYuborish("/api/tolov/rad-etish", { invoysId, sabab: sorov.radSababi });
+      servergaPostYuborish("/api/tolov/rad-etish", { invoysId, sabab: sorov.radSababi }, adminSarlavhalari());
 
       return {
         muvaffaqiyat: true,

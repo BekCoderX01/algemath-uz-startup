@@ -1,25 +1,204 @@
 /* ==========================================================================
    FAYL NOMI: Dastur_Kodlari_JS/Admin_paneli.js
    VAZIFASI: Saytning Admin Paneli (Boshqaruv markazi):
-             1) Foydalanuvchilar ro'yxati, kirish usullari (Telefon, Google,
-                Email, Instagram) va ularga qo'shimcha Olmos (💎) taqdim etish;
-             2) Bazaga yangi matematik/algebraik test savollarini qo'shish;
-             3) Berilgan Milliy Sertifikatlar (A+, A, B+, B, C+, C) reestrini
-                nazorat qilish.
+             - Faqat serverda tasdiqlangan (ADMIN_SECRET orqali) maxsus
+               Admin sessiyasi mavjud bo'lgandagina ochiladi;
+             - Oddiy foydalanuvchilarga maxfiy admin ma'lumotlari (foydalanuvchilar
+               ro'yxati, telefon/email, to'lov so'rovlari, karta rekvizitlari,
+               test savollari javoblari va sertifikat reestri) ko'rsatilmaydi!
    ========================================================================== */
 
 (function (global) {
+  function htmlTozalash(qiymat) {
+    return String(qiymat == null ? "" : qiymat)
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#39;");
+  }
+
+  function httpServerMavjudmi() {
+    return (
+      typeof fetch !== "undefined" &&
+      typeof window !== "undefined" &&
+      window.location &&
+      typeof window.location.protocol === "string" &&
+      window.location.protocol.startsWith("http")
+    );
+  }
+
   const AdminPaneli = {
+    _serverAdminHolat: null,
+    _kirishXatosi: "",
+
+    adminRuxsatiBormi: function () {
+      return Boolean(
+        global.UmumiyHolatVaBazalar &&
+        typeof global.UmumiyHolatVaBazalar.adminSessiyasiBormi === "function" &&
+        global.UmumiyHolatVaBazalar.adminSessiyasiBormi()
+      );
+    },
+
+    adminSarlavhalari: function (qoshimcha) {
+      const headers = { ...(qoshimcha || {}) };
+      const token = global.UmumiyHolatVaBazalar &&
+        typeof global.UmumiyHolatVaBazalar.adminTokeniniOlish === "function"
+        ? global.UmumiyHolatVaBazalar.adminTokeniniOlish()
+        : "";
+      if (token) {
+        headers["x-admin-token"] = token;
+      }
+      return headers;
+    },
+
     sahifaniIshgaTushirish: function () {
       if (typeof document === "undefined") return;
       const konteyner = document.getElementById("admin-asosiy-konteyner");
       if (!konteyner) return;
 
+      if (!this.adminRuxsatiBormi()) {
+        this._serverAdminHolat = null;
+        this.kirishBlokiniChizish(konteyner);
+        return;
+      }
+
+      if (httpServerMavjudmi()) {
+        this.serverAdminHolatiniYuklash(konteyner);
+        return;
+      }
+
       this.interfeysniChizish(konteyner);
     },
 
+    serverAdminHolatiniYuklash: async function (konteyner) {
+      try {
+        const resp = await fetch("/api/admin/holat", {
+          headers: this.adminSarlavhalari()
+        });
+        if (!resp.ok) {
+          this._serverAdminHolat = null;
+          if (global.UmumiyHolatVaBazalar && typeof global.UmumiyHolatVaBazalar.adminSessiyasiniTozalash === "function") {
+            global.UmumiyHolatVaBazalar.adminSessiyasiniTozalash();
+          }
+          if (global.MundarijaVaNavigatsiya) {
+            global.MundarijaVaNavigatsiya.navigatsiyaniChizish("admin");
+          }
+          this._kirishXatosi = "Admin sessiyasi muddati tugagan yoki ruxsat tasdiqlanmadi.";
+          this.kirishBlokiniChizish(konteyner);
+          return false;
+        }
+        this._serverAdminHolat = await resp.json();
+        this.interfeysniChizish(konteyner);
+        return true;
+      } catch (e) {
+        this.interfeysniChizish(konteyner);
+        return false;
+      }
+    },
+
+    kirishBlokiniChizish: function (konteyner) {
+      const boshSahifaYol = global.MundarijaVaNavigatsiya
+        ? global.MundarijaVaNavigatsiya.sahifaManziliniOlish("Asosiy_sahifa.html")
+        : "../index.html";
+      const serverFaol = httpServerMavjudmi();
+
+      konteyner.innerHTML = `
+        <div class="kun-settings-layout" id="admin-kirish-oynasi">
+          <div class="kun-settings-section-card" style="max-width:620px; margin:1.5rem auto; border-top:5px solid var(--accent-primary);">
+            <div class="section-header">
+              <div>
+                <span class="kun-settings-step-badge">🔒 CHEKLANGAN BO'LIM</span>
+                <h1 class="section-title">Kirish Cheklangan — Faqat Administratorlar Uchun</h1>
+                <p style="color:var(--text-secondary); font-size:0.95rem; margin-top:0.45rem;">
+                  Ushbu bo'limdagi maxfiy ma'lumotlar oddiy foydalanuvchilardan himoyalangan. Davom etish uchun serverning maxfiy administrator kalitini kiriting.
+                </p>
+              </div>
+            </div>
+
+            ${this._kirishXatosi ? `
+              <div style="padding:0.85rem 1rem; border-radius:8px; background:rgba(220,38,38,0.1); color:var(--danger); font-weight:700; margin-bottom:1.1rem;">
+                ⚠️ ${htmlTozalash(this._kirishXatosi)}
+              </div>
+            ` : ""}
+
+            ${serverFaol ? `
+              <form id="admin-kirish-formasi" style="display:flex; flex-direction:column; gap:1rem;">
+                <div class="form-group" style="margin-bottom:0;">
+                  <label class="form-label" for="admin-maxfiy-kalit-input">🔑 Maxfiy Admin Kaliti (ADMIN_SECRET) *</label>
+                  <input type="password"
+                         id="admin-maxfiy-kalit-input"
+                         class="form-input"
+                         autocomplete="current-password"
+                         placeholder="Serverda sozlangan maxfiy kalitni kiriting..."
+                         required />
+                </div>
+                <div style="display:flex; gap:0.85rem; flex-wrap:wrap;">
+                  <button type="submit" id="admin-kirish-tugmasi" class="btn btn-primary" style="flex:1;">
+                    🛡️ Tasdiqlash va Kirish
+                  </button>
+                  <a href="${boshSahifaYol}" class="btn btn-outline">
+                    🏠 Asosiy sahifaga qaytish
+                  </a>
+                </div>
+              </form>
+            ` : `
+              <div style="padding:1rem; border-radius:var(--radius-md); background:var(--bg-primary); border:1px solid var(--border-color); margin-bottom:1.1rem; font-size:0.9rem; color:var(--text-secondary);">
+                🔒 Xavfsizlik talabi: Admin panel faqat Backend server (<code>Server_Asosiy.js</code> yoki <code>Server_Asosiy.py</code>) va <code>ADMIN_SECRET</code> orqali ishlaydi. Maxfiy kalit brauzer kodida saqlanmaydi.
+              </div>
+              <a href="${boshSahifaYol}" class="btn btn-primary" style="width:100%;">
+                🏠 Asosiy sahifaga qaytish
+              </a>
+            `}
+          </div>
+        </div>
+      `;
+
+      const kirishForma = document.getElementById("admin-kirish-formasi");
+      if (kirishForma) {
+        kirishForma.addEventListener("submit", async (e) => {
+          e.preventDefault();
+          const kalitInput = document.getElementById("admin-maxfiy-kalit-input");
+          const adminKalit = (kalitInput ? kalitInput.value : "").trim();
+          if (!adminKalit) return;
+
+          try {
+            const resp = await fetch("/api/admin/kirish", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ adminKalit })
+            });
+            const data = await resp.json().catch(() => ({}));
+            if (!resp.ok || !data.muvaffaqiyat || !data.adminToken) {
+              this._kirishXatosi = data.xabar || "Maxfiy admin kaliti noto'g'ri!";
+              this.kirishBlokiniChizish(konteyner);
+              return;
+            }
+            this._kirishXatosi = "";
+            global.UmumiyHolatVaBazalar.adminSessiyasiniSaqlash(data.adminToken, data.admin);
+            if (global.MundarijaVaNavigatsiya) {
+              global.MundarijaVaNavigatsiya.navigatsiyaniChizish("admin");
+            }
+            await this.serverAdminHolatiniYuklash(konteyner);
+            global.UmumiyHolatVaBazalar.xabarnomaKorsatish("🛡️ Admin sessiyasi muvaffaqiyatli tasdiqlandi!");
+          } catch (err) {
+            this._kirishXatosi = "Server bilan bog'lanishda xatolik yuz berdi.";
+            this.kirishBlokiniChizish(konteyner);
+          }
+        });
+      }
+    },
+
     interfeysniChizish: function (konteyner) {
-      const baza = global.UmumiyHolatVaBazalar.holatniYuklash();
+      if (!this.adminRuxsatiBormi()) {
+        this.kirishBlokiniChizish(konteyner);
+        return;
+      }
+
+      const lokalBaza = global.UmumiyHolatVaBazalar.holatniYuklash();
+      const baza = this._serverAdminHolat
+        ? { ...lokalBaza, ...this._serverAdminHolat }
+        : lokalBaza;
       const foydalanuvchilar = baza.foydalanuvchilarRoyxati || [];
       const sertifikatlar = baza.berilganSertifikatlarArxivi || [];
       const qoshimchaSavollar = baza.qoshimchaAdminSavollar || [];
@@ -27,6 +206,8 @@
       const kutilayotganTolovlar = tolovSorovlari.filter(s => s.holat === "kutilmoqda");
       const rekvizit = baza.tolovRekvizitlari || {};
       const jamiOlmoslar = foydalanuvchilar.reduce((s, u) => s + (u.olmoslar || 0), 0);
+      const sessiya = global.UmumiyHolatVaBazalar.adminSessiyasiniOlish();
+      const adminNomi = (sessiya && sessiya.admin && `${sessiya.admin.ism || ""} ${sessiya.admin.familiya || ""}`.trim()) || "Bosh Administrator";
 
       konteyner.innerHTML = `
         <div class="kun-settings-layout">
@@ -39,9 +220,14 @@
                   O'quvchilar va ustozlar faoliyati, 4 xil login usuli statistikasi, yangi test qo'shish va Milliy Sertifikatlar nazorati.
                 </p>
               </div>
-              <span class="badge-pill" style="background:var(--bg-tertiary); color:var(--accent-primary); font-size:0.9rem; padding:0.5rem 1rem;">
-                🛡️ Faol Admin: ${baza.joriyFoydalanuvchi.ism} ${baza.joriyFoydalanuvchi.familiya}
-              </span>
+              <div style="display:flex; align-items:center; gap:0.75rem; flex-wrap:wrap;">
+                <span class="badge-pill" style="background:var(--bg-tertiary); color:var(--accent-primary); font-size:0.9rem; padding:0.5rem 1rem;">
+                  🛡️ Faol Admin: ${htmlTozalash(adminNomi)}
+                </span>
+                <button type="button" id="admin-chiqish-btn" class="btn btn-outline" style="padding:0.45rem 0.9rem; font-size:0.85rem; color:var(--danger); border-color:var(--danger);">
+                  🚪 Chiqish
+                </button>
+              </div>
             </div>
           </div>
 
@@ -136,7 +322,7 @@
                   <div style="display:flex; flex-direction:column; gap:0.65rem;">
                     ${qoshimchaSavollar.map(q => `
                       <div style="font-size:0.88rem; padding:0.75rem 1rem; background:var(--bg-primary); border:1px solid var(--border-color); border-radius:8px;">
-                        <strong>[${q.daraja}]</strong> ${q.savol} → <em>To'g'ri: ${q.variantlar[q.togriIndex || 0]}</em>
+                        <strong>[${htmlTozalash(q.daraja)}]</strong> ${htmlTozalash(q.savol)} → <em>To'g'ri: ${htmlTozalash((q.variantlar || [])[q.togriIndex || 0] || "")}</em>
                       </div>
                     `).join("")}
                   </div>
@@ -157,16 +343,16 @@
                   <div style="padding:1.05rem 1.2rem; border-radius:var(--radius-md); background:var(--bg-primary); border:1px solid var(--border-color); display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:0.85rem;">
                     <div>
                       <div style="font-weight:800; font-size:1rem;">
-                        ${u.avatar || "👨‍🎓"} ${u.ism} ${u.familiya}
-                        <span class="badge-pill" style="background:var(--bg-tertiary); color:var(--accent-primary);">${u.rol}</span>
+                        ${htmlTozalash(u.avatar || "👨‍🎓")} ${htmlTozalash(u.ism)} ${htmlTozalash(u.familiya)}
+                        <span class="badge-pill" style="background:var(--bg-tertiary); color:var(--accent-primary);">${htmlTozalash(u.rol)}</span>
                       </div>
                       <div style="font-size:0.82rem; color:var(--text-muted); margin-top:0.2rem;">
-                        Kirish: ${u.kirishUsuli || "Telefon"} • Jins: ${u.jins || "Erkak"} • Daraja: ${u.tanlanganDaraja || "B"}
+                        Kirish: ${htmlTozalash(u.kirishUsuli || "Telefon")} • Jins: ${htmlTozalash(u.jins || "Erkak")} • Daraja: ${htmlTozalash(u.tanlanganDaraja || "B")}
                       </div>
                     </div>
                     <div style="display:flex; align-items:center; gap:0.75rem;">
-                      <span class="stat-pill diamond-pill">${u.olmoslar || 0} 💎</span>
-                      <button type="button" class="btn btn-emerald" data-gift-user="${u.id}" style="padding:0.5rem 0.9rem; font-size:0.84rem;">
+                      <span class="stat-pill diamond-pill">${Number(u.olmoslar) || 0} 💎</span>
+                      <button type="button" class="btn btn-emerald" data-gift-user="${htmlTozalash(u.id)}" style="padding:0.5rem 0.9rem; font-size:0.84rem;">
                         +10 💎 rag'bat
                       </button>
                     </div>
@@ -188,12 +374,12 @@
               ${sertifikatlar.map(s => `
                 <div class="card" style="background:var(--bg-primary);">
                   <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:0.5rem;">
-                    <span style="font-weight:800; font-size:0.84rem; color:var(--text-muted);">${s.sertifikatId}</span>
-                    <span class="grade-badge ${global.UmumiyHolatVaBazalar.darajaKlassiniOlish(s.daraja)}">${s.daraja}</span>
+                    <span style="font-weight:800; font-size:0.84rem; color:var(--text-muted);">${htmlTozalash(s.sertifikatId)}</span>
+                    <span class="grade-badge ${global.UmumiyHolatVaBazalar.darajaKlassiniOlish(s.daraja)}">${htmlTozalash(s.daraja)}</span>
                   </div>
-                  <div style="font-weight:900; font-size:1.08rem;">${s.ismFamiliya} (${s.rol})</div>
+                  <div style="font-weight:900; font-size:1.08rem;">${htmlTozalash(s.ismFamiliya)} (${htmlTozalash(s.rol)})</div>
                   <div style="font-size:0.88rem; color:var(--text-secondary); margin-top:0.35rem;">
-                    Natija: <strong>${s.togriSoni}/45 (${s.foiz}%)</strong> • Sana: ${s.sana}
+                    Natija: <strong>${Number(s.togriSoni) || 0}/45 (${Number(s.foiz) || 0}%)</strong> • Sana: ${htmlTozalash(s.sana)}
                   </div>
                 </div>
               `).join("")}
@@ -214,15 +400,15 @@
               <div class="grid-3">
                 <div class="form-group">
                   <label class="form-label" for="adm-pay-type">Karta turi</label>
-                  <input type="text" id="adm-pay-type" class="form-input" value="${rekvizit.kartaTuri || "HUMO"}" placeholder="HUMO yoki UZCARD" />
+                  <input type="text" id="adm-pay-type" class="form-input" value="${htmlTozalash(rekvizit.kartaTuri || "HUMO")}" placeholder="HUMO yoki UZCARD" />
                 </div>
                 <div class="form-group">
                   <label class="form-label" for="adm-pay-card">Karta raqami</label>
-                  <input type="text" id="adm-pay-card" class="form-input" value="${rekvizit.kartaRaqami || "9860 1201 7157 4847"}" placeholder="9860 1201 7157 4847" />
+                  <input type="text" id="adm-pay-card" class="form-input" value="${htmlTozalash(rekvizit.kartaRaqami || "9860 1201 7157 4847")}" placeholder="9860 1201 7157 4847" />
                 </div>
                 <div class="form-group">
                   <label class="form-label" for="adm-pay-owner">Karta egasi (F.I.Sh)</label>
-                  <input type="text" id="adm-pay-owner" class="form-input" value="${rekvizit.qabulQiluvchi || "OTABEK TOYCHIYEV"}" />
+                  <input type="text" id="adm-pay-owner" class="form-input" value="${htmlTozalash(rekvizit.qabulQiluvchi || "OTABEK TOYCHIYEV")}" />
                 </div>
               </div>
               <button type="submit" class="btn btn-primary" style="margin-top:0.5rem;">💾 To'lov rekvizitini saqlash</button>
@@ -237,17 +423,17 @@
                 ${tolovSorovlari.map(s => `
                   <div style="padding:1rem 1.15rem; border-radius:var(--radius-md); background:var(--bg-primary); border:1px solid var(--border-color); display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:0.85rem;">
                     <div>
-                      <div style="font-weight:900;">${s.invoysId} • ${s.foydalanuvchiIsmi} → ${s.tarifNomi}</div>
+                      <div style="font-weight:900;">${htmlTozalash(s.invoysId)} • ${htmlTozalash(s.foydalanuvchiIsmi)} → ${htmlTozalash(s.tarifNomi)}</div>
                       <div style="font-size:0.84rem; color:var(--text-secondary); margin-top:0.2rem;">
-                        Ilova: <strong>${s.tolovUsuli}</strong> • Summa: <strong>${s.summa}</strong> • Karta/Tel: <strong>${s.kartaYokiTel}</strong> • Sana: <strong>${s.yaratilganSana}</strong>
+                        Ilova: <strong>${htmlTozalash(s.tolovUsuli)}</strong> • Summa: <strong>${htmlTozalash(s.summa)}</strong> • Karta/Tel: <strong>${htmlTozalash(s.kartaYokiTel)}</strong> • Sana: <strong>${htmlTozalash(s.yaratilganSana)}</strong>
                       </div>
                     </div>
                     <div style="display:flex; gap:0.6rem; flex-wrap:wrap; align-items:center;">
                       ${s.holat === "kutilmoqda" ? `
-                        <button type="button" class="btn btn-emerald" data-approve-payment="${s.invoysId}" style="padding:0.5rem 0.9rem; font-size:0.84rem;">
+                        <button type="button" class="btn btn-emerald" data-approve-payment="${htmlTozalash(s.invoysId)}" style="padding:0.5rem 0.9rem; font-size:0.84rem;">
                           ✅ To'lov tushdi — PRO yoqish
                         </button>
-                        <button type="button" class="btn btn-outline" data-reject-payment="${s.invoysId}" style="padding:0.5rem 0.9rem; font-size:0.84rem; color:var(--danger); border-color:var(--danger);">
+                        <button type="button" class="btn btn-outline" data-reject-payment="${htmlTozalash(s.invoysId)}" style="padding:0.5rem 0.9rem; font-size:0.84rem; color:var(--danger); border-color:var(--danger);">
                           ❌ Rad etish
                         </button>
                       ` : `
@@ -264,10 +450,31 @@
         </div>
       `;
 
+      // Admin sessiyasidan chiqish
+      const chiqishBtn = document.getElementById("admin-chiqish-btn");
+      if (chiqishBtn) {
+        chiqishBtn.addEventListener("click", async () => {
+          if (httpServerMavjudmi()) {
+            await fetch("/api/admin/chiqish", {
+              method: "POST",
+              headers: this.adminSarlavhalari()
+            }).catch(() => {});
+          }
+          this._serverAdminHolat = null;
+          this._kirishXatosi = "";
+          global.UmumiyHolatVaBazalar.adminSessiyasiniTozalash();
+          if (global.MundarijaVaNavigatsiya) {
+            global.MundarijaVaNavigatsiya.navigatsiyaniChizish("admin");
+          }
+          this.kirishBlokiniChizish(konteyner);
+          global.UmumiyHolatVaBazalar.xabarnomaKorsatish("🔒 Admin sessiyasidan chiqildi.");
+        });
+      }
+
       // Yangi savol qo'shish
       const forma = document.getElementById("admin-savol-formasi");
       if (forma) {
-        forma.addEventListener("submit", (e) => {
+        forma.addEventListener("submit", async (e) => {
           e.preventDefault();
           const daraja = document.getElementById("adm-q-daraja").value;
           const savol = document.getElementById("adm-q-matn").value.trim();
@@ -289,19 +496,46 @@
             togriIndex
           };
 
+          if (httpServerMavjudmi()) {
+            const resp = await fetch("/api/admin/savol-qoshish", {
+              method: "POST",
+              headers: this.adminSarlavhalari({ "Content-Type": "application/json" }),
+              body: JSON.stringify(yangiSavol)
+            }).catch(() => null);
+            if (!resp || !resp.ok) {
+              global.UmumiyHolatVaBazalar.xabarnomaKorsatish("⚠️ Serverga savol qo'shishda ruxsat rad etildi.");
+              return;
+            }
+          }
+
           const holat = global.UmumiyHolatVaBazalar.holatniYuklash();
           if (!Array.isArray(holat.qoshimchaAdminSavollar)) holat.qoshimchaAdminSavollar = [];
           holat.qoshimchaAdminSavollar.unshift(yangiSavol);
           global.UmumiyHolatVaBazalar.holatniSaqlash(holat);
-          this.interfeysniChizish(konteyner);
+          if (httpServerMavjudmi()) {
+            await this.serverAdminHolatiniYuklash(konteyner);
+          } else {
+            this.interfeysniChizish(konteyner);
+          }
           global.UmumiyHolatVaBazalar.xabarnomaKorsatish(`✅ Yangi savol (${daraja} daraja) bazaga qo'shildi!`);
         });
       }
 
       // Foydalanuvchiga +10 olmos berish
       konteyner.querySelectorAll("[data-gift-user]").forEach(btn => {
-        btn.addEventListener("click", () => {
+        btn.addEventListener("click", async () => {
           const userId = btn.getAttribute("data-gift-user");
+          if (httpServerMavjudmi()) {
+            const resp = await fetch("/api/admin/olmos-berish", {
+              method: "POST",
+              headers: this.adminSarlavhalari({ "Content-Type": "application/json" }),
+              body: JSON.stringify({ foydalanuvchiId: userId, miqdor: 10 })
+            }).catch(() => null);
+            if (!resp || !resp.ok) {
+              global.UmumiyHolatVaBazalar.xabarnomaKorsatish("⚠️ Olmos qo'shishda server ruxsati rad etildi.");
+              return;
+            }
+          }
           const holat = global.UmumiyHolatVaBazalar.holatniYuklash();
           const f = holat.foydalanuvchilarRoyxati.find(u => u.id === userId);
           if (f) {
@@ -311,34 +545,71 @@
             }
             global.UmumiyHolatVaBazalar.holatniSaqlash(holat);
             global.OlmoslarVaVaqtTizimi.ekrandagiOlmosVaVaqtniYangilash();
-            this.interfeysniChizish(konteyner);
-            global.UmumiyHolatVaBazalar.xabarnomaKorsatish(`💎 ${f.ism} ${f.familiya} hisobiga +10 ta Olmos qo'shildi!`);
           }
+          if (httpServerMavjudmi()) {
+            await this.serverAdminHolatiniYuklash(konteyner);
+          } else {
+            this.interfeysniChizish(konteyner);
+          }
+          global.UmumiyHolatVaBazalar.xabarnomaKorsatish(`💎 Hisobga +10 ta Olmos qo'shildi!`);
         });
       });
 
       // To'lov qabul qiluvchi karta / hisob rekvizitini saqlash
       const rekvizitForm = document.getElementById("admin-rekvizit-formasi");
       if (rekvizitForm) {
-        rekvizitForm.addEventListener("submit", (e) => {
+        rekvizitForm.addEventListener("submit", async (e) => {
           e.preventDefault();
-          const holat = global.UmumiyHolatVaBazalar.holatniYuklash();
-          holat.tolovRekvizitlari = {
-            ...(holat.tolovRekvizitlari || {}),
+          const yangiRekvizit = {
             kartaTuri: ((document.getElementById("adm-pay-type") || {}).value || "HUMO").trim(),
             kartaRaqami: ((document.getElementById("adm-pay-card") || {}).value || "9860 1201 7157 4847").trim(),
             qabulQiluvchi: ((document.getElementById("adm-pay-owner") || {}).value || "OTABEK TOYCHIYEV").trim()
           };
+          if (httpServerMavjudmi()) {
+            const resp = await fetch("/api/admin/rekvizit", {
+              method: "POST",
+              headers: this.adminSarlavhalari({ "Content-Type": "application/json" }),
+              body: JSON.stringify(yangiRekvizit)
+            }).catch(() => null);
+            if (!resp || !resp.ok) {
+              global.UmumiyHolatVaBazalar.xabarnomaKorsatish("⚠️ Rekvizitni saqlashda server ruxsati rad etildi.");
+              return;
+            }
+          }
+          const holat = global.UmumiyHolatVaBazalar.holatniYuklash();
+          holat.tolovRekvizitlari = {
+            ...(holat.tolovRekvizitlari || {}),
+            ...yangiRekvizit
+          };
           global.UmumiyHolatVaBazalar.holatniSaqlash(holat);
-          this.interfeysniChizish(konteyner);
+          if (httpServerMavjudmi()) {
+            await this.serverAdminHolatiniYuklash(konteyner);
+          } else {
+            this.interfeysniChizish(konteyner);
+          }
           global.UmumiyHolatVaBazalar.xabarnomaKorsatish("✅ To'lov qabul qiluvchi rekvizit saqlandi!");
         });
       }
 
       // PRO to'lov so'rovini tasdiqlash (PRO obunani yoqish)
       konteyner.querySelectorAll("[data-approve-payment]").forEach(btn => {
-        btn.addEventListener("click", () => {
+        btn.addEventListener("click", async () => {
           const invoysId = btn.getAttribute("data-approve-payment");
+          if (httpServerMavjudmi()) {
+            const resp = await fetch("/api/tolov/tasdiqlash", {
+              method: "POST",
+              headers: this.adminSarlavhalari({ "Content-Type": "application/json" }),
+              body: JSON.stringify({ invoysId })
+            }).catch(() => null);
+            const data = resp ? await resp.json().catch(() => ({})) : {};
+            if (!resp || !resp.ok || !data.muvaffaqiyat) {
+              global.UmumiyHolatVaBazalar.xabarnomaKorsatish(data.xabar || "⚠️ To'lovni tasdiqlashda xatolik.");
+              return;
+            }
+            global.UmumiyHolatVaBazalar.xabarnomaKorsatish(data.xabar || "✅ To'lov tasdiqlandi!");
+            await this.serverAdminHolatiniYuklash(konteyner);
+            return;
+          }
           if (global.ObunaVaTolovMantiqi) {
             const res = global.ObunaVaTolovMantiqi.tolovniTasdiqlash(invoysId);
             global.UmumiyHolatVaBazalar.xabarnomaKorsatish(res.xabar);
@@ -352,8 +623,23 @@
 
       // PRO to'lov so'rovini rad etish
       konteyner.querySelectorAll("[data-reject-payment]").forEach(btn => {
-        btn.addEventListener("click", () => {
+        btn.addEventListener("click", async () => {
           const invoysId = btn.getAttribute("data-reject-payment");
+          if (httpServerMavjudmi()) {
+            const resp = await fetch("/api/tolov/rad-etish", {
+              method: "POST",
+              headers: this.adminSarlavhalari({ "Content-Type": "application/json" }),
+              body: JSON.stringify({ invoysId })
+            }).catch(() => null);
+            const data = resp ? await resp.json().catch(() => ({})) : {};
+            if (!resp || !resp.ok || !data.muvaffaqiyat) {
+              global.UmumiyHolatVaBazalar.xabarnomaKorsatish(data.xabar || "⚠️ Rad etishda xatolik.");
+              return;
+            }
+            global.UmumiyHolatVaBazalar.xabarnomaKorsatish("❌ To'lov so'rovi rad etildi.");
+            await this.serverAdminHolatiniYuklash(konteyner);
+            return;
+          }
           if (global.ObunaVaTolovMantiqi) {
             const res = global.ObunaVaTolovMantiqi.tolovniRadEtish(invoysId);
             global.UmumiyHolatVaBazalar.xabarnomaKorsatish(res.xabar);

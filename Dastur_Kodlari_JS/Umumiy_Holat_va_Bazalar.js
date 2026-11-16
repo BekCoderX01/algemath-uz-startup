@@ -9,6 +9,12 @@
 
 (function (global) {
   const STORAGE_KEY = "algemath_uz_asosiy_baza_v1";
+  const ADMIN_SESSION_KEY = "algemath_uz_admin_sessiya_v1";
+  let xotiradagiAdminSessiya = null;
+
+  function ommaviyRolniTozalash(rol) {
+    return rol === "Ustoz" ? "Ustoz" : "O'quvchi";
+  }
 
   const STANDART_FOYDALANUVCHI = {
     id: "user_default_1",
@@ -135,23 +141,6 @@
         tanlanganDaraja: "B+",
         faolUnvon: "🔥 7 Kunlik Zanjir Sohibasi",
         obunaTarifi: "Bepul"
-      },
-      {
-        id: "user_admin",
-        ism: "Ulug'bek",
-        familiya: "Mirzayev",
-        rol: "Admin",
-        jins: "Erkak",
-        viloyat: "Toshkent shahri",
-        bio: "AlgeMath UZ platformasi bosh administratori va metodisti.",
-        avatar: "🛡️",
-        kirishUsuli: "Email (admin@algemath.uz)",
-        email: "admin@algemath.uz",
-        olmoslar: 300,
-        kunlikZanjirSoni: 21,
-        tanlanganDaraja: "A+",
-        faolUnvon: "🛡️ Platforma Administratori",
-        obunaTarifi: "Ustoz Ekspert PRO"
       }
     ],
     qoshimchaAdminSavollar: [],
@@ -211,6 +200,59 @@
   };
 
   const UmumiyHolatVaBazalar = {
+    adminSessiyasiniSaqlash: function (token, adminMalumot) {
+      xotiradagiAdminSessiya = {
+        faol: true,
+        token: token ? String(token) : "",
+        admin: adminMalumot || { ism: "Bosh", familiya: "Administrator" },
+        vaqt: Date.now()
+      };
+      try {
+        if (typeof sessionStorage !== "undefined") {
+          sessionStorage.setItem(ADMIN_SESSION_KEY, JSON.stringify(xotiradagiAdminSessiya));
+        }
+      } catch (e) {}
+      return xotiradagiAdminSessiya;
+    },
+
+    adminSessiyasiniOlish: function () {
+      if (xotiradagiAdminSessiya && xotiradagiAdminSessiya.faol) {
+        return xotiradagiAdminSessiya;
+      }
+      try {
+        if (typeof sessionStorage !== "undefined") {
+          const saqlangan = sessionStorage.getItem(ADMIN_SESSION_KEY);
+          if (saqlangan) {
+            const parsed = JSON.parse(saqlangan);
+            if (parsed && parsed.faol) {
+              xotiradagiAdminSessiya = parsed;
+              return xotiradagiAdminSessiya;
+            }
+          }
+        }
+      } catch (e) {}
+      return null;
+    },
+
+    adminSessiyasiBormi: function () {
+      const sessiya = this.adminSessiyasiniOlish();
+      return Boolean(sessiya && sessiya.faol);
+    },
+
+    adminTokeniniOlish: function () {
+      const sessiya = this.adminSessiyasiniOlish();
+      return (sessiya && sessiya.token) || "";
+    },
+
+    adminSessiyasiniTozalash: function () {
+      xotiradagiAdminSessiya = null;
+      try {
+        if (typeof sessionStorage !== "undefined") {
+          sessionStorage.removeItem(ADMIN_SESSION_KEY);
+        }
+      } catch (e) {}
+    },
+
     standartBazaOlish: function () {
       return JSON.parse(JSON.stringify(STANDART_TIZIM_BAZASI));
     },
@@ -228,19 +270,30 @@
     },
 
     holatniYuklash: function () {
+      const adminFaol = this.adminSessiyasiBormi();
       try {
         if (typeof localStorage !== "undefined") {
           const saqlangan = localStorage.getItem(STORAGE_KEY);
           if (saqlangan) {
             const parsed = JSON.parse(saqlangan);
             const saqlanganRekvizit = parsed.tolovRekvizitlari || {};
+            const joriy = {
+              ...STANDART_FOYDALANUVCHI,
+              ...(parsed.joriyFoydalanuvchi || {})
+            };
+            if (!adminFaol && joriy.rol === "Admin") {
+              joriy.rol = "O'quvchi";
+            }
+            const royxat = Array.isArray(parsed.foydalanuvchilarRoyxati)
+              ? parsed.foydalanuvchilarRoyxati
+              : STANDART_TIZIM_BAZASI.foydalanuvchilarRoyxati;
             return {
               ...STANDART_TIZIM_BAZASI,
               ...parsed,
-              joriyFoydalanuvchi: {
-                ...STANDART_FOYDALANUVCHI,
-                ...(parsed.joriyFoydalanuvchi || {})
-              },
+              joriyFoydalanuvchi: joriy,
+              foydalanuvchilarRoyxati: adminFaol
+                ? royxat
+                : royxat.filter(u => u && u.rol !== "Admin"),
               ustozSinfxonalari: parsed.ustozSinfxonalari && parsed.ustozSinfxonalari.length
                 ? parsed.ustozSinfxonalari
                 : STANDART_TIZIM_BAZASI.ustozSinfxonalari,
@@ -273,10 +326,24 @@
       }
       try {
         if (typeof fetch !== "undefined" && typeof window !== "undefined" && window.location && typeof window.location.protocol === "string" && window.location.protocol.startsWith("http")) {
+          const headers = { "Content-Type": "application/json" };
+          const adminToken = this.adminTokeniniOlish();
+          if (adminToken) headers["x-admin-token"] = adminToken;
+          let yuboriladigan = yangiHolat;
+          if (!this.adminSessiyasiBormi()) {
+            const {
+              tolovSorovlari,
+              ishlatilganTranzaksiyalar,
+              tolovRekvizitlari,
+              qoshimchaAdminSavollar,
+              ...oddiyHolat
+            } = yangiHolat || {};
+            yuboriladigan = oddiyHolat;
+          }
           fetch("/api/sinxronlash", {
             method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(yangiHolat)
+            headers,
+            body: JSON.stringify(yuboriladigan)
           }).catch(() => {});
         }
       } catch (e) {}
@@ -286,9 +353,13 @@
 
     foydalanuvchiniYangilash: function (ozgarishlar) {
       const holat = this.holatniYuklash();
+      const tozaOzgarishlar = { ...(ozgarishlar || {}) };
+      if (tozaOzgarishlar.rol && !this.adminSessiyasiBormi()) {
+        tozaOzgarishlar.rol = ommaviyRolniTozalash(tozaOzgarishlar.rol);
+      }
       holat.joriyFoydalanuvchi = {
         ...holat.joriyFoydalanuvchi,
-        ...ozgarishlar
+        ...tozaOzgarishlar
       };
       const idx = holat.foydalanuvchilarRoyxati.findIndex(u => u.id === holat.joriyFoydalanuvchi.id);
       if (idx >= 0) {
@@ -302,6 +373,15 @@
 
     foydalanuvchigaOtish: function (malumot) {
       const holat = this.holatniYuklash();
+      const tozaMalumot = { ...(malumot || {}) };
+      if (!this.adminSessiyasiBormi()) {
+        if (tozaMalumot.id === "user_admin") {
+          delete tozaMalumot.id;
+        }
+        if (tozaMalumot.rol === "Admin") {
+          tozaMalumot.rol = "O'quvchi";
+        }
+      }
       // Avval joriy foydalanuvchini ro'yxatda saqlab qo'yamiz
       const joriyIdx = holat.foydalanuvchilarRoyxati.findIndex(u => u.id === holat.joriyFoydalanuvchi.id);
       if (joriyIdx >= 0) {
@@ -310,12 +390,12 @@
 
       // Tanlangan yoki yangi foydalanuvchini topamiz
       let mavjud = null;
-      if (malumot && malumot.id) {
-        mavjud = holat.foydalanuvchilarRoyxati.find(u => u.id === malumot.id);
+      if (tozaMalumot && tozaMalumot.id) {
+        mavjud = holat.foydalanuvchilarRoyxati.find(u => u.id === tozaMalumot.id);
       }
-      if (!mavjud && malumot && malumot.ism && malumot.familiya) {
+      if (!mavjud && tozaMalumot && tozaMalumot.ism && tozaMalumot.familiya) {
         mavjud = holat.foydalanuvchilarRoyxati.find(
-          u => u.ism.toLowerCase() === malumot.ism.toLowerCase() && u.familiya.toLowerCase() === malumot.familiya.toLowerCase()
+          u => u.ism.toLowerCase() === tozaMalumot.ism.toLowerCase() && u.familiya.toLowerCase() === tozaMalumot.familiya.toLowerCase()
         );
       }
 
@@ -323,12 +403,12 @@
         holat.joriyFoydalanuvchi = {
           ...STANDART_FOYDALANUVCHI,
           ...mavjud,
-          ...malumot,
+          ...tozaMalumot,
           id: mavjud.id,
           olmoslar: typeof mavjud.olmoslar === "number" ? mavjud.olmoslar : STANDART_FOYDALANUVCHI.olmoslar
         };
       } else {
-        const yangiId = (malumot && malumot.id) || ("user_" + Date.now());
+        const yangiId = (tozaMalumot && tozaMalumot.id) || ("user_" + Date.now());
         holat.joriyFoydalanuvchi = {
           ...STANDART_FOYDALANUVCHI,
           olmoslar: 20,
@@ -338,9 +418,13 @@
           ],
           ozlashtirilganDarslar: [],
           sertifikatlar: [],
-          ...malumot,
+          ...tozaMalumot,
           id: yangiId
         };
+      }
+
+      if (!this.adminSessiyasiBormi() && holat.joriyFoydalanuvchi.rol === "Admin") {
+        holat.joriyFoydalanuvchi.rol = "O'quvchi";
       }
 
       const yangiIdx = holat.foydalanuvchilarRoyxati.findIndex(u => u.id === holat.joriyFoydalanuvchi.id);

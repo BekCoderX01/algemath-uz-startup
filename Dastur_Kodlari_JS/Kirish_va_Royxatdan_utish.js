@@ -5,7 +5,7 @@
              2) Google akkaunt
              3) Email va parol
              4) Instagram profil
-             orqali O'quvchi, Ustoz yoki Admin sifatida tizimga kiritish.
+             orqali O'quvchi yoki Ustoz sifatida tizimga kiritish.
    ========================================================================== */
 
 (function (global) {
@@ -73,7 +73,6 @@
                   <select id="auth-rol" class="form-select">
                     <option value="O'quvchi" ${joriy.rol === "O'quvchi" ? "selected" : ""}>🎓 O'quvchi</option>
                     <option value="Ustoz" ${joriy.rol === "Ustoz" ? "selected" : ""}>👨‍🏫 Ustoz (O'qituvchi)</option>
-                    <option value="Admin" ${joriy.rol === "Admin" ? "selected" : ""}>🛡️ Administrator (Admin panel)</option>
                   </select>
                 </div>
                 <div class="form-group">
@@ -140,13 +139,6 @@
                 <div>
                   <div style="font-weight:900;">Instagram orqali: Javohir Tursunov</div>
                   <div style="font-size:0.82rem; color:var(--text-muted);">@javohir_algebra • Olimpiada A daraja</div>
-                </div>
-              </button>
-              <button type="button" class="language-flag-option" data-demo-login="admin">
-                <span style="font-size:1.5rem;">🛡️</span>
-                <div>
-                  <div style="font-weight:900;">Admin Panel (Email orqali): Bosh Administrator</div>
-                  <div style="font-size:0.82rem; color:var(--text-muted);">admin@algemath.uz • Tizim boshqaruvchisi</div>
                 </div>
               </button>
             </div>
@@ -289,19 +281,6 @@
           kirishUsuli: "Instagram (@javohir_algebra)",
           instagram: "@javohir_algebra",
           tanlanganDaraja: "A"
-        });
-      } else if (tur === "admin") {
-        global.UmumiyHolatVaBazalar.foydalanuvchigaOtish({
-          id: "user_admin",
-          ism: "Ulug'bek",
-          familiya: "Mirzayev",
-          rol: "Admin",
-          jins: "Erkak",
-          avatar: "🛡️",
-          bio: "AlgeMath UZ platformasi bosh administratori va metodisti.",
-          kirishUsuli: "Email (admin@algemath.uz)",
-          email: "admin@algemath.uz",
-          tanlanganDaraja: "A+"
         });
       } else {
         global.UmumiyHolatVaBazalar.foydalanuvchigaOtish({

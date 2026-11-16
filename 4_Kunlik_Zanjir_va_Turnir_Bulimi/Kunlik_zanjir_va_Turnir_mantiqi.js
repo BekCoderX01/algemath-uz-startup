@@ -71,6 +71,7 @@
       const kunlar = ["Du", "Se", "Ch", "Pa", "Ju", "Sh", "Ya"];
 
       const saralanganFoydalanuvchilar = (baza.foydalanuvchilarRoyxati || [])
+        .filter(f => f && f.rol !== "Admin")
         .slice()
         .sort((a, b) => (b.olmoslar || 0) - (a.olmoslar || 0));
 
