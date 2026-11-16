@@ -8,6 +8,7 @@
    ========================================================================== */
 
 const assert = require("assert");
+const crypto = require("crypto");
 const fs = require("fs");
 const path = require("path");
 const http = require("http");
@@ -74,6 +75,35 @@ function httpGet(url) {
         res.on("end", () => resolve({ statusCode: res.statusCode, body }));
       })
       .on("error", reject);
+  });
+}
+
+function httpPost(url, payload, contentType = "application/json") {
+  return new Promise((resolve, reject) => {
+    const raw = typeof payload === "string" ? payload : JSON.stringify(payload);
+    const parsed = new URL(url);
+    const req = http.request(
+      {
+        hostname: parsed.hostname,
+        port: parsed.port,
+        path: parsed.pathname + parsed.search,
+        method: "POST",
+        headers: {
+          "Content-Type": contentType,
+          "Content-Length": Buffer.byteLength(raw),
+        },
+      },
+      (res) => {
+        let body = "";
+        res.on("data", (c) => {
+          body += c;
+        });
+        res.on("end", () => resolve({ statusCode: res.statusCode, body }));
+      },
+    );
+    req.on("error", reject);
+    req.write(raw);
+    req.end();
   });
 }
 
@@ -340,8 +370,13 @@ function httpGet(url) {
     ); // 200 - 120
   });
 
-  // 11. Server barcha 17 ta sahifani (Sahifalar/ va 1..8 maxsus papkalar) HTTP 200 bilan uzatishi
-  await test("11. Server barcha 17 ta alohida sahifani (9 asosiy + 8 yangi papka) xatosiz uzatishi", async () => {
+  // 11. Server barcha 17 ta sahifani hamda Backend PRO to'lov tekshiruv API va Click webhook ni to'g'ri ishlashi
+  await test("11. Server barcha 17 ta alohida sahifani va Backend to'lov tekshiruv API (/api/tolov/*, /api/webhook/click) ni xatosiz uzatishi", async () => {
+    const dbPath = path.join(ROOT, "Malumotlar_Bazasi", "Baza_Malumotlari.json");
+    const dbBackup = fs.existsSync(dbPath) ? fs.readFileSync(dbPath, "utf8") : null;
+    const prevSecret = process.env.CLICK_SECRET_KEY;
+    delete process.env.CLICK_SECRET_KEY;
+
     const server = createServerInstance();
     await new Promise((resolve) => server.listen(0, "127.0.0.1", resolve));
     const port = server.address().port;
@@ -360,7 +395,71 @@ function httpGet(url) {
           `${s.papka}/${s.fayl} 200 qaytarishi kerak`,
         );
       }
+
+      // 1) Backend to'lov so'rovi yaratiladi, lekin holat "kutilmoqda" (tasdiqlandi: false)
+      const invoysId = "INV-TEST-9001";
+      const postSorov = await httpPost(`${base}/api/tolov/sorov`, {
+        invoysId,
+        foydalanuvchiId: "user_default_1",
+        foydalanuvchiIsmi: "Sardorbek Alimov",
+        tarifId: "plan_student_pro",
+        tolovUsuli: "Paynet",
+        kartaYokiTel: "+998901234567",
+        tranzaksiyaId: "PAYNET-123456",
+      });
+      assert.strictEqual(postSorov.statusCode, 200);
+      const sorovJson = JSON.parse(postSorov.body);
+      assert.strictEqual(sorovJson.kutilmoqda, true);
+
+      const statusRes1 = await httpGet(`${base}/api/tolov/holat?invoysId=${invoysId}`);
+      assert.strictEqual(statusRes1.statusCode, 200);
+      assert.strictEqual(JSON.parse(statusRes1.body).tasdiqlandi, false);
+
+      // 2) CLICK_SECRET_KEY sozlanmagan paytda soxta webhook rad etiladi (503)
+      const unauthWebhook = await httpPost(
+        `${base}/api/webhook/click`,
+        "action=1&merchant_trans_id=" + invoysId,
+        "application/x-www-form-urlencoded",
+      );
+      assert.strictEqual(unauthWebhook.statusCode, 503);
+
+      // 3) CLICK_SECRET_KEY sozlanganda haqiqiy MD5 imzoli webhook Backend da to'lovni tasdiqlab PRO ga o'tkazadi
+      process.env.CLICK_SECRET_KEY = "test_click_secret_key";
+      const clickTransId = "777888";
+      const serviceId = "101";
+      const prepareId = "999";
+      const amount = "39000";
+      const action = "1";
+      const signTime = "2026-11-16 11:30:00";
+      const signStr = crypto
+        .createHash("md5")
+        .update(`${clickTransId}${serviceId}test_click_secret_key${invoysId}${prepareId}${amount}${action}${signTime}`)
+        .digest("hex");
+      const webhookBody = new URLSearchParams({
+        click_trans_id: clickTransId,
+        service_id: serviceId,
+        merchant_trans_id: invoysId,
+        merchant_prepare_id: prepareId,
+        amount,
+        action,
+        sign_time: signTime,
+        sign_string: signStr,
+      }).toString();
+
+      const okWebhook = await httpPost(`${base}/api/webhook/click`, webhookBody, "application/x-www-form-urlencoded");
+      assert.strictEqual(okWebhook.statusCode, 200);
+      assert.strictEqual(JSON.parse(okWebhook.body).error, 0);
+
+      const statusRes2 = await httpGet(`${base}/api/tolov/holat?invoysId=${invoysId}`);
+      assert.strictEqual(JSON.parse(statusRes2.body).tasdiqlandi, true);
+      const dbAfter = JSON.parse(fs.readFileSync(dbPath, "utf8"));
+      assert.strictEqual(dbAfter.joriyFoydalanuvchi.obunaTarifi, "O'quvchi PRO");
     } finally {
+      if (prevSecret === undefined) delete process.env.CLICK_SECRET_KEY;
+      else process.env.CLICK_SECRET_KEY = prevSecret;
+      if (dbBackup !== null) {
+        fs.writeFileSync(dbPath, dbBackup, "utf8");
+      }
       await new Promise((resolve) => server.close(resolve));
     }
   });
@@ -522,6 +621,10 @@ function httpGet(url) {
       ObunaVaTolovMantiqi.sahifaniIshgaTushirish();
       assert.ok(elements["obuna-va-tolov-konteyner"].innerHTML.includes("kun-page-banner"));
       assert.ok(elements["obuna-va-tolov-konteyner"].innerHTML.includes("tolov-kassa-bloki"));
+      assert.ok(elements["obuna-va-tolov-konteyner"].innerHTML.includes("9860 1201 7157 4847"));
+      assert.ok(elements["obuna-va-tolov-konteyner"].innerHTML.includes("OTABEK TOYCHIYEV"));
+      assert.ok(elements["obuna-va-tolov-konteyner"].innerHTML.includes("HUMO"));
+      assert.ok(elements["obuna-va-tolov-konteyner"].innerHTML.includes("pay-ilova-nomi"));
     } finally {
       if (typeof OlmoslarVaVaqtTizimi.kunlikTaymerniToxtatish === "function") {
         OlmoslarVaVaqtTizimi.kunlikTaymerniToxtatish();

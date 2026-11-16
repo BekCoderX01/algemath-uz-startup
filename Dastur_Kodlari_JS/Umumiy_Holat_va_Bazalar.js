@@ -202,10 +202,11 @@
     tolovSorovlari: [],
     ishlatilganTranzaksiyalar: [],
     tolovRekvizitlari: {
-      kartaRaqami: "",
-      qabulQiluvchi: "To'ychiyev Otabek",
+      kartaTuri: "HUMO",
+      kartaRaqami: "9860 1201 7157 4847",
+      qabulQiluvchi: "OTABEK TOYCHIYEV",
       telegramAloqa: "@Tuychiyev_c",
-      izoh: "Click, Payme yoki Uzum orqali to'lov qiling va tranzaksiya chek raqamini kiriting."
+      izoh: "Istalgan ilova (Click, Payme, Uzum, Paynet, Bank ilovasi) va istalgan kartadan (HUMO/UZCARD) o'tkazma qiling."
     }
   };
 
@@ -232,6 +233,7 @@
           const saqlangan = localStorage.getItem(STORAGE_KEY);
           if (saqlangan) {
             const parsed = JSON.parse(saqlangan);
+            const saqlanganRekvizit = parsed.tolovRekvizitlari || {};
             return {
               ...STANDART_TIZIM_BAZASI,
               ...parsed,
@@ -246,7 +248,12 @@
               ishlatilganTranzaksiyalar: Array.isArray(parsed.ishlatilganTranzaksiyalar) ? parsed.ishlatilganTranzaksiyalar : [],
               tolovRekvizitlari: {
                 ...STANDART_TIZIM_BAZASI.tolovRekvizitlari,
-                ...(parsed.tolovRekvizitlari || {})
+                ...saqlanganRekvizit,
+                kartaTuri: saqlanganRekvizit.kartaTuri || STANDART_TIZIM_BAZASI.tolovRekvizitlari.kartaTuri,
+                kartaRaqami: saqlanganRekvizit.kartaRaqami || STANDART_TIZIM_BAZASI.tolovRekvizitlari.kartaRaqami,
+                qabulQiluvchi: saqlanganRekvizit.qabulQiluvchi && saqlanganRekvizit.qabulQiluvchi !== "To'ychiyev Otabek"
+                  ? saqlanganRekvizit.qabulQiluvchi
+                  : STANDART_TIZIM_BAZASI.tolovRekvizitlari.qabulQiluvchi
               }
             };
           }
@@ -265,7 +272,7 @@
         saqlandi = false;
       }
       try {
-        if (typeof fetch !== "undefined" && typeof window !== "undefined" && window.location.protocol.startsWith("http")) {
+        if (typeof fetch !== "undefined" && typeof window !== "undefined" && window.location && typeof window.location.protocol === "string" && window.location.protocol.startsWith("http")) {
           fetch("/api/sinxronlash", {
             method: "POST",
             headers: { "Content-Type": "application/json" },

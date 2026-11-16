@@ -210,15 +210,19 @@
             </div>
 
             <form id="admin-rekvizit-formasi" style="margin-bottom:1.35rem; padding:1.1rem; border-radius:var(--radius-md); background:var(--bg-primary); border:1px solid var(--border-color);">
-              <div style="font-weight:800; margin-bottom:0.65rem;">🏦 To'lov qabul qiluvchi karta / hisob sozlamalari (Click • Payme • Uzum):</div>
-              <div class="grid-2">
+              <div style="font-weight:800; margin-bottom:0.65rem;">🏦 To'lov qabul qiluvchi karta sozlamalari (Istalgan ilova va karta orqali):</div>
+              <div class="grid-3">
                 <div class="form-group">
-                  <label class="form-label" for="adm-pay-card">Karta raqami yoki Click/Payme hisob</label>
-                  <input type="text" id="adm-pay-card" class="form-input" value="${rekvizit.kartaRaqami || ""}" placeholder="Masalan: 8600 1234 5678 9012" />
+                  <label class="form-label" for="adm-pay-type">Karta turi</label>
+                  <input type="text" id="adm-pay-type" class="form-input" value="${rekvizit.kartaTuri || "HUMO"}" placeholder="HUMO yoki UZCARD" />
                 </div>
                 <div class="form-group">
-                  <label class="form-label" for="adm-pay-owner">Qabul qiluvchi F.I.Sh</label>
-                  <input type="text" id="adm-pay-owner" class="form-input" value="${rekvizit.qabulQiluvchi || "To'ychiyev Otabek"}" />
+                  <label class="form-label" for="adm-pay-card">Karta raqami</label>
+                  <input type="text" id="adm-pay-card" class="form-input" value="${rekvizit.kartaRaqami || "9860 1201 7157 4847"}" placeholder="9860 1201 7157 4847" />
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="adm-pay-owner">Karta egasi (F.I.Sh)</label>
+                  <input type="text" id="adm-pay-owner" class="form-input" value="${rekvizit.qabulQiluvchi || "OTABEK TOYCHIYEV"}" />
                 </div>
               </div>
               <button type="submit" class="btn btn-primary" style="margin-top:0.5rem;">💾 To'lov rekvizitini saqlash</button>
@@ -321,8 +325,9 @@
           const holat = global.UmumiyHolatVaBazalar.holatniYuklash();
           holat.tolovRekvizitlari = {
             ...(holat.tolovRekvizitlari || {}),
-            kartaRaqami: ((document.getElementById("adm-pay-card") || {}).value || "").trim(),
-            qabulQiluvchi: ((document.getElementById("adm-pay-owner") || {}).value || "To'ychiyev Otabek").trim()
+            kartaTuri: ((document.getElementById("adm-pay-type") || {}).value || "HUMO").trim(),
+            kartaRaqami: ((document.getElementById("adm-pay-card") || {}).value || "9860 1201 7157 4847").trim(),
+            qabulQiluvchi: ((document.getElementById("adm-pay-owner") || {}).value || "OTABEK TOYCHIYEV").trim()
           };
           global.UmumiyHolatVaBazalar.holatniSaqlash(holat);
           this.interfeysniChizish(konteyner);

@@ -316,5 +316,14 @@
         }
       ]
     }
-  ]
+  ],
+  "tolovSorovlari": [],
+  "ishlatilganTranzaksiyalar": [],
+  "tolovRekvizitlari": {
+    "kartaTuri": "HUMO",
+    "kartaRaqami": "9860 1201 7157 4847",
+    "qabulQiluvchi": "OTABEK TOYCHIYEV",
+    "telegramAloqa": "@Tuychiyev_c",
+    "izoh": "Istalgan ilova (Click, Payme, Uzum, Paynet, Bank ilovasi) va istalgan kartadan (HUMO/UZCARD) o'tkazma qiling."
+  }
 }
