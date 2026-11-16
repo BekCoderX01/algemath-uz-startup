@@ -406,7 +406,10 @@ function httpGet(url) {
       TilVaTarjimalar.tilniOzgartirish("uz");
       MundarijaVaNavigatsiya.navigatsiyaniChizish("settings");
       assert.ok(elements["umumiy-pastki-qism-joyi"].innerHTML.includes("Sayt asoschisi va Bosh dasturchisi:"));
-      assert.ok(elements["umumiy-pastki-qism-joyi"].innerHTML.includes("@BekCoderX01"));
+      assert.ok(elements["umumiy-pastki-qism-joyi"].innerHTML.includes("To'ychiyev Otabek"));
+      assert.ok(elements["umumiy-pastki-qism-joyi"].innerHTML.includes("https://github.com/BekCoderX01"));
+      assert.ok(elements["umumiy-pastki-qism-joyi"].innerHTML.includes("https://t.me/Tuychiyev_c"));
+      assert.ok(elements["umumiy-pastki-qism-joyi"].innerHTML.includes("https://instagram.com/tuychiyev_2009"));
 
       SozlamalarVaProfil.sozlamalarSahifasiniChizish();
       assert.ok(elements["sozlamalar-asosiy-konteyner"].innerHTML.includes("settings-sec-theme"));
