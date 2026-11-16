@@ -314,12 +314,11 @@ function httpPost(url, payload, contentType = "application/json") {
       "Bepul",
     );
 
-    // 3) To'lov so'rovi yuborilganda holat "kutilmoqda", foydalanuvchi hali "Bepul"
+    // 3) To'lov so'rovi (tranzaksiya ID siz) yuborilganda holat "kutilmoqda", foydalanuvchi hali "Bepul"
     const sorovRes = ObunaVaTolovMantiqi.tolovSoroviniYuborish(
       "plan_teacher_pro",
-      "Click",
+      "Click Evolution",
       "+998901234567",
-      "CLK-998877",
     );
     assert.strictEqual(sorovRes.muvaffaqiyat, true);
     assert.strictEqual(sorovRes.kutilmoqda, true);
@@ -342,11 +341,11 @@ function httpPost(url, payload, contentType = "application/json") {
       300,
     );
 
-    // 5) Bir xil tranzaksiya kodi qayta ishlatilmasligi kerak
+    // 5) Bir xil invoys / to'lov kodi qayta ishlatilmasligi kerak
     const qaytaRes = ObunaVaTolovMantiqi.tarifniFaollashtirish(
       "plan_student_pro",
-      "Click",
-      { tolandi: true, tranzaksiyaId: "CLK-998877" },
+      "Click Evolution",
+      { tolandi: true, invoysId: sorovRes.sorov.invoysId },
     );
     assert.strictEqual(qaytaRes.muvaffaqiyat, false);
 
@@ -396,7 +395,7 @@ function httpPost(url, payload, contentType = "application/json") {
         );
       }
 
-      // 1) Backend to'lov so'rovi yaratiladi, lekin holat "kutilmoqda" (tasdiqlandi: false)
+      // 1) Backend to'lov so'rovi yaratiladi (Tranzaksiya ID siz), lekin holat "kutilmoqda" (tasdiqlandi: false)
       const invoysId = "INV-TEST-9001";
       const postSorov = await httpPost(`${base}/api/tolov/sorov`, {
         invoysId,
@@ -405,7 +404,6 @@ function httpPost(url, payload, contentType = "application/json") {
         tarifId: "plan_student_pro",
         tolovUsuli: "Paynet",
         kartaYokiTel: "+998901234567",
-        tranzaksiyaId: "PAYNET-123456",
       });
       assert.strictEqual(postSorov.statusCode, 200);
       const sorovJson = JSON.parse(postSorov.body);
@@ -625,6 +623,8 @@ function httpPost(url, payload, contentType = "application/json") {
       assert.ok(elements["obuna-va-tolov-konteyner"].innerHTML.includes("OTABEK TOYCHIYEV"));
       assert.ok(elements["obuna-va-tolov-konteyner"].innerHTML.includes("HUMO"));
       assert.ok(elements["obuna-va-tolov-konteyner"].innerHTML.includes("pay-ilova-nomi"));
+      assert.ok(elements["obuna-va-tolov-konteyner"].innerHTML.includes("To'lovni tasdiqlash"));
+      assert.strictEqual(elements["obuna-va-tolov-konteyner"].innerHTML.includes("pay-tranzaksiya-id"), false);
     } finally {
       if (typeof OlmoslarVaVaqtTizimi.kunlikTaymerniToxtatish === "function") {
         OlmoslarVaVaqtTizimi.kunlikTaymerniToxtatish();

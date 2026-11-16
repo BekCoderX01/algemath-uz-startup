@@ -153,8 +153,8 @@
       this.kassaTarifId = null;
     },
 
-    // Pullik tariflar uchun to'lov so'rovini yuborish (Backend + LocalStorage).
-    // DIQQAT: To'lov Backend da tasdiqlanmasdan PRO ochilmaydi!
+    // Pullik tariflar uchun to'lovni tasdiqlash so'rovini yuborish (Backend + LocalStorage).
+    // DIQQAT: Tranzaksiya ID shart emas, lekin to'lov Backend da tasdiqlanmasdan PRO ochilmaydi!
     tolovSoroviniYuborish: function (tarifId, tolovUsuli, kartaYokiTel, tranzaksiyaId) {
       const tarif = OBUNA_TARIFLARI.find(t => t.id === tarifId);
       if (!tarif || tarif.narxOlmos <= 0) {
@@ -174,30 +174,15 @@
         };
       }
 
-      const txId = String(tranzaksiyaId || "").trim().toUpperCase();
-      if (txId.length < 6 || !/^[A-Z0-9\-_]+$/.test(txId)) {
-        return {
-          muvaffaqiyat: false,
-          xabar: "⚠️ Ilova chekidagi haqiqiy Tranzaksiya ID raqamini kiriting (kamida 6 ta belgi)!"
-        };
-      }
-
       const baza = global.UmumiyHolatVaBazalar.holatniYuklash();
       if (!Array.isArray(baza.tolovSorovlari)) baza.tolovSorovlari = [];
       if (!Array.isArray(baza.ishlatilganTranzaksiyalar)) baza.ishlatilganTranzaksiyalar = [];
 
-      const takror = baza.ishlatilganTranzaksiyalar.includes(txId) ||
-        baza.tolovSorovlari.some(s => String(s.tranzaksiyaId).toUpperCase() === txId && s.holat !== "rad_etildi");
-      if (takror) {
-        return {
-          muvaffaqiyat: false,
-          xabar: "⚠️ Bu tranzaksiya ID raqami allaqachon ishlatilgan yoki tekshirilmoqda!"
-        };
-      }
-
+      const invoysId = "INV-UZ-" + Math.floor(100000 + Math.random() * 900000);
+      const ixtiyoriyTx = String(tranzaksiyaId || "").trim().toUpperCase();
       const u = baza.joriyFoydalanuvchi;
       const sorov = {
-        invoysId: "INV-UZ-" + Math.floor(100000 + Math.random() * 900000),
+        invoysId,
         foydalanuvchiId: u.id,
         foydalanuvchiIsmi: `${u.ism} ${u.familiya}`,
         tarifId: tarif.id,
@@ -206,7 +191,7 @@
         tolovUsuli: usul,
         summa: tarif.narxSom,
         kartaYokiTel: manba,
-        tranzaksiyaId: txId,
+        tranzaksiyaId: ixtiyoriyTx || invoysId,
         holat: "kutilmoqda",
         yaratilganSana: new Date().toISOString().replace("T", " ").slice(0, 16)
       };
@@ -215,14 +200,14 @@
       global.UmumiyHolatVaBazalar.holatniSaqlash(baza);
       this.kassaTarifId = null;
 
-      // Agar Backend server (Node.js/Python) ishlab turgan bo'lsa, to'lovni serverga ham yuboramiz
+      // Agar Backend server (Node.js/Python) ishlab turgan bo'lsa, serverga tekshirish uchun yuboramiz
       servergaPostYuborish("/api/tolov/sorov", sorov);
 
       return {
         muvaffaqiyat: true,
         kutilmoqda: true,
         sorov,
-        xabar: `⏳ To'lov so'rovi (${sorov.invoysId}) Backend ga yuborildi! To'lov tasdiqlangach "${tarif.nomi}" avtomatik faollashadi.`
+        xabar: `✅ To'lovni tasdiqlash so'rovingiz (${sorov.invoysId}) qabul qilindi! To'lov tekshirilgach "${tarif.nomi}" avtomatik faollashadi.`
       };
     },
 
@@ -371,22 +356,22 @@
           sabab: `${tarif.nomi} obunasi uchun to'lov (-${tarif.narxOlmos} 💎)`
         });
       } else {
-        const txId = tolovTasdigi && String(tolovTasdigi.tranzaksiyaId || "").trim().toUpperCase();
-        if (!tolovTasdigi || tolovTasdigi.tolandi !== true || !txId || txId.length < 6) {
+        const tasdiqKaliti = tolovTasdigi && String(tolovTasdigi.tranzaksiyaId || tolovTasdigi.invoysId || "").trim().toUpperCase();
+        if (!tolovTasdigi || tolovTasdigi.tolandi !== true || !tasdiqKaliti || tasdiqKaliti.length < 4) {
           return {
             muvaffaqiyat: false,
             tolovKerak: true,
             xabar: `⚠️ To'lov qilinmasidan "${tarif.nomi}" ga o'tib bo'lmaydi! Avval to'lovni tasdiqlang.`
           };
         }
-        if (baza.ishlatilganTranzaksiyalar.includes(txId)) {
+        if (baza.ishlatilganTranzaksiyalar.includes(tasdiqKaliti)) {
           return {
             muvaffaqiyat: false,
             tolovKerak: true,
-            xabar: `⚠️ "${txId}" tranzaksiya kodi allaqachon ishlatilgan!`
+            xabar: `⚠️ "${tasdiqKaliti}" to'lov kodi allaqachon ishlatilgan!`
           };
         }
-        baza.ishlatilganTranzaksiyalar.push(txId);
+        baza.ishlatilganTranzaksiyalar.push(tasdiqKaliti);
 
         if (tarif.bonusOlmos > 0) {
           u.olmoslar = (u.olmoslar || 0) + tarif.bonusOlmos;
@@ -408,7 +393,7 @@
         chekId: "PAY-UZ-" + Math.floor(100000 + Math.random() * 900000),
         tarifNomi: tarif.sarlavha,
         tolovUsuli: usul,
-        tranzaksiyaId: usul === "Olmos" ? `DIAMOND-${tarif.narxOlmos}` : String(tolovTasdigi.tranzaksiyaId).toUpperCase(),
+        tranzaksiyaId: usul === "Olmos" ? `DIAMOND-${tarif.narxOlmos}` : String(tolovTasdigi.tranzaksiyaId || tolovTasdigi.invoysId || "").toUpperCase(),
         summa: usul === "Olmos" ? `${tarif.narxOlmos} 💎 Olmos` : tarif.narxSom,
         sana: new Date().toISOString().replace("T", " ").slice(0, 16),
         foydalanuvchi: `${u.ism} ${u.familiya}`
@@ -557,10 +542,10 @@
                   <div style="padding:1rem 1.2rem; border-radius:var(--radius-md); background:var(--bg-tertiary); border:1px solid var(--border-color); font-size:0.9rem; line-height:1.6;">
                     <strong>📌 Qanday to'lanadi?</strong><br/>
                     1. O'zingiz xohlagan <strong>istalgan ilovadan</strong> (Click, Payme, Uzum Bank, Paynet, Milliy, Alif, Agrobank, Kapitalbank va b.) va <strong>istalgan kartangizdan</strong> (HUMO / UZCARD) yuqoridagi <strong>${rekvizit.kartaTuri} (${rekvizit.kartaRaqami})</strong> kartasiga <strong>${kassaTarif.narxSom}</strong> o'tkazing.<br/>
-                    2. To'lov chekidagi <strong>Tranzaksiya ID</strong> raqamini kiriting — Backend tizimi to'lov tasdiqlangach PRO tarifingizni avtomatik ochadi.
+                    2. To'lovni amalga oshirgach, qaysi ilovadan to'laganingizni hamda telefon yoki kartangizning oxirgi 4 raqamini kiriting va <strong>"✅ To'lovni tasdiqlash"</strong> tugmasini bosing.
                   </div>
 
-                  <div class="grid-3">
+                  <div class="grid-2">
                     <div class="form-group">
                       <label class="form-label" for="pay-ilova-nomi">Qaysi ilova orqali to'ladingiz? *</label>
                       <select id="pay-ilova-nomi" class="form-select">
@@ -571,15 +556,11 @@
                       <label class="form-label" for="pay-karta-tel">Telefon raqamingiz yoki kartangiz oxirgi 4 raqami *</label>
                       <input type="text" id="pay-karta-tel" class="form-input" placeholder="Masalan: +998 90 123 45 67 yoki *4589" required />
                     </div>
-                    <div class="form-group">
-                      <label class="form-label" for="pay-tranzaksiya-id">Chekdagi Tranzaksiya ID raqami *</label>
-                      <input type="text" id="pay-tranzaksiya-id" class="form-input" placeholder="Masalan: TXN-984512" required />
-                    </div>
                   </div>
 
                   <div style="display:flex; gap:0.85rem; flex-wrap:wrap; align-items:center;">
                     <button type="submit" class="btn btn-primary" data-submit-payment="${kassaTarif.id}">
-                      📤 To'lov chekini Backend ga yuborish
+                      ✅ To'lovni tasdiqlash
                     </button>
                     <a href="https://t.me/Tuychiyev_c" target="_blank" rel="noopener noreferrer" class="btn btn-outline">
                       ✈️ Chek rasmini Telegramda yuborish (@Tuychiyev_c)
@@ -599,7 +580,6 @@
                 <span>👤 Foydalanuvchi: <strong>${this.oxirgiChek.foydalanuvchi}</strong></span>
                 <span>📦 Tarif: <strong>${this.oxirgiChek.tarifNomi}</strong></span>
                 <span>💳 Usul: <strong>${this.oxirgiChek.tolovUsuli}</strong></span>
-                <span>🔢 Tranzaksiya: <strong>${this.oxirgiChek.tranzaksiyaId || "-"}</strong></span>
                 <span>💰 Qiymat: <strong>${this.oxirgiChek.summa}</strong></span>
                 <span>🕒 Sana: <strong>${this.oxirgiChek.sana}</strong></span>
               </div>
@@ -652,11 +632,11 @@
             <div class="kun-settings-section-card">
               <div class="section-header">
                 <div>
-                  <span class="kun-settings-step-badge">3-BO'LIM • BACKEND TO'LOV HOLATI</span>
+                  <span class="kun-settings-step-badge">3-BO'LIM • TO'LOV HOLATI</span>
                   <h2 class="section-title">📋 Mening PRO To'lov So'rovlarim</h2>
                 </div>
                 <button type="button" class="btn btn-outline" id="backend-tekshir-btn">
-                  🔄 Backend da holatni tekshirish
+                  🔄 To'lov holatini tekshirish
                 </button>
               </div>
               <div style="display:flex; flex-direction:column; gap:0.75rem;">
@@ -667,16 +647,16 @@
                       ? "var(--danger)"
                       : "#d97706";
                   const holatMatn = s.holat === "tasdiqlandi"
-                    ? "✅ Backend tasdiqladi (PRO yoqildi)"
+                    ? "✅ To'lov tasdiqlandi (PRO yoqildi)"
                     : s.holat === "rad_etildi"
                       ? `❌ Rad etildi (${s.radSababi || "To'lov topilmadi"})`
-                      : "⏳ Backend da tasdiqlanish kutilmoqda";
+                      : "⏳ To'lov tekshirilmoqda";
                   return `
                     <div style="padding:0.95rem 1.15rem; border-radius:var(--radius-md); background:var(--bg-primary); border:1px solid var(--border-color); display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:0.8rem;">
                       <div>
                         <div style="font-weight:800;">${s.invoysId} • ${s.tarifNomi} (${s.tolovUsuli})</div>
                         <div style="font-size:0.83rem; color:var(--text-muted);">
-                          Summa: ${s.summa} • Tranzaksiya: <strong>${s.tranzaksiyaId}</strong> • Sana: ${s.yaratilganSana}
+                          Summa: ${s.summa} • Karta/Tel: <strong>${s.kartaYokiTel}</strong> • Sana: ${s.yaratilganSana}
                         </div>
                       </div>
                       <span class="badge-pill" style="background:var(--bg-tertiary); color:${holatRangi}; font-weight:800;">
@@ -758,9 +738,8 @@
           const planId = submitBtn ? submitBtn.getAttribute("data-submit-payment") : this.kassaTarifId;
           const ilovaNomi = (document.getElementById("pay-ilova-nomi") || {}).value || this.tanlanganTolovUsuli;
           const kartaTel = (document.getElementById("pay-karta-tel") || {}).value || "";
-          const txId = (document.getElementById("pay-tranzaksiya-id") || {}).value || "";
 
-          const res = this.tolovSoroviniYuborish(planId, ilovaNomi, kartaTel, txId);
+          const res = this.tolovSoroviniYuborish(planId, ilovaNomi, kartaTel);
           global.UmumiyHolatVaBazalar.xabarnomaKorsatish(res.xabar);
           global.MundarijaVaNavigatsiya.navigatsiyaniChizish("pricing");
           this.interfeysniChizish(konteyner);

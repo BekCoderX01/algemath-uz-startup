@@ -187,18 +187,15 @@ class AlgeMathServerHandler(http.server.SimpleHTTPRequestHandler):
                 manba = str(d.get("kartaYokiTel", "")).strip()
                 if len(re.findall(r"\d", manba)) < 4:
                     return self._json_javob(400, {"muvaffaqiyat": False, "xabar": "Telefon yoki karta oxirgi 4 raqami noto'g'ri."})
-                tx_id = str(d.get("tranzaksiyaId", "")).strip().upper()
-                if len(tx_id) < 6 or not re.match(r"^[A-Z0-9\-_]+$", tx_id):
-                    return self._json_javob(400, {"muvaffaqiyat": False, "xabar": "Tranzaksiya ID kamida 6 ta belgi bo'lishi shart."})
+                invoys_id = d.get("invoysId") or f"INV-UZ-{random.randint(100000, 999999)}"
+                tx_id = str(d.get("tranzaksiyaId") or invoys_id).strip().upper()
 
                 baza = bazani_oqish()
                 sorovlar = baza.setdefault("tolovSorovlari", [])
-                ishlatilgan = baza.setdefault("ishlatilganTranzaksiyalar", [])
-                if tx_id in ishlatilgan or any(str(s.get("tranzaksiyaId", "")).upper() == tx_id and s.get("holat") != "rad_etildi" for s in sorovlar):
-                    return self._json_javob(409, {"muvaffaqiyat": False, "xabar": "Bu tranzaksiya ID allaqachon ishlatilgan."})
+                baza.setdefault("ishlatilganTranzaksiyalar", [])
 
                 sorov = {
-                    "invoysId": d.get("invoysId") or f"INV-UZ-{random.randint(100000, 999999)}",
+                    "invoysId": invoys_id,
                     "foydalanuvchiId": d.get("foydalanuvchiId") or "user_default_1",
                     "foydalanuvchiIsmi": d.get("foydalanuvchiIsmi") or "Foydalanuvchi",
                     "tarifId": d.get("tarifId"),

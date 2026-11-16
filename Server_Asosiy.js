@@ -191,23 +191,15 @@ function createServerInstance() {
             return jsonJavob(res, 400, { muvaffaqiyat: false, xabar: "Telefon raqam yoki karta oxirgi 4 raqami noto'g'ri." });
           }
 
-          const txId = String(d.tranzaksiyaId || "").trim().toUpperCase();
-          if (txId.length < 6 || !/^[A-Z0-9\-_]+$/.test(txId)) {
-            return jsonJavob(res, 400, { muvaffaqiyat: false, xabar: "Tranzaksiya ID kamida 6 ta belgidan iborat bo'lishi shart." });
-          }
+          const invoysId = d.invoysId || ("INV-UZ-" + Math.floor(100000 + Math.random() * 900000));
+          const txId = String(d.tranzaksiyaId || invoysId).trim().toUpperCase();
 
           const baza = bazaniOqish();
           if (!Array.isArray(baza.tolovSorovlari)) baza.tolovSorovlari = [];
           if (!Array.isArray(baza.ishlatilganTranzaksiyalar)) baza.ishlatilganTranzaksiyalar = [];
 
-          const takror = baza.ishlatilganTranzaksiyalar.includes(txId) ||
-            baza.tolovSorovlari.some(s => String(s.tranzaksiyaId).toUpperCase() === txId && s.holat !== "rad_etildi");
-          if (takror) {
-            return jsonJavob(res, 409, { muvaffaqiyat: false, xabar: "Bu tranzaksiya ID allaqachon ro'yxatdan o'tgan." });
-          }
-
           const sorov = {
-            invoysId: d.invoysId || ("INV-UZ-" + Math.floor(100000 + Math.random() * 900000)),
+            invoysId,
             foydalanuvchiId: d.foydalanuvchiId || (baza.joriyFoydalanuvchi && baza.joriyFoydalanuvchi.id) || "user_default_1",
             foydalanuvchiIsmi: d.foydalanuvchiIsmi || "Foydalanuvchi",
             tarifId: d.tarifId,

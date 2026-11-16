@@ -45,14 +45,14 @@ def obunani_faollashtirish(
             return {"muvaffaqiyat": False, "tolov_kerak": True, "xabar": "Olmoslar yetarli emas"}
         foydalanuvchi["olmoslar"] = balans - t["narx_olmos"]
     else:
-        tx_id = str((tolov_tasdigi or {}).get("tranzaksiya_id", "")).strip()
+        tasdiq_kaliti = str((tolov_tasdigi or {}).get("tranzaksiya_id") or (tolov_tasdigi or {}).get("invoys_id") or "").strip()
         tolandi = bool((tolov_tasdigi or {}).get("tolandi", False))
-        if not tolandi or len(tx_id) < 6:
+        if not tolandi or len(tasdiq_kaliti) < 4:
             return {
                 "muvaffaqiyat": False,
                 "tolov_kerak": True,
                 "holat": "tolov_kutilmoqda",
-                "xabar": "To'lov tasdiqlanmagan! Avval Click/Payme/Uzum orqali to'lovni bajaring."
+                "xabar": "To'lov tasdiqlanmagan! Avval to'lovni amalga oshiring."
             }
         foydalanuvchi["olmoslar"] = balans + t["bonus_olmos"]
 

@@ -239,7 +239,7 @@
                     <div>
                       <div style="font-weight:900;">${s.invoysId} • ${s.foydalanuvchiIsmi} → ${s.tarifNomi}</div>
                       <div style="font-size:0.84rem; color:var(--text-secondary); margin-top:0.2rem;">
-                        Usul: <strong>${s.tolovUsuli}</strong> • Summa: <strong>${s.summa}</strong> • Karta/Tel: <strong>${s.kartaYokiTel}</strong> • Tranzaksiya ID: <strong>${s.tranzaksiyaId}</strong>
+                        Ilova: <strong>${s.tolovUsuli}</strong> • Summa: <strong>${s.summa}</strong> • Karta/Tel: <strong>${s.kartaYokiTel}</strong> • Sana: <strong>${s.yaratilganSana}</strong>
                       </div>
                     </div>
                     <div style="display:flex; gap:0.6rem; flex-wrap:wrap; align-items:center;">
