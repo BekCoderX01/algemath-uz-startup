@@ -23,6 +23,9 @@
       const foydalanuvchilar = baza.foydalanuvchilarRoyxati || [];
       const sertifikatlar = baza.berilganSertifikatlarArxivi || [];
       const qoshimchaSavollar = baza.qoshimchaAdminSavollar || [];
+      const tolovSorovlari = baza.tolovSorovlari || [];
+      const kutilayotganTolovlar = tolovSorovlari.filter(s => s.holat === "kutilmoqda");
+      const rekvizit = baza.tolovRekvizitlari || {};
       const jamiOlmoslar = foydalanuvchilar.reduce((s, u) => s + (u.olmoslar || 0), 0);
 
       konteyner.innerHTML = `
@@ -196,6 +199,64 @@
               `).join("")}
             </div>
           </div>
+
+          <!-- 4-BO'LIM: PRO OBUNA TO'LOVLARINI TASDIQLASH VA REKVIZITLAR -->
+          <div class="kun-settings-section-card">
+            <div class="section-header">
+              <div>
+                <span class="kun-settings-step-badge">4-BO'LIM • PRO TO'LOVLAR NAZORATI</span>
+                <h2 class="section-title">💳 PRO Obuna To'lovlarini Tasdiqlash (${kutilayotganTolovlar.length} ta kutilmoqda)</h2>
+              </div>
+            </div>
+
+            <form id="admin-rekvizit-formasi" style="margin-bottom:1.35rem; padding:1.1rem; border-radius:var(--radius-md); background:var(--bg-primary); border:1px solid var(--border-color);">
+              <div style="font-weight:800; margin-bottom:0.65rem;">🏦 To'lov qabul qiluvchi karta / hisob sozlamalari (Click • Payme • Uzum):</div>
+              <div class="grid-2">
+                <div class="form-group">
+                  <label class="form-label" for="adm-pay-card">Karta raqami yoki Click/Payme hisob</label>
+                  <input type="text" id="adm-pay-card" class="form-input" value="${rekvizit.kartaRaqami || ""}" placeholder="Masalan: 8600 1234 5678 9012" />
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="adm-pay-owner">Qabul qiluvchi F.I.Sh</label>
+                  <input type="text" id="adm-pay-owner" class="form-input" value="${rekvizit.qabulQiluvchi || "To'ychiyev Otabek"}" />
+                </div>
+              </div>
+              <button type="submit" class="btn btn-primary" style="margin-top:0.5rem;">💾 To'lov rekvizitini saqlash</button>
+            </form>
+
+            ${tolovSorovlari.length === 0 ? `
+              <div style="padding:1rem; border-radius:8px; background:var(--bg-primary); border:1px dashed var(--border-color); color:var(--text-muted);">
+                Hozircha kelib tushgan PRO to'lov so'rovlari yo'q. Foydalanuvchilar PRO sahifada to'lov chekini yuborganda shu yerda ko'rinadi.
+              </div>
+            ` : `
+              <div style="display:flex; flex-direction:column; gap:0.85rem;">
+                ${tolovSorovlari.map(s => `
+                  <div style="padding:1rem 1.15rem; border-radius:var(--radius-md); background:var(--bg-primary); border:1px solid var(--border-color); display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:0.85rem;">
+                    <div>
+                      <div style="font-weight:900;">${s.invoysId} • ${s.foydalanuvchiIsmi} → ${s.tarifNomi}</div>
+                      <div style="font-size:0.84rem; color:var(--text-secondary); margin-top:0.2rem;">
+                        Usul: <strong>${s.tolovUsuli}</strong> • Summa: <strong>${s.summa}</strong> • Karta/Tel: <strong>${s.kartaYokiTel}</strong> • Tranzaksiya ID: <strong>${s.tranzaksiyaId}</strong>
+                      </div>
+                    </div>
+                    <div style="display:flex; gap:0.6rem; flex-wrap:wrap; align-items:center;">
+                      ${s.holat === "kutilmoqda" ? `
+                        <button type="button" class="btn btn-emerald" data-approve-payment="${s.invoysId}" style="padding:0.5rem 0.9rem; font-size:0.84rem;">
+                          ✅ To'lov tushdi — PRO yoqish
+                        </button>
+                        <button type="button" class="btn btn-outline" data-reject-payment="${s.invoysId}" style="padding:0.5rem 0.9rem; font-size:0.84rem; color:var(--danger); border-color:var(--danger);">
+                          ❌ Rad etish
+                        </button>
+                      ` : `
+                        <span class="badge-pill" style="background:var(--bg-tertiary); color:${s.holat === "tasdiqlandi" ? "var(--success)" : "var(--danger)"};">
+                          ${s.holat === "tasdiqlandi" ? "✅ Tasdiqlangan" : "❌ Rad etilgan"}
+                        </span>
+                      `}
+                    </div>
+                  </div>
+                `).join("")}
+              </div>
+            `}
+          </div>
         </div>
       `;
 
@@ -248,6 +309,50 @@
             global.OlmoslarVaVaqtTizimi.ekrandagiOlmosVaVaqtniYangilash();
             this.interfeysniChizish(konteyner);
             global.UmumiyHolatVaBazalar.xabarnomaKorsatish(`💎 ${f.ism} ${f.familiya} hisobiga +10 ta Olmos qo'shildi!`);
+          }
+        });
+      });
+
+      // To'lov qabul qiluvchi karta / hisob rekvizitini saqlash
+      const rekvizitForm = document.getElementById("admin-rekvizit-formasi");
+      if (rekvizitForm) {
+        rekvizitForm.addEventListener("submit", (e) => {
+          e.preventDefault();
+          const holat = global.UmumiyHolatVaBazalar.holatniYuklash();
+          holat.tolovRekvizitlari = {
+            ...(holat.tolovRekvizitlari || {}),
+            kartaRaqami: ((document.getElementById("adm-pay-card") || {}).value || "").trim(),
+            qabulQiluvchi: ((document.getElementById("adm-pay-owner") || {}).value || "To'ychiyev Otabek").trim()
+          };
+          global.UmumiyHolatVaBazalar.holatniSaqlash(holat);
+          this.interfeysniChizish(konteyner);
+          global.UmumiyHolatVaBazalar.xabarnomaKorsatish("✅ To'lov qabul qiluvchi rekvizit saqlandi!");
+        });
+      }
+
+      // PRO to'lov so'rovini tasdiqlash (PRO obunani yoqish)
+      konteyner.querySelectorAll("[data-approve-payment]").forEach(btn => {
+        btn.addEventListener("click", () => {
+          const invoysId = btn.getAttribute("data-approve-payment");
+          if (global.ObunaVaTolovMantiqi) {
+            const res = global.ObunaVaTolovMantiqi.tolovniTasdiqlash(invoysId);
+            global.UmumiyHolatVaBazalar.xabarnomaKorsatish(res.xabar);
+            if (global.MundarijaVaNavigatsiya) {
+              global.MundarijaVaNavigatsiya.navigatsiyaniChizish("admin");
+            }
+            this.interfeysniChizish(konteyner);
+          }
+        });
+      });
+
+      // PRO to'lov so'rovini rad etish
+      konteyner.querySelectorAll("[data-reject-payment]").forEach(btn => {
+        btn.addEventListener("click", () => {
+          const invoysId = btn.getAttribute("data-reject-payment");
+          if (global.ObunaVaTolovMantiqi) {
+            const res = global.ObunaVaTolovMantiqi.tolovniRadEtish(invoysId);
+            global.UmumiyHolatVaBazalar.xabarnomaKorsatish(res.xabar);
+            this.interfeysniChizish(konteyner);
           }
         });
       });

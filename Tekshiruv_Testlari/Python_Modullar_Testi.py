@@ -86,6 +86,25 @@ class BarchaPythonModullarTesti(unittest.TestCase):
         self.assertEqual(top["daraja"], "A+")
 
     def test_8_obuna_va_tolov(self):
+        # To'lovsiz Click/Payme urinishida Bepul tarifda qolishi shart
+        u_click = {"olmoslar": 50, "obunaTarifi": "Bepul"}
+        rad = obunani_faollashtirish(u_click, "plan_student_pro", "Click")
+        self.assertFalse(rad["muvaffaqiyat"])
+        self.assertTrue(rad.get("tolov_kerak"))
+        self.assertEqual(u_click["obunaTarifi"], "Bepul")
+        self.assertEqual(u_click["olmoslar"], 50)
+
+        # Tasdiqlangan to'lov bilan PRO ochilishi
+        ok = obunani_faollashtirish(
+            u_click,
+            "plan_student_pro",
+            "Click",
+            {"tolandi": True, "tranzaksiya_id": "CLK-556677"}
+        )
+        self.assertTrue(ok["muvaffaqiyat"])
+        self.assertEqual(u_click["obunaTarifi"], "O'quvchi PRO")
+
+        # Olmos evaziga xarid
         u = {"olmoslar": 150, "obunaTarifi": "Bepul"}
         res = obunani_faollashtirish(u, "plan_student_pro", "Olmos")
         self.assertTrue(res["muvaffaqiyat"])

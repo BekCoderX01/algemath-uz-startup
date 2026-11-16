@@ -253,8 +253,74 @@ function httpGet(url) {
     assert.strictEqual(topilmadi.topildi, false);
   });
 
-  // 10. [8-MODUL] Startup Monetizatsiyasi — Click / Payme / Uzum va Olmos PRO Obuna
-  await test("10. [8-Papkadagi Modul] Click va Olmos orqali O'quvchi PRO obunasini aktivlashtirish", () => {
+  // 10. [8-MODUL] Startup Monetizatsiyasi — To'lovsiz PRO ga o'tib ketmasligi va to'lov tasdiqlangach ochilishi
+  await test("10. [8-Papkadagi Modul] To'lov qilinmasdan PRO ochilmasligi, chek yuborish va tasdiqlangach faollashishi", () => {
+    UmumiyHolatVaBazalar.foydalanuvchiniYangilash({
+      olmoslar: 200,
+      obunaTarifi: "Bepul",
+    });
+
+    // 1) To'lovsiz to'g'ridan-to'g'ri Click/Payme bosilganda Bepuldan PRO ga O'TMASLIGI shart!
+    const tolovsizUrinish = ObunaVaTolovMantiqi.tarifniFaollashtirish(
+      "plan_teacher_pro",
+      "Click",
+    );
+    assert.strictEqual(tolovsizUrinish.muvaffaqiyat, false);
+    assert.strictEqual(tolovsizUrinish.tolovKerak, true);
+    assert.strictEqual(
+      UmumiyHolatVaBazalar.holatniYuklash().joriyFoydalanuvchi.obunaTarifi,
+      "Bepul",
+    );
+    assert.strictEqual(
+      UmumiyHolatVaBazalar.holatniYuklash().joriyFoydalanuvchi.olmoslar,
+      200,
+    );
+
+    // 2) Kassa ochilganda ham hali Bepul tarifda qolishi kerak
+    const kassaRes = ObunaVaTolovMantiqi.kassaniOchish("plan_teacher_pro");
+    assert.strictEqual(kassaRes.kassaOchildi, true);
+    assert.strictEqual(
+      UmumiyHolatVaBazalar.holatniYuklash().joriyFoydalanuvchi.obunaTarifi,
+      "Bepul",
+    );
+
+    // 3) To'lov so'rovi yuborilganda holat "kutilmoqda", foydalanuvchi hali "Bepul"
+    const sorovRes = ObunaVaTolovMantiqi.tolovSoroviniYuborish(
+      "plan_teacher_pro",
+      "Click",
+      "+998901234567",
+      "CLK-998877",
+    );
+    assert.strictEqual(sorovRes.muvaffaqiyat, true);
+    assert.strictEqual(sorovRes.kutilmoqda, true);
+    assert.strictEqual(
+      UmumiyHolatVaBazalar.holatniYuklash().joriyFoydalanuvchi.obunaTarifi,
+      "Bepul",
+    );
+
+    // 4) Admin to'lov tushganini tasdiqlagandan keyingina PRO ochiladi (+100 bonus olmos)
+    const tasdiqRes = ObunaVaTolovMantiqi.tolovniTasdiqlash(
+      sorovRes.sorov.invoysId,
+    );
+    assert.strictEqual(tasdiqRes.muvaffaqiyat, true);
+    assert.strictEqual(
+      UmumiyHolatVaBazalar.holatniYuklash().joriyFoydalanuvchi.obunaTarifi,
+      "Ustoz Ekspert PRO",
+    );
+    assert.strictEqual(
+      UmumiyHolatVaBazalar.holatniYuklash().joriyFoydalanuvchi.olmoslar,
+      300,
+    );
+
+    // 5) Bir xil tranzaksiya kodi qayta ishlatilmasligi kerak
+    const qaytaRes = ObunaVaTolovMantiqi.tarifniFaollashtirish(
+      "plan_student_pro",
+      "Click",
+      { tolandi: true, tranzaksiyaId: "CLK-998877" },
+    );
+    assert.strictEqual(qaytaRes.muvaffaqiyat, false);
+
+    // 6) Olmos evaziga xarid balansdan yechib faollashtiradi (va yetarli bo'lmasa rad etadi)
     UmumiyHolatVaBazalar.foydalanuvchiniYangilash({
       olmoslar: 200,
       obunaTarifi: "Bepul",
@@ -272,16 +338,6 @@ function httpGet(url) {
       UmumiyHolatVaBazalar.holatniYuklash().joriyFoydalanuvchi.olmoslar,
       80,
     ); // 200 - 120
-
-    const resClick = ObunaVaTolovMantiqi.tarifniFaollashtirish(
-      "plan_teacher_pro",
-      "Click",
-    );
-    assert.strictEqual(resClick.muvaffaqiyat, true);
-    assert.strictEqual(
-      UmumiyHolatVaBazalar.holatniYuklash().joriyFoydalanuvchi.obunaTarifi,
-      "Ustoz Ekspert PRO",
-    );
   });
 
   // 11. Server barcha 17 ta sahifani (Sahifalar/ va 1..8 maxsus papkalar) HTTP 200 bilan uzatishi
@@ -438,6 +494,7 @@ function httpGet(url) {
 
       AdminPaneli.sahifaniIshgaTushirish();
       assert.ok(elements["admin-asosiy-konteyner"].innerHTML.includes("kun-settings-section-card"));
+      assert.ok(elements["admin-asosiy-konteyner"].innerHTML.includes("PRO Obuna To'lovlarini Tasdiqlash"));
 
       OlmoslarDukoniMantiqi.sahifaniIshgaTushirish();
       assert.ok(elements["olmoslar-dukoni-konteyner"].innerHTML.includes("kun-page-banner"));
@@ -461,8 +518,10 @@ function httpGet(url) {
       SertifikatTekshirishMantiqi.sahifaniIshgaTushirish();
       assert.ok(elements["sertifikat-tekshirish-konteyner"].innerHTML.includes("kun-settings-section-card"));
 
+      ObunaVaTolovMantiqi.kassaniOchish("plan_student_pro");
       ObunaVaTolovMantiqi.sahifaniIshgaTushirish();
       assert.ok(elements["obuna-va-tolov-konteyner"].innerHTML.includes("kun-page-banner"));
+      assert.ok(elements["obuna-va-tolov-konteyner"].innerHTML.includes("tolov-kassa-bloki"));
     } finally {
       if (typeof OlmoslarVaVaqtTizimi.kunlikTaymerniToxtatish === "function") {
         OlmoslarVaVaqtTizimi.kunlikTaymerniToxtatish();

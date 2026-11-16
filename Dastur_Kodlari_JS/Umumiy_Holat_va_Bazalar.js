@@ -198,7 +198,15 @@
           { ismFamiliya: "Sardorbek Alimov", holat: "Kutilmoqda", ball: "—", sana: "—" }
         ]
       }
-    ]
+    ],
+    tolovSorovlari: [],
+    ishlatilganTranzaksiyalar: [],
+    tolovRekvizitlari: {
+      kartaRaqami: "",
+      qabulQiluvchi: "To'ychiyev Otabek",
+      telegramAloqa: "@Tuychiyev_c",
+      izoh: "Click, Payme yoki Uzum orqali to'lov qiling va tranzaksiya chek raqamini kiriting."
+    }
   };
 
   const UmumiyHolatVaBazalar = {
@@ -233,7 +241,13 @@
               },
               ustozSinfxonalari: parsed.ustozSinfxonalari && parsed.ustozSinfxonalari.length
                 ? parsed.ustozSinfxonalari
-                : STANDART_TIZIM_BAZASI.ustozSinfxonalari
+                : STANDART_TIZIM_BAZASI.ustozSinfxonalari,
+              tolovSorovlari: Array.isArray(parsed.tolovSorovlari) ? parsed.tolovSorovlari : [],
+              ishlatilganTranzaksiyalar: Array.isArray(parsed.ishlatilganTranzaksiyalar) ? parsed.ishlatilganTranzaksiyalar : [],
+              tolovRekvizitlari: {
+                ...STANDART_TIZIM_BAZASI.tolovRekvizitlari,
+                ...(parsed.tolovRekvizitlari || {})
+              }
             };
           }
         }
