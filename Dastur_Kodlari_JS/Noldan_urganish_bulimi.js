@@ -54,111 +54,116 @@
       const maqsadYoli = barchaDarajalar.filter(d => d.tartib <= maqsadObj.tartib);
 
       konteyner.innerHTML = `
-        <!-- 1. MAQSAD DARAJANI TANLASH (0 dan A+ gacha yo'l xaritasi) -->
-        <div class="card" style="margin-bottom:1.5rem;">
-          <div class="section-header">
-            <div>
-              <h1 style="font-size:1.55rem; font-weight:900;">📚 Matematikani 0 dan Maqsad Darajagacha O'rganish</h1>
-              <p style="color:var(--text-secondary); font-size:0.95rem;">
-                Qaysi darajaga (masalan, <strong>A+</strong>) chiqmoqchi bo'lsangiz, o'sha darajani tanlang va 0 dan boshlab shu darajaga yetguncha darslar hamda 10 talik testlarni o'zlashtiring!
-              </p>
+        <div class="kun-settings-layout">
+          <!-- 1. MAQSAD DARAJANI TANLASH (0 dan A+ gacha yo'l xaritasi) -->
+          <div class="kun-settings-section-card">
+            <div class="section-header">
+              <div>
+                <span class="kun-settings-step-badge">1-QADAM • O'QUV YO'NALISHI VA MAQSAD DARAJA</span>
+                <h1 class="section-title">📚 Matematikani 0 dan Maqsad Darajagacha O'rganish</h1>
+                <p style="color:var(--text-secondary); font-size:0.95rem; margin-top:0.35rem;">
+                  Qaysi darajaga (masalan, <strong>A+</strong>) chiqmoqchi bo'lsangiz, o'sha darajani tanlang va 0 dan boshlab shu darajaga yetguncha darslar hamda 10 talik testlarni o'zlashtiring!
+                </p>
+              </div>
+              <div style="display:flex; align-items:center; gap:0.75rem;">
+                <label for="maqsad-daraja-select" style="font-weight:800; font-size:0.92rem;">🎯 Mening maqsadim:</label>
+                <select id="maqsad-daraja-select" class="form-select" style="width:auto; font-weight:800;">
+                  ${barchaDarajalar.map(d => `
+                    <option value="${d.daraja}" ${d.daraja === this.maqsadDaraja ? "selected" : ""}>
+                      ${d.daraja} darajaga chiqish
+                    </option>
+                  `).join("")}
+                </select>
+              </div>
             </div>
-            <div style="display:flex; align-items:center; gap:0.65rem;">
-              <label for="maqsad-daraja-select" style="font-weight:800; font-size:0.9rem;">🎯 Mening maqsadim:</label>
-              <select id="maqsad-daraja-select" class="form-select" style="width:auto; font-weight:800;">
-                ${barchaDarajalar.map(d => `
-                  <option value="${d.daraja}" ${d.daraja === this.maqsadDaraja ? "selected" : ""}>
-                    ${d.daraja} darajaga chiqish
-                  </option>
-                `).join("")}
-              </select>
+
+            <!-- BOSQICHMA-BOSQICH YO'L XARITASI TUGMALARI -->
+            <div>
+              <div style="font-size:0.9rem; font-weight:700; color:var(--text-secondary); margin-bottom:0.85rem;">
+                0 dan <strong>${this.maqsadDaraja}</strong> darajagacha o'quv yo'lingiz (${maqsadYoli.length} ta bosqich — o'rganmoqchi bo'lgan bosqichni bosing):
+              </div>
+              <div class="grid-3">
+                ${barchaDarajalar.map(d => {
+                  const maqsadIchida = d.tartib <= maqsadObj.tartib;
+                  const faol = d.daraja === this.joriyDarajaKodi;
+                  return `
+                    <button type="button"
+                            class="language-flag-option ${faol ? "active" : ""}"
+                            data-select-level="${d.daraja}"
+                            style="${!maqsadIchida ? "opacity:0.6;" : ""}">
+                      <span class="grade-badge ${this.darajaKlassiniOlish(d.daraja)}">${d.daraja}</span>
+                      <div style="flex:1;">
+                        <div style="font-weight:900; font-size:0.98rem;">${d.tartib}-bosqich • ${d.daraja} daraja</div>
+                        <div style="font-size:0.8rem; color:var(--text-muted); font-weight:600;">+${d.olmosMukofoti} 💎 mukofot</div>
+                      </div>
+                      ${faol ? `<span class="badge-pill" style="background:var(--accent-primary); color:#fff;">Faol</span>` : ""}
+                    </button>
+                  `;
+                }).join("")}
+              </div>
             </div>
           </div>
 
-          <!-- BOSQICHMA-BOSQICH YO'L XARITASI TUGMALARI -->
-          <div style="margin-top:0.75rem;">
-            <div style="font-size:0.86rem; font-weight:700; color:var(--text-muted); margin-bottom:0.6rem;">
-              0 dan <strong>${this.maqsadDaraja}</strong> darajagacha o'quv yo'lingiz (${maqsadYoli.length} ta bosqich — o'rganmoqchi bo'lgan bosqichni bosing):
+          <!-- 2. TANLANGAN DARAJA DARSLARI VA NAZARIY TUSHUNTIRISHLAR -->
+          <div class="kun-settings-section-card">
+            <div class="section-header">
+              <div>
+                <span class="kun-settings-step-badge">2-QADAM • NAZARIY DARSLAR VA FORMULALAR (${joriyObj.daraja} DARAJA)</span>
+                <h2 class="section-title">${joriyObj.sarlavha}</h2>
+                <p style="color:var(--text-secondary); font-size:0.94rem; margin-top:0.35rem;">${joriyObj.tavsif}</p>
+              </div>
+              <div class="stat-pill diamond-pill">
+                💎 Bosqich mukofoti: +${joriyObj.olmosMukofoti} Olmos
+              </div>
             </div>
-            <div style="display:flex; gap:0.65rem; flex-wrap:wrap;">
-              ${barchaDarajalar.map(d => {
-                const maqsadIchida = d.tartib <= maqsadObj.tartib;
-                const faol = d.daraja === this.joriyDarajaKodi;
+
+            <div class="grid-3">
+              ${joriyObj.darslar.map(dars => {
+                const tugatilgan = ozlashtirilgan.includes(dars.id);
                 return `
-                  <button type="button"
-                          class="btn ${faol ? "btn-primary" : (maqsadIchida ? "btn-outline" : "btn-outline")}"
-                          data-select-level="${d.daraja}"
-                          style="${!maqsadIchida ? "opacity:0.6;" : ""}">
-                    <span class="grade-badge ${this.darajaKlassiniOlish(d.daraja)}">${d.daraja}</span>
-                    <span>${d.tartib}-bosqich</span>
-                  </button>
+                  <div class="card" style="background:var(--bg-primary); display:flex; flex-direction:column; justify-content:space-between;">
+                    <div>
+                      <div style="display:flex; align-items:center; justify-content:space-between; gap:0.5rem; margin-bottom:0.85rem;">
+                        <span class="badge-pill" style="background:var(--bg-tertiary); color:var(--accent-primary);">📖 Nazariy dars</span>
+                        ${tugatilgan
+                          ? `<span class="badge-pill" style="background:rgba(5,150,105,0.16); color:var(--success);">✅ O'zlashtirilgan</span>`
+                          : `<span class="badge-pill" style="background:rgba(217,119,6,0.16); color:#d97706;">+5 💎 olmos</span>`}
+                      </div>
+                      <h3 style="font-size:1.1rem; font-weight:800; margin-bottom:0.65rem;">${dars.nomi}</h3>
+                      <p style="font-size:0.92rem; color:var(--text-secondary); margin-bottom:1rem;">${dars.nazariya}</p>
+                      <div style="padding:0.85rem 1rem; border-radius:var(--radius-sm); background:var(--bg-secondary); border-left:4px solid var(--accent-primary); font-family:monospace; font-weight:700; font-size:0.88rem; margin-bottom:0.9rem;">
+                        📌 Formula: ${dars.formula}
+                      </div>
+                      <div style="font-size:0.88rem; color:var(--text-muted); margin-bottom:1.25rem;">
+                        💡 <strong>Namuna:</strong> ${dars.namuna}
+                      </div>
+                    </div>
+                    <button type="button"
+                            class="btn ${tugatilgan ? "btn-emerald" : "btn-primary"}"
+                            data-complete-lesson="${dars.id}"
+                            data-lesson-title="${dars.nomi}">
+                      ${tugatilgan ? "✅ Dars o'zlashtirilgan (+5 💎 olindi)" : "✨ Darsni tushundim va o'zlashtirdim (+5 💎)"}
+                    </button>
+                  </div>
                 `;
               }).join("")}
             </div>
           </div>
-        </div>
 
-        <!-- 2. TANLANGAN DARAJA DARSLARI VA NAZARIY TUSHUNTIRISHLAR -->
-        <div class="card" style="margin-bottom:1.5rem;">
-          <div class="section-header">
-            <div>
-              <span class="grade-badge ${this.darajaKlassiniOlish(joriyObj.daraja)}" style="margin-bottom:0.4rem;">
-                Joriy o'quv bosqichi: ${joriyObj.daraja}
-              </span>
-              <h2 style="font-size:1.35rem; font-weight:800;">${joriyObj.sarlavha}</h2>
-              <p style="color:var(--text-secondary); font-size:0.92rem;">${joriyObj.tavsif}</p>
+          <!-- 3. SHU DARAJA UCHUN 10 TALIK TEST (HAR BIR SAVOL TAGIDA ANIQ JAVOBSIZ YORDAM/MEMORY BILAN) -->
+          <div class="kun-settings-section-card">
+            <div class="section-header">
+              <div>
+                <span class="kun-settings-step-badge">3-QADAM • 10 TALIK O'QUV SINOVI VA YORDAM (MEMORY)</span>
+                <h2 class="section-title">
+                  📝 ${joriyObj.daraja} Daraja uchun 10 talik O'quv Testi
+                </h2>
+                <p style="color:var(--text-secondary); font-size:0.94rem; margin-top:0.35rem;">
+                  Har bir testning pastki qismida <strong>"💡 Yordam / Memory (Tushuntirish)"</strong> berilgan. U sizga aniq javobni aytmaydi, balki misolni o'zingiz yechishingiz uchun kerakli qoida va formulani eslatadi!
+                </p>
+              </div>
+              <button type="button" class="btn btn-outline" id="learn-test-qayta-btn">🔄 Testni yangidan boshlash</button>
             </div>
-            <div class="stat-pill diamond-pill">
-              💎 Bosqich mukofoti: +${joriyObj.olmosMukofoti} Olmos
-            </div>
-          </div>
-
-          <div class="grid-3">
-            ${joriyObj.darslar.map(dars => {
-              const tugatilgan = ozlashtirilgan.includes(dars.id);
-              return `
-                <div class="card" style="background:var(--bg-primary); display:flex; flex-direction:column; justify-content:space-between;">
-                  <div>
-                    <div style="display:flex; align-items:center; justify-content:space-between; gap:0.5rem; margin-bottom:0.65rem;">
-                      <span class="badge-pill" style="background:var(--bg-tertiary); color:var(--accent-primary);">📖 Nazariy dars</span>
-                      ${tugatilgan
-                        ? `<span class="badge-pill" style="background:rgba(5,205,153,0.18); color:var(--success);">✅ O'zlashtirilgan</span>`
-                        : `<span class="badge-pill" style="background:rgba(255,181,71,0.18); color:#d97706;">+5 💎 olmos</span>`}
-                    </div>
-                    <h3 style="font-size:1.05rem; font-weight:800; margin-bottom:0.6rem;">${dars.nomi}</h3>
-                    <p style="font-size:0.9rem; color:var(--text-secondary); margin-bottom:0.85rem;">${dars.nazariya}</p>
-                    <div style="padding:0.7rem; border-radius:var(--radius-sm); background:var(--bg-secondary); border:1px dashed var(--accent-primary); font-family:monospace; font-weight:700; font-size:0.86rem; margin-bottom:0.75rem;">
-                      📌 Formula: ${dars.formula}
-                    </div>
-                    <div style="font-size:0.85rem; color:var(--text-muted); margin-bottom:1rem;">
-                      💡 <strong>Namuna:</strong> ${dars.namuna}
-                    </div>
-                  </div>
-                  <button type="button"
-                          class="btn ${tugatilgan ? "btn-emerald" : "btn-primary"}"
-                          data-complete-lesson="${dars.id}"
-                          data-lesson-title="${dars.nomi}">
-                    ${tugatilgan ? "✅ Dars o'zlashtirilgan (+5 💎 olindi)" : "✨ Darsni tushundim va o'zlashtirdim (+5 💎)"}
-                  </button>
-                </div>
-              `;
-            }).join("")}
-          </div>
-        </div>
-
-        <!-- 3. SHU DARAJA UCHUN 10 TALIK TEST (HAR BIR SAVOL TAGIDA ANIQ JAVOBSIZ YORDAM/MEMORY BILAN) -->
-        <div class="card">
-          <div class="section-header">
-            <div>
-              <h2 style="font-size:1.35rem; font-weight:900;">
-                📝 ${joriyObj.daraja} Daraja uchun 10 talik O'quv Testi (Yordam va Xotira eslatmalari bilan)
-              </h2>
-              <p style="color:var(--text-secondary); font-size:0.92rem;">
-                Har bir testning pastki qismida <strong>"💡 Yordam / Memory (Tushuntirish)"</strong> berilgan. U sizga aniq javobni aytmaydi, balki misolni o'zingiz yechishingiz uchun kerakli qoida va formulani eslatadi!
-              </p>
-            </div>
-            <button type="button" class="btn btn-outline" id="learn-test-qayta-btn">🔄 Testni yangidan boshlash</button>
-          </div>
 
           <div id="learn-10-questions-list">
             ${joriyObj.onTalikTest.map((savolObj, qIdx) => {
@@ -211,8 +216,9 @@
           </div>
 
           <!-- TESTNI YAKUNLASH VA NATIJA BLOKI -->
-          <div id="learn-test-natija-joyi" style="margin-top:1.25rem;">
+          <div id="learn-test-natija-joyi" style="margin-top:1.5rem;">
             ${this.natijaBlokiniOlish(joriyObj)}
+          </div>
           </div>
         </div>
       `;
@@ -224,11 +230,11 @@
       if (!this.testYakunlandi) {
         const belgilanganSoni = joriyObj.onTalikTest.filter(q => typeof this.tanlanganJavoblar[q.id] === "number").length;
         return `
-          <div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:1rem; padding:1.25rem; border-radius:var(--radius-md); background:var(--bg-tertiary);">
-            <div style="font-weight:700;">
+          <div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:1rem; padding:1.35rem 1.5rem; border-radius:var(--radius-md); background:var(--bg-tertiary); border:1px solid var(--border-color);">
+            <div style="font-weight:700; font-size:0.98rem;">
               Belgilangan javoblar: <strong>${belgilanganSoni} / 10</strong>
             </div>
-            <button type="button" class="btn btn-primary" id="learn-test-tekshirish-btn" style="font-size:1.02rem; padding:0.85rem 1.75rem;">
+            <button type="button" class="btn btn-primary" id="learn-test-tekshirish-btn" style="font-size:1.02rem; padding:0.9rem 1.85rem;">
               ✅ 10 talik testni tekshirish va Olmos olish
             </button>
           </div>
@@ -243,14 +249,14 @@
       const olmos = global.OlmoslarVaVaqtTizimi.adolatliTestOlmosiHisoblash(togri, 10, joriyObj.daraja);
 
       return `
-        <div class="card" style="background:linear-gradient(135deg, rgba(5,205,153,0.14), rgba(67,24,255,0.12)); border:2px solid var(--success);">
-          <h3 style="font-size:1.3rem; font-weight:900; margin-bottom:0.5rem;">
+        <div class="card" style="background:var(--accent-light); border:2px solid var(--success);">
+          <h3 style="font-size:1.35rem; font-weight:900; margin-bottom:0.5rem;">
             🎉 ${joriyObj.daraja} daraja 10 talik testi yakunlandi!
           </h3>
-          <p style="font-size:1.02rem; margin-bottom:1rem;">
+          <p style="font-size:1.02rem; margin-bottom:1.15rem;">
             To'g'ri javoblar: <strong>${togri} / 10 (${foiz}%)</strong> • Taqdim etilgan olmos: <strong>+${olmos} 💎</strong>
           </p>
-          <div style="display:flex; gap:0.85rem; flex-wrap:wrap;">
+          <div style="display:flex; gap:1rem; flex-wrap:wrap;">
             <button type="button" class="btn btn-primary" id="keyingi-darajaga-otish-btn">
               🚀 Keyingi daraja bosqichiga o'tish (${this.maqsadDaraja} maqsad sari)
             </button>

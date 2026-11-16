@@ -2,7 +2,8 @@
    FAYL NOMI: Dastur_Kodlari_JS/Qidiruv_bulimi.js
    VAZIFASI: Sayt bo'ylab tezkor Qidiruv (mavzular, formulalar, 0 dan o'rganish
              darslari, 45 talik sertifikat savollari va alohida sahifalar) hamda
-             barcha sahifalarga oson o'tish uchun To'liq Mundarija.
+             barcha 17 ta sahifaga oson o'tish uchun Kun.uz uslubida 4 ta
+             yo'nalishga tartiblangan To'liq Mundarija.
    ========================================================================== */
 
 (function (global) {
@@ -21,7 +22,7 @@
           sarlavha: `${s.raqam}. ${s.nomi}`,
           tavsif: s.tavsif,
           havola: global.MundarijaVaNavigatsiya.sahifaManziliniOlish(s.fayl),
-          kalitSozlar: `${s.nomi} ${s.tavsif} sahifa mundarija`.toLowerCase()
+          kalitSozlar: `${s.nomi} ${s.qisqaNomi || ""} ${s.tavsif} sahifa mundarija`.toLowerCase()
         });
       });
 
@@ -69,62 +70,47 @@
       const konteyner = document.getElementById("qidiruv-va-mundarija-konteyner");
       if (!konteyner) return;
 
-      const mundarija = global.MundarijaVaNavigatsiya.sahifalarMundarijasi || [];
-
       konteyner.innerHTML = `
-        <!-- 1. INTERAKTIV TO'LIQ MUNDARIJA (BARCHA ALOHIDA SAHIFALAR XARITASI) -->
-        <div class="card" style="margin-bottom:1.5rem;">
+        <!-- 1. AQLLI GLOBAL QIDIRUV BO'LIMI (YUQORIDA QULAY JOYLASHGAN) -->
+        <div class="card" style="margin-bottom:2.25rem; border-top:4px solid var(--accent-primary);">
           <div class="section-header">
             <div>
-              <h1 style="font-size:1.55rem; font-weight:900;">🧭 Saytning To'liq Mundarijasi (Barcha Alohida Sahifalar)</h1>
-              <p style="color:var(--text-secondary); font-size:0.94rem;">
-                Har bir bo'lim alohida sahifada joylashgan. Kerakli sahifaga 1 bosishda o'tishingiz mumkin:
+              <h1 class="section-title">🔍 Portal bo'ylab Global Qidiruv va Mundarija</h1>
+              <p style="color:var(--text-secondary); font-size:0.95rem; margin-top:0.25rem;">
+                Matematik mavzu, formula (masalan: <em>Viyet, logarifm, integral, progressiya, EKUB</em>), daraja (<em>A+, B+</em>) yoki bo'lim nomini yozing:
               </p>
             </div>
           </div>
 
-          <div class="grid-3">
-            ${mundarija.map(s => `
-              <a href="${global.MundarijaVaNavigatsiya.sahifaManziliniOlish(s.fayl)}" class="card card-interactive" style="background:var(--bg-primary); display:flex; flex-direction:column; justify-content:space-between;">
-                <div>
-                  <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:0.65rem;">
-                    <span class="mundarija-item-num">${s.raqam}</span>
-                    <span style="font-size:1.65rem;">${s.ikonka}</span>
-                  </div>
-                  <h3 style="font-size:1.05rem; font-weight:800; margin-bottom:0.25rem;">${s.nomi}</h3>
-                  <div style="font-size:0.75rem; font-weight:700; color:var(--accent-primary); margin-bottom:0.35rem;">📂 ${s.papka}/${s.fayl}</div>
-                  <p style="font-size:0.86rem; color:var(--text-secondary); margin-bottom:0.85rem;">${s.tavsif}</p>
-                </div>
-                <div style="font-size:0.82rem; font-weight:800; color:var(--accent-primary);">
-                  Sahifani ochish (${s.fayl}) →
-                </div>
-              </a>
-            `).join("")}
-          </div>
-        </div>
-
-        <!-- 2. AQLLI QIDIRUV BO'LIMI -->
-        <div class="card">
-          <h2 style="font-size:1.4rem; font-weight:900; margin-bottom:0.5rem;">🔍 Global Qidiruv Bo'limi</h2>
-          <p style="color:var(--text-secondary); font-size:0.92rem; margin-bottom:1rem;">
-            Matematik mavzu, formula (masalan: <em>Viyet, logarifm, integral, progressiya, EKUB</em>), daraja (<em>A+, B+</em>) yoki sahifa nomini yozing:
-          </p>
-
-          <div style="display:flex; gap:0.85rem; flex-wrap:wrap; margin-bottom:1.25rem;">
+          <div style="display:flex; gap:1rem; flex-wrap:wrap; margin-bottom:1.5rem;">
             <input type="search"
                    id="global-qidiruv-input"
                    class="form-input"
-                   style="flex:1; min-width:260px;"
-                   placeholder="Mavzu, formula, test yoki sahifani qidiring (masalan: Viyet, logarifm, A+, Sertifikat)..." />
+                   style="flex:1; min-width:280px;"
+                   placeholder="Mavzu, formula, test yoki sahifani qidiring (masalan: Sozlamalar, Viyet, logarifm, A+, Sertifikat)..." />
             <select id="global-qidiruv-tur" class="form-select" style="width:auto; font-weight:700;">
               <option value="barchasi">📂 Barcha bo'limlar</option>
-              <option value="Sahifa">🧭 Sahifalar</option>
+              <option value="Sahifa">🧭 17 ta Sahifa va Modullar</option>
               <option value="0 dan o'rganish">📚 0 dan o'rganish darslari</option>
               <option value="Sertifikat">🏆 45 talik Sertifikat savollari</option>
             </select>
           </div>
 
           <div id="global-qidiruv-natijalari"></div>
+        </div>
+
+        <!-- 2. KUN.UZ USLUBIDA 4 TA YO'NALISHGA GURUHLANGAN 17 TA SAHIFA MUNDARIJASI -->
+        <div>
+          <div class="section-header">
+            <div>
+              <h2 class="section-title">🧭 Saytning To'liq Mundarijasi (4 ta yo'nalish, 17 ta alohida sahifa)</h2>
+              <p style="color:var(--text-secondary); font-size:0.94rem; margin-top:0.25rem;">
+                Har bir bo'lim tartib bilan o'z yo'nalishiga ajratilgan — kerakli sahifaga 1 bosishda o'ting:
+              </p>
+            </div>
+          </div>
+
+          ${global.MundarijaVaNavigatsiya.kategoriyalanganMundarijaHtml()}
         </div>
       `;
 
@@ -146,25 +132,25 @@
         const natijalar = this.qidirish(inputEl.value, turEl.value);
         if (natijalar.length === 0) {
           natijaEl.innerHTML = `
-            <div style="padding:2rem; text-align:center; color:var(--text-muted);">
+            <div style="padding:2rem; text-align:center; color:var(--text-muted); background:var(--bg-primary); border-radius:var(--radius-md);">
               So'rovingiz bo'yicha hech narsa topilmadi. Boshqa kalit so'zni yozib ko'ring.
             </div>
           `;
           return;
         }
         natijaEl.innerHTML = `
-          <div style="font-size:0.86rem; font-weight:700; color:var(--text-muted); margin-bottom:0.85rem;">
-            Topilgan natijalar: <strong>${natijalar.length} ta</strong>
+          <div style="font-size:0.88rem; font-weight:700; color:var(--text-muted); margin-bottom:1rem;">
+            Topilgan natijalar: <strong>${natijalar.length} ta</strong> (dastlabki 18 tasi ko'rsatilmoqda)
           </div>
-          <div class="grid-2" style="gap:0.9rem;">
-            ${natijalar.slice(0, 24).map(r => `
-              <a href="${r.havola}" class="card card-interactive" style="background:var(--bg-primary); padding:1.1rem;">
-                <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:0.4rem;">
+          <div class="grid-2" style="gap:1.15rem;">
+            ${natijalar.slice(0, 18).map(r => `
+              <a href="${r.havola}" class="card card-interactive" style="background:var(--bg-primary); padding:1.25rem 1.4rem;">
+                <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:0.5rem;">
                   <span class="badge-pill" style="background:var(--bg-tertiary); color:var(--accent-primary);">${r.ikonka} ${r.tur}</span>
-                  <span style="font-size:0.8rem; font-weight:700; color:var(--accent-primary);">O'tish →</span>
+                  <span style="font-size:0.82rem; font-weight:800; color:var(--accent-primary);">O'tish →</span>
                 </div>
-                <div style="font-weight:800; font-size:1rem; margin-bottom:0.3rem;">${r.sarlavha}</div>
-                <div style="font-size:0.86rem; color:var(--text-secondary);">${r.tavsif}</div>
+                <div style="font-weight:800; font-size:1.02rem; margin-bottom:0.35rem;">${r.sarlavha}</div>
+                <div style="font-size:0.88rem; color:var(--text-secondary);">${r.tavsif}</div>
               </a>
             `).join("")}
           </div>

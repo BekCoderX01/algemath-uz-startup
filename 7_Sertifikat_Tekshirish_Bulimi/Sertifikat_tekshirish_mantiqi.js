@@ -1,4 +1,5 @@
 /* ==========================================================================
+
    PAPKA VA FAYL: 7_Sertifikat_Tekshirish_Bulimi/Sertifikat_tekshirish_mantiqi.js
    VAZIFASI: 7-Modul — "Milliy Sertifikat Haqiqiyligini Tekshirish Reestri".
              Sertifikat ID raqami (masalan: MS-UZ-2026-1001) yoki nomzodning
@@ -16,17 +17,20 @@
 
       const baza = global.UmumiyHolatVaBazalar.holatniYuklash();
       const arxiv = baza.berilganSertifikatlarArxivi || [];
-      const shaxsiy = (baza.joriyFoydalanuvchi && baza.joriyFoydalanuvchi.sertifikatlar) || [];
+      const shaxsiy =
+        (baza.joriyFoydalanuvchi && baza.joriyFoydalanuvchi.sertifikatlar) ||
+        [];
       const barchasi = [...shaxsiy, ...arxiv];
 
       const topilgan = barchasi.find(
-        s => (s.sertifikatId && s.sertifikatId.toLowerCase() === q) ||
-             (s.ismFamiliya && s.ismFamiliya.toLowerCase().includes(q))
+        (s) =>
+          (s.sertifikatId && s.sertifikatId.toLowerCase() === q) ||
+          (s.ismFamiliya && s.ismFamiliya.toLowerCase().includes(q)),
       );
 
       return {
         topildi: !!topilgan,
-        sertifikat: topilgan || null
+        sertifikat: topilgan || null,
       };
     },
 
@@ -52,7 +56,9 @@
 
     sahifaniIshgaTushirish: function () {
       if (typeof document === "undefined") return;
-      const konteyner = document.getElementById("sertifikat-tekshirish-konteyner");
+      const konteyner = document.getElementById(
+        "sertifikat-tekshirish-konteyner",
+      );
       if (!konteyner) return;
       this.interfeysniChizish(konteyner);
     },
@@ -88,16 +94,23 @@
 
           <div style="display:flex; gap:0.5rem; flex-wrap:wrap; align-items:center; font-size:0.84rem;">
             <span style="color:var(--text-muted); font-weight:700;">Tezkor tekshirib ko'rish:</span>
-            ${arxiv.slice(0, 5).map(item => `
+            ${arxiv
+              .slice(0, 5)
+              .map(
+                (item) => `
               <button type="button" class="btn btn-outline" data-quick-verify="${item.sertifikatId}" style="padding:0.35rem 0.75rem; font-size:0.8rem;">
                 📜 ${item.sertifikatId} (${item.ismFamiliya} • ${item.daraja})
               </button>
-            `).join("")}
+            `,
+              )
+              .join("")}
           </div>
         </div>
 
         <!-- TEKSHIRUV NATIJASI -->
-        ${natija.topildi && natija.sertifikat ? `
+        ${
+          natija.topildi && natija.sertifikat
+            ? `
           <div class="card" style="border:3px solid var(--success);">
             <div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:1rem; padding-bottom:1rem; border-bottom:1px solid var(--border-color); margin-bottom:1.25rem;">
               <div style="display:flex; align-items:center; gap:0.85rem;">
@@ -142,7 +155,8 @@
               </div>
             </div>
           </div>
-        ` : `
+        `
+            : `
           <div class="card" style="border:2px solid var(--danger); text-align:center; padding:2rem;">
             <div style="font-size:2.5rem; margin-bottom:0.5rem;">⚠️</div>
             <h2 style="font-size:1.3rem; font-weight:900;">"${this.oxirgiQidiruv}" bo'yicha Sertifikat topilmadi</h2>
@@ -150,22 +164,26 @@
               ID raqam to'g'ri yozilganini tekshiring (masalan: <code>MS-UZ-2026-1001</code>) yoki avval 45 talik Sertifikat imtihonini topshiring.
             </p>
           </div>
-        `}
+        `
+        }
       `;
 
-      document.getElementById("verify-cert-form")?.addEventListener("submit", (e) => {
-        e.preventDefault();
-        this.oxirgiQidiruv = document.getElementById("verify-cert-input").value;
-        this.interfeysniChizish(konteyner);
-      });
+      document
+        .getElementById("verify-cert-form")
+        ?.addEventListener("submit", (e) => {
+          e.preventDefault();
+          this.oxirgiQidiruv =
+            document.getElementById("verify-cert-input").value;
+          this.interfeysniChizish(konteyner);
+        });
 
-      konteyner.querySelectorAll("[data-quick-verify]").forEach(btn => {
+      konteyner.querySelectorAll("[data-quick-verify]").forEach((btn) => {
         btn.addEventListener("click", () => {
           this.oxirgiQidiruv = btn.getAttribute("data-quick-verify");
           this.interfeysniChizish(konteyner);
         });
       });
-    }
+    },
   };
 
   global.SertifikatTekshirishMantiqi = SertifikatTekshirishMantiqi;

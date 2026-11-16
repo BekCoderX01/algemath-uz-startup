@@ -46,60 +46,71 @@
       ];
 
       konteyner.innerHTML = `
-        <div class="card" style="margin-bottom:1.5rem;">
-          <div class="section-header">
-            <div>
-              <h1 style="font-size:1.55rem; font-weight:900;">🧮 O'quvchi va Ustozlar uchun Darajali Test Bo'limi</h1>
-              <p style="color:var(--text-secondary); font-size:0.94rem;">
-                Avval kim ekanligingizni (<strong>O'quvchi</strong> yoki <strong>Ustoz</strong>) va bilim darajangizni tanlang — tizim sizning darajangizga mos matematik testlarni shakllantiradi!
-              </p>
+        <div class="kun-settings-layout">
+          <div class="kun-settings-section-card">
+            <div class="section-header">
+              <div>
+                <span class="kun-settings-step-badge">1-BO'LIM • MAQOM VA DARAJANI TANLASH</span>
+                <h1 class="section-title">🧮 O'quvchi va Ustozlar uchun Darajali Test Bo'limi</h1>
+                <p style="color:var(--text-secondary); font-size:0.95rem; margin-top:0.35rem;">
+                  Avval kim ekanligingizni (<strong>O'quvchi</strong> yoki <strong>Ustoz</strong>) va bilim darajangizni tanlang — tizim sizning darajangizga mos matematik testlarni shakllantiradi!
+                </p>
+              </div>
             </div>
-          </div>
 
-          <!-- 1-QADAM: O'QUVCHI YOKI USTOZ TANLASH -->
-          <div style="margin-bottom:1.25rem;">
-            <div class="form-label">1. Kim sifatida test yechmoqchisiz?</div>
-            <div style="display:flex; gap:0.85rem; flex-wrap:wrap;">
-              <button type="button" class="btn ${this.tanlanganRol === "O'quvchi" ? "btn-primary" : "btn-outline"}" data-role-pick="O'quvchi">
-                🎓 O'quvchi darajasidagi testlar
-              </button>
-              <button type="button" class="btn ${this.tanlanganRol === "Ustoz" ? "btn-primary" : "btn-outline"}" data-role-pick="Ustoz">
-                👨‍🏫 Ustoz (O'qituvchi) malaka va metodika testlari
-              </button>
-            </div>
-          </div>
-
-          <!-- 2-QADAM: BILIM DARAJASINI TANLASH -->
-          <div style="margin-bottom:1.4rem;">
-            <div class="form-label">2. O'z bilim darajangizni tanlang:</div>
-            <div class="grid-3" style="gap:0.85rem;">
-              ${darajalar.map(d => `
-                <div class="card card-interactive"
-                     data-level-pick="${d.kod}"
-                     style="cursor:pointer; padding:1rem; background:${this.tanlanganDaraja === d.kod ? "var(--bg-tertiary)" : "var(--bg-primary)"}; border-color:${this.tanlanganDaraja === d.kod ? "var(--accent-primary)" : "var(--border-color)"};">
-                  <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:0.35rem;">
-                    <span style="font-weight:800;">${d.nom}</span>
-                    ${this.tanlanganDaraja === d.kod ? `<span class="badge-pill" style="background:var(--accent-primary); color:#fff;">Tanlandi</span>` : ""}
+            <!-- 1-QADAM: O'QUVCHI YOKI USTOZ TANLASH -->
+            <div style="margin-bottom:1.65rem;">
+              <div class="form-label">1. Kim sifatida test yechmoqchisiz?</div>
+              <div class="grid-2">
+                <button type="button" class="language-flag-option ${this.tanlanganRol === "O'quvchi" ? "active" : ""}" data-role-pick="O'quvchi">
+                  <span style="font-size:1.75rem;">🎓</span>
+                  <div>
+                    <div style="font-weight:900; font-size:1.02rem;">O'quvchi darajasidagi testlar</div>
+                    <div style="font-size:0.82rem; color:var(--text-muted);">Maktab, litsey va abituriyentlar uchun</div>
                   </div>
-                  <div style="font-size:0.82rem; color:var(--text-muted);">${d.tavsif}</div>
-                </div>
-              `).join("")}
+                </button>
+                <button type="button" class="language-flag-option ${this.tanlanganRol === "Ustoz" ? "active" : ""}" data-role-pick="Ustoz">
+                  <span style="font-size:1.75rem;">👨‍🏫</span>
+                  <div>
+                    <div style="font-weight:900; font-size:1.02rem;">Ustoz (O'qituvchi) malaka va metodika testlari</div>
+                    <div style="font-size:0.82rem; color:var(--text-muted);">Attestatsiya va Milliy Sertifikat ustozlari uchun</div>
+                  </div>
+                </button>
+              </div>
+            </div>
+
+            <!-- 2-QADAM: BILIM DARAJASINI TANLASH -->
+            <div style="margin-bottom:1.65rem;">
+              <div class="form-label">2. O'z bilim darajangizni tanlang:</div>
+              <div class="grid-3">
+                ${darajalar.map(d => `
+                  <div class="card card-interactive"
+                       data-level-pick="${d.kod}"
+                       style="cursor:pointer; background:${this.tanlanganDaraja === d.kod ? "var(--accent-light)" : "var(--bg-primary)"}; border-color:${this.tanlanganDaraja === d.kod ? "var(--accent-primary)" : "var(--border-color)"}; border-width:${this.tanlanganDaraja === d.kod ? "2px" : "1px"};">
+                    <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:0.55rem;">
+                      <span style="font-weight:900; font-size:1.02rem;">${d.nom}</span>
+                      ${this.tanlanganDaraja === d.kod ? `<span class="badge-pill" style="background:var(--accent-primary); color:#fff;">✓ Tanlandi</span>` : ""}
+                    </div>
+                    <div style="font-size:0.88rem; color:var(--text-secondary);">${d.tavsif}</div>
+                  </div>
+                `).join("")}
+              </div>
+            </div>
+
+            <div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:1rem; padding-top:1.15rem; border-top:1px solid var(--border-color);">
+              <div style="font-size:0.95rem;">
+                Tanlangan rejim: <strong>${this.tanlanganRol}</strong> • Daraja: <strong>${this.tanlanganDaraja}</strong>
+              </div>
+              <button type="button" class="btn btn-emerald" id="daraja-testni-boshlash-btn" style="font-size:1.05rem; padding:0.9rem 1.85rem;">
+                🚀 ${this.tanlanganRol} (${this.tanlanganDaraja} daraja) testini boshlash
+              </button>
             </div>
           </div>
 
-          <div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:1rem; padding-top:0.5rem; border-top:1px solid var(--border-color);">
-            <div>
-              Tanlangan rejim: <strong>${this.tanlanganRol}</strong> • Daraja: <strong>${this.tanlanganDaraja}</strong>
-            </div>
-            <button type="button" class="btn btn-emerald" id="daraja-testni-boshlash-btn" style="font-size:1.05rem; padding:0.85rem 1.75rem;">
-              🚀 ${this.tanlanganRol} (${this.tanlanganDaraja} daraja) testini boshlash
-            </button>
+          <!-- TEST SAVOLLARI MAYDONI -->
+          <div id="daraja-test-savollar-joyi">
+            ${this.testMaydoniniChizish()}
           </div>
-        </div>
-
-        <!-- TEST SAVOLLARI MAYDONI -->
-        <div id="daraja-test-savollar-joyi">
-          ${this.testMaydoniniChizish()}
         </div>
       `;
 
@@ -206,16 +217,19 @@
       const olmos = global.OlmoslarVaVaqtTizimi.adolatliTestOlmosiHisoblash(togri, jami, this.tanlanganDaraja);
 
       return `
-        <div class="card">
+        <div class="kun-settings-section-card">
           <div class="section-header">
-            <h2 style="font-size:1.3rem; font-weight:900;">
-              📋 ${this.tanlanganRol} • ${this.tanlanganDaraja} daraja savollari (${jami} ta savol)
-            </h2>
+            <div>
+              <span class="kun-settings-step-badge">2-BO'LIM • TEST SAVOLLARI MAYDONI</span>
+              <h2 class="section-title">
+                📋 ${this.tanlanganRol} • ${this.tanlanganDaraja} daraja savollari (${jami} ta savol)
+              </h2>
+            </div>
             <span class="stat-pill diamond-pill">Maksimal mukofot: +${global.OlmoslarVaVaqtTizimi.adolatliTestOlmosiHisoblash(jami, jami, this.tanlanganDaraja)} 💎</span>
           </div>
 
           ${this.testYakunlandi ? `
-            <div class="card" style="margin-bottom:1.25rem; background:linear-gradient(135deg, rgba(5,205,153,0.16), rgba(67,24,255,0.12)); border:2px solid var(--success);">
+            <div class="card" style="margin-bottom:1.5rem; background:var(--accent-light); border:2px solid var(--success);">
               <h3 style="font-size:1.35rem; font-weight:900;">🏆 Test Natijasi: ${togri} / ${jami} (${Math.round((togri/jami)*100)}%)</h3>
               <p style="margin-top:0.35rem; font-weight:700;">
                 Sizga adolatli taqsimot asosida <strong>+${olmos} 💎 olmos</strong> taqdim etildi!

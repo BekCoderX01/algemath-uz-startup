@@ -19,14 +19,15 @@
 
       if (baza.joriyFoydalanuvchi.oxirgiKunlikBonusSana !== bugun) {
         baza.joriyFoydalanuvchi.oxirgiKunlikBonusSana = bugun;
-        baza.joriyFoydalanuvchi.olmoslar = (baza.joriyFoydalanuvchi.olmoslar || 0) + 5;
+        baza.joriyFoydalanuvchi.olmoslar =
+          (baza.joriyFoydalanuvchi.olmoslar || 0) + 5;
         if (!Array.isArray(baza.joriyFoydalanuvchi.olmoslarTarixi)) {
           baza.joriyFoydalanuvchi.olmoslarTarixi = [];
         }
         baza.joriyFoydalanuvchi.olmoslarTarixi.unshift({
           sana: `${bugun} ${new Date().toTimeString().slice(0, 5)}`,
           miqdor: 5,
-          sabab: "Kunlik saytga kirish bonusi (+5 💎)"
+          sabab: "Kunlik saytga kirish bonusi (+5 💎)",
         });
         global.UmumiyHolatVaBazalar.holatniSaqlash(baza);
         this.ekrandagiOlmosVaVaqtniYangilash();
@@ -37,10 +38,18 @@
         setTimeout(() => {
           global.UmumiyHolatVaBazalar.xabarnomaKorsatish(xabar);
         }, 600);
-        return { berildi: true, miqdor: 5, jami: baza.joriyFoydalanuvchi.olmoslar };
+        return {
+          berildi: true,
+          miqdor: 5,
+          jami: baza.joriyFoydalanuvchi.olmoslar,
+        };
       }
 
-      return { berildi: false, miqdor: 0, jami: baza.joriyFoydalanuvchi.olmoslar };
+      return {
+        berildi: false,
+        miqdor: 0,
+        jami: baza.joriyFoydalanuvchi.olmoslar,
+      };
     },
 
     // 2. Foydalanuvchi profiliga olmos qo'shish va tarixda saqlash
@@ -49,7 +58,8 @@
       if (soni <= 0) return 0;
 
       const baza = global.UmumiyHolatVaBazalar.holatniYuklash();
-      baza.joriyFoydalanuvchi.olmoslar = (baza.joriyFoydalanuvchi.olmoslar || 0) + soni;
+      baza.joriyFoydalanuvchi.olmoslar =
+        (baza.joriyFoydalanuvchi.olmoslar || 0) + soni;
       if (!Array.isArray(baza.joriyFoydalanuvchi.olmoslarTarixi)) {
         baza.joriyFoydalanuvchi.olmoslarTarixi = [];
       }
@@ -57,18 +67,23 @@
       baza.joriyFoydalanuvchi.olmoslarTarixi.unshift({
         sana: vaqtSatri,
         miqdor: soni,
-        sabab: sabab || "Matematik faollik uchun mukofot"
+        sabab: sabab || "Matematik faollik uchun mukofot",
       });
 
       // Foydalanuvchilar ro'yxatida ham yangilaymiz
-      const idx = baza.foydalanuvchilarRoyxati.findIndex(u => u.id === baza.joriyFoydalanuvchi.id);
+      const idx = baza.foydalanuvchilarRoyxati.findIndex(
+        (u) => u.id === baza.joriyFoydalanuvchi.id,
+      );
       if (idx >= 0) {
-        baza.foydalanuvchilarRoyxati[idx].olmoslar = baza.joriyFoydalanuvchi.olmoslar;
+        baza.foydalanuvchilarRoyxati[idx].olmoslar =
+          baza.joriyFoydalanuvchi.olmoslar;
       }
 
       global.UmumiyHolatVaBazalar.holatniSaqlash(baza);
       this.ekrandagiOlmosVaVaqtniYangilash();
-      global.UmumiyHolatVaBazalar.xabarnomaKorsatish(`💎 +${soni} ta Olmos qo'shildi: ${sabab}`);
+      global.UmumiyHolatVaBazalar.xabarnomaKorsatish(
+        `💎 +${soni} ta Olmos qo'shildi: ${sabab}`,
+      );
       return baza.joriyFoydalanuvchi.olmoslar;
     },
 
@@ -76,12 +91,12 @@
     adolatliTestOlmosiHisoblash: function (togriSoni, jamiSoni, darajaKodi) {
       // Daraja koeffitsiyenti: C=1, C+=1.2, B=1.5, B+=1.8, A=2.2, A+=3
       const koeffitsiyentlar = {
-        "C": 1,
+        C: 1,
         "C+": 1.2,
-        "B": 1.5,
+        B: 1.5,
         "B+": 1.8,
-        "A": 2.2,
-        "A+": 3.0
+        A: 2.2,
+        "A+": 3.0,
       };
       const k = koeffitsiyentlar[darajaKodi] || 1.5;
       let olmos = Math.round(togriSoni * k);
@@ -93,13 +108,15 @@
     },
 
     // 4. Bir kunda necha soat va daqiqa misol ishlaganini formatlash
-    vaqtniFormatlash: function (sekundlar, majburiyTil) {
+    vaqtniFormatlash: function (sekundlar) {
       const jamiSek = Math.max(0, Math.floor(Number(sekundlar) || 0));
       const soat = Math.floor(jamiSek / 3600);
       const daqiqa = Math.floor((jamiSek % 3600) / 60);
       const soniya = jamiSek % 60;
 
-      const til = majburiyTil || (global.TilVaTarjimalar ? global.TilVaTarjimalar.joriyTilniOlish() : "uz");
+      const til = global.TilVaTarjimalar
+        ? global.TilVaTarjimalar.joriyTilniOlish()
+        : "uz";
       if (til === "ru") {
         return `${soat} ч ${daqiqa} мин (${soniya} с)`;
       } else if (til === "en") {
@@ -121,12 +138,23 @@
           baza.oxirgiVaqtSana = bugun;
           baza.bugungiIshlanganSekundlar = 0;
         }
-        baza.bugungiIshlanganSekundlar = (baza.bugungiIshlanganSekundlar || 0) + 1;
+        baza.bugungiIshlanganSekundlar =
+          (baza.bugungiIshlanganSekundlar || 0) + 1;
         try {
-          localStorage.setItem("algemath_uz_asosiy_baza_v1", JSON.stringify(baza));
+          localStorage.setItem(
+            "algemath_uz_asosiy_baza_v1",
+            JSON.stringify(baza),
+          );
         } catch (e) {}
         this.ekrandagiOlmosVaVaqtniYangilash();
       }, 1000);
+    },
+
+    kunlikTaymerniToxtatish: function () {
+      if (vaqtIntervalId) {
+        clearInterval(vaqtIntervalId);
+        vaqtIntervalId = null;
+      }
     },
 
     // 6. Ekrandagi barcha olmos va vaqt ko'rsatkichlarini jonli yangilash
@@ -134,15 +162,17 @@
       if (typeof document === "undefined") return;
       const baza = global.UmumiyHolatVaBazalar.holatniYuklash();
       const olmosSoni = baza.joriyFoydalanuvchi.olmoslar || 0;
-      const vaqtMatni = this.vaqtniFormatlash(baza.bugungiIshlanganSekundlar || 0);
+      const vaqtMatni = this.vaqtniFormatlash(
+        baza.bugungiIshlanganSekundlar || 0,
+      );
 
-      document.querySelectorAll("[data-live-diamonds]").forEach(el => {
+      document.querySelectorAll("[data-live-diamonds]").forEach((el) => {
         el.textContent = olmosSoni;
       });
-      document.querySelectorAll("[data-live-study-time]").forEach(el => {
+      document.querySelectorAll("[data-live-study-time]").forEach((el) => {
         el.textContent = vaqtMatni;
       });
-    }
+    },
   };
 
   global.OlmoslarVaVaqtTizimi = OlmoslarVaVaqtTizimi;

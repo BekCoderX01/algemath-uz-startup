@@ -1,183 +1,259 @@
 /* ==========================================================================
    FAYL NOMI: Dastur_Kodlari_JS/Mundarija_va_Navigatsiya.js
    VAZIFASI: Barcha 17 ta alohida sahifa va maxsus papkalarni (9 ta asosiy
-             sahifa + 8 ta yangi Startup moduli papkalari) o'zaro bog'lovchi
-             yuqori menyu, istalgan joydan 1 bosishda ochiladigan "MUNDARIJA"
-             (sahifalar xaritasi) va pastki "Milliy Sertifikat" bloki.
+             sahifa + 8 ta Startup moduli papkalari) KUN.UZ portali uslubidagi
+             2 qavatli tartibli menyu, yo'l ko'rsatkichi (Breadcrumb),
+             kategoriyalangan "MUNDARIJA" oynasi va pastki "Milliy Sertifikat"
+             bloki orqali o'zaro bog'lash.
    ========================================================================== */
 
 (function (global) {
-  // Barcha 17 ta alohida sahifa va papkalar ro'yxati (Mundarija uchun)
+  // Barcha 17 ta alohida sahifa va papkalar ro'yxati (Kun.uz rubrikalari bo'yicha guruhlangan)
   const SAHIFALAR_MUNDARIJASI = [
     {
       raqam: "01",
       id: "home",
+      kategoriyaId: "oquv",
+      kategoriyaNomi: "📘 I. O'quv Kursi va Milliy Sertifikat",
       papka: "Sahifalar",
       fayl: "Asosiy_sahifa.html",
       ikonka: "🏠",
       i18nKalit: "nav_home",
+      qisqaNomi: "Asosiy",
       nomi: "Asosiy sahifa va Kunlik Ko'rsatkichlar",
       tavsif: "Kunlik ishlangan vaqt, olmoslar hisobi, barcha 17 ta bo'limga tezkor kirish va statistika."
     },
     {
       raqam: "02",
       id: "learn",
+      kategoriyaId: "oquv",
+      kategoriyaNomi: "📘 I. O'quv Kursi va Milliy Sertifikat",
       papka: "Sahifalar",
       fayl: "Noldan_urganish_sahifasi.html",
       ikonka: "📚",
       i18nKalit: "nav_learn",
+      qisqaNomi: "0 dan O'rganish",
       nomi: "Matematikani 0 dan O'rganish (C dan A+ gacha)",
       tavsif: "Maqsad darajani (masalan A+) tanlab, nazariy darslar va aniq javobsiz Yordam/Memory eslatmali 10 talik testlar yechish."
     },
     {
       raqam: "03",
       id: "tests",
+      kategoriyaId: "oquv",
+      kategoriyaNomi: "📘 I. O'quv Kursi va Milliy Sertifikat",
       papka: "Sahifalar",
       fayl: "Test_yechish_sahifasi.html",
       ikonka: "🧮",
       i18nKalit: "nav_tests",
+      qisqaNomi: "Darajali Testlar",
       nomi: "O'quvchi va Ustozlar uchun Darajali Testlar",
       tavsif: "O'quvchi yoki Ustoz maqomini va bilim darajasini (C, C+, B, B+, A, A+) tanlab mos testlarni ishlash."
     },
     {
       raqam: "04",
       id: "certificate",
+      kategoriyaId: "oquv",
+      kategoriyaNomi: "📘 I. O'quv Kursi va Milliy Sertifikat",
       papka: "Sahifalar",
       fayl: "Sertifikat_olish_sahifasi.html",
       ikonka: "🏆",
       i18nKalit: "nav_certificate",
+      qisqaNomi: "Sertifikat (45)",
       nomi: "Milliy Sertifikat Imtihoni (45 talik test)",
       tavsif: "Ism-familiya kiritib, 15 ta oson (o'ylantiradigan), 15 ta o'rtacha va 15 ta qiyin testni yechish hamda A+..C sertifikat olish."
     },
     {
       raqam: "05",
       id: "shop",
+      kategoriyaId: "musobaqa",
+      kategoriyaNomi: "🏆 III. Musobaqa, Turnir va Olmos Do'koni",
       papka: "1_Olmoslar_Dukoni_Bulimi",
       fayl: "Olmoslar_dukoni_sahifasi.html",
       ikonka: "🛒",
       i18nKalit: "nav_shop",
+      qisqaNomi: "Olmos Do'koni",
       nomi: "1. 💎 Olmoslar Do'koni (Diamond Shop)",
       tavsif: "To'plangan olmoslarga PDF formula kitobchalar, Oltin profil ramkalari, VIP unvonlar va imtihon kuchaytirgichlarini xarid qilish."
     },
     {
       raqam: "06",
       id: "duel",
+      kategoriyaId: "musobaqa",
+      kategoriyaNomi: "🏆 III. Musobaqa, Turnir va Olmos Do'koni",
       papka: "2_Matematik_Duel_Bulimi",
       fayl: "Matematik_duel_sahifasi.html",
       ikonka: "⚔️",
       i18nKalit: "nav_duel",
+      qisqaNomi: "1v1 Duel",
       nomi: "2. ⚔️ 1 ga 1 Matematik Duel Arenasi",
       tavsif: "60 soniya ichida raqib bilan 5 ta algebra misolini tezlikka yechib, tikilgan olmoslarni 2 barobar qilib yutib olish!"
     },
     {
       raqam: "07",
       id: "graph",
+      kategoriyaId: "amaliyot",
+      kategoriyaNomi: "📐 II. Interaktiv Laboratoriya va Ustoz Xonasi",
       papka: "3_Grafik_va_Formulalar_Bulimi",
       fayl: "Grafik_va_Formulalar_sahifasi.html",
       ikonka: "📈",
       i18nKalit: "nav_graph",
+      qisqaNomi: "Grafik & Formula",
       nomi: "3. 📈 Interaktiv Grafik Chizuvchi va Formula Doskasi",
       tavsif: "Parabola, chiziqli, sinus va logarifmik funksiyalar grafigini koordinata tekisligida jonli chizish hamda barcha formulalar to'plami."
     },
     {
       raqam: "08",
       id: "streak",
+      kategoriyaId: "musobaqa",
+      kategoriyaNomi: "🏆 III. Musobaqa, Turnir va Olmos Do'koni",
       papka: "4_Kunlik_Zanjir_va_Turnir_Bulimi",
       fayl: "Reyting_va_Turnir_sahifasi.html",
       ikonka: "🔥",
       i18nKalit: "nav_streak",
+      qisqaNomi: "Turnir & Streak",
       nomi: "4. 🔥 Olovli Kunlar Zanjiri (Streak) va Viloyatlar Turniri",
       tavsif: "7 kunlik uzluksiz olovli seriya (+50 💎 super-bonus) hamda O'zbekistonning 14 hududi bo'yicha haftalik turnir jadvali."
     },
     {
       raqam: "09",
       id: "classroom",
+      kategoriyaId: "amaliyot",
+      kategoriyaNomi: "📐 II. Interaktiv Laboratoriya va Ustoz Xonasi",
       papka: "5_Ustoz_Sinfxonasi_Bulimi",
       fayl: "Ustoz_sinfxonasi_sahifasi.html",
       ikonka: "👨‍🏫",
       i18nKalit: "nav_classroom",
+      qisqaNomi: "Ustoz Xonasi",
       nomi: "5. 👨‍🏫 Ustoz Xonasi — Sinf Kodi va Uyga Vazifalar",
       tavsif: "Ustozlar uchun 6 xonali sinf kodi (MATH-77) ochib uyga vazifa berish, o'quvchilar uchun sinfga qo'shilib vazifa topshirish."
     },
     {
       raqam: "10",
       id: "mistakes",
+      kategoriyaId: "amaliyot",
+      kategoriyaNomi: "📐 II. Interaktiv Laboratoriya va Ustoz Xonasi",
       papka: "6_Xatolar_Daftari_Bulimi",
       fayl: "Xatolar_daftari_sahifasi.html",
       ikonka: "📓",
       i18nKalit: "nav_mistakes",
+      qisqaNomi: "Xatolar Daftari",
       nomi: "6. 📸 Aqlli Xatolar Ustida Ishlash Daftari",
       tavsif: "Testlarda xato qilingan savollarni aniq javobsiz Yordam/Memory ko'magida qayta yechib tuzatish va har biriga +3 💎 olish."
     },
     {
       raqam: "11",
       id: "verify",
+      kategoriyaId: "oquv",
+      kategoriyaNomi: "📘 I. O'quv Kursi va Milliy Sertifikat",
       papka: "7_Sertifikat_Tekshirish_Bulimi",
       fayl: "Sertifikat_tekshirish_sahifasi.html",
       ikonka: "✅",
       i18nKalit: "nav_verify",
+      qisqaNomi: "Sertifikat Tekshirish",
       nomi: "7. 🔍 Milliy Sertifikat Haqiqiyligini Tekshirish",
       tavsif: "Sertifikat ID raqami (masalan MS-UZ-2026-1001) yoki ism-familiya orqali diplomning haqiqiyligi va ballarini rasmiy tekshirish."
     },
     {
       raqam: "12",
       id: "pricing",
+      kategoriyaId: "musobaqa",
+      kategoriyaNomi: "🏆 III. Musobaqa, Turnir va Olmos Do'koni",
       papka: "8_Obuna_va_Tolov_Bulimi",
       fayl: "Obuna_va_Tolov_sahifasi.html",
       ikonka: "💰",
       i18nKalit: "nav_pricing",
+      qisqaNomi: "PRO Obuna",
       nomi: "8. 💰 Startup Monetizatsiyasi (PRO Obuna: Click / Payme / Uzum)",
       tavsif: "Click, Payme, Uzum yoki to'plangan 200 💎 Olmos evaziga PRO tarifga o'tish va premium imkoniyatlarni ochish."
     },
     {
       raqam: "13",
       id: "search",
+      kategoriyaId: "amaliyot",
+      kategoriyaNomi: "📐 II. Interaktiv Laboratoriya va Ustoz Xonasi",
       papka: "Sahifalar",
       fayl: "Qidiruv_va_Mundarija_sahifasi.html",
       ikonka: "🔍",
       i18nKalit: "nav_search",
+      qisqaNomi: "Qidiruv & Mundarija",
       nomi: "Qidiruv Bo'limi va To'liq Mundarija",
       tavsif: "Saytdagi barcha matematik mavzular, formulalar, testlar va 17 ta sahifani bir zumda topish."
     },
     {
       raqam: "14",
       id: "profile",
+      kategoriyaId: "kabinet",
+      kategoriyaNomi: "⚙️ IV. Shaxsiy Kabinet, Sozlamalar va Boshqaruv",
       papka: "Sahifalar",
       fayl: "Profil_va_Olmoslar_sahifasi.html",
       ikonka: "💎",
       i18nKalit: "nav_profile",
+      qisqaNomi: "Profil",
       nomi: "Shaxsiy Profil, Olmoslar va Vaqt Tarixi",
       tavsif: "To'plangan olmoslar (💎), faol unvon, ishlangan soat/daqiqalar va olingan sertifikatlar."
     },
     {
       raqam: "15",
       id: "settings",
+      kategoriyaId: "kabinet",
+      kategoriyaNomi: "⚙️ IV. Shaxsiy Kabinet, Sozlamalar va Boshqaruv",
       papka: "Sahifalar",
       fayl: "Sozlamalar_sahifasi.html",
       ikonka: "⚙️",
       i18nKalit: "nav_settings",
+      qisqaNomi: "Sozlamalar",
       nomi: "Sozlamalar (Tungi/Kunduzgi rejim, Tillar, Profil)",
       tavsif: "Tungi va kunduzgi rejim, O'zbek 🇺🇿 / Rus 🇷🇺 / Ingliz 🇺🇸 tillari, rasm qo'yish, BIO va jins (Erkak/Ayol) tanlash."
     },
     {
       raqam: "16",
       id: "login",
+      kategoriyaId: "kabinet",
+      kategoriyaNomi: "⚙️ IV. Shaxsiy Kabinet, Sozlamalar va Boshqaruv",
       papka: "Sahifalar",
       fayl: "Kirish_sahifasi.html",
       ikonka: "🔐",
       i18nKalit: "nav_login",
+      qisqaNomi: "Kirish",
       nomi: "Kirish va Ro'yxatdan o'tish (Telefon, Google, Email, Instagram)",
       tavsif: "Telefon raqam, Google, Email yoki Instagram orqali o'quvchi, ustoz yoki admin sifatida tizimga kirish."
     },
     {
       raqam: "17",
       id: "admin",
+      kategoriyaId: "kabinet",
+      kategoriyaNomi: "⚙️ IV. Shaxsiy Kabinet, Sozlamalar va Boshqaruv",
       papka: "Sahifalar",
       fayl: "Admin_panel_sahifasi.html",
       ikonka: "🛡️",
       i18nKalit: "nav_admin",
+      qisqaNomi: "Admin Panel",
       nomi: "Admin Panel (Boshqaruv markazi)",
       tavsif: "Foydalanuvchilarni boshqarish, yangi matematik test qo'shish, sertifikatlar reestri va olmos taqdim etish."
+    }
+  ];
+
+  // Kun.uz uslubidagi 4 ta asosiy rubrika (kategoriya)
+  const RUBRIKALAR_GURUHI = [
+    {
+      id: "oquv",
+      sarlavha: "📘 I BO'LIM: O'QUV KURSI, DARAJALI TESTLAR VA MILLIY SERTIFIKAT",
+      izoh: "0 dan A+ gacha bosqichma-bosqich nazariy darslar, darajali sinovlar va 45 talik rasmiy Sertifikat imtihoni"
+    },
+    {
+      id: "amaliyot",
+      sarlavha: "📐 II BO'LIM: INTERAKTIV LABORATORIYA, USTOZ XONASI VA XATOLAR DAFTARI",
+      izoh: "Jonli grafik chizuvchi, 6 xonali sinf kodi bilan uyga vazifalar, xatolarni tuzatish va global qidiruv"
+    },
+    {
+      id: "musobaqa",
+      sarlavha: "🏆 III BO'LIM: 1v1 DUEL, VILOYATLAR TURNIRI, OLMOS DO'KONI VA PRO OBUNA",
+      izoh: "60 soniyalik bellashuv, 7 kunlik olovli streak, olmos evaziga xaridlar va Click/Payme/Uzum/Olmos PRO tariflar"
+    },
+    {
+      id: "kabinet",
+      sarlavha: "⚙️ IV BO'LIM: SHAXSIY KABINET, SOZLAMALAR, KIRISH VA ADMIN BOSHQARUV",
+      izoh: "Tungi/Kunduzgi rejim, O'zbek/Rus/Ingliz tillari, profil rasmi va BIO, 4 xil login usuli hamda Admin markazi"
     }
   ];
 
@@ -195,6 +271,7 @@
 
   const MundarijaVaNavigatsiya = {
     sahifalarMundarijasi: SAHIFALAR_MUNDARIJASI,
+    rubrikalarGuruhi: RUBRIKALAR_GURUHI,
 
     // Istalgan sahifadan boshqa sahifaga to'g'ri nisbiy manzilni hisoblash
     sahifaManziliniOlish: function (faylYokiNisbiyYol) {
@@ -214,7 +291,47 @@
       return ildizdanYol;
     },
 
-    // Yuqori navigatsiya va Mundarija oynasini chizish
+    // Barcha 17 ta bo'limni Kun.uz uslubida 4 ta tartibli rubrikaga ajratib HTML qaytarish
+    kategoriyalanganMundarijaHtml: function () {
+      const self = this;
+      return RUBRIKALAR_GURUHI.map(rub => {
+        const sahifalar = SAHIFALAR_MUNDARIJASI.filter(s => s.kategoriyaId === rub.id);
+        return `
+          <div class="kun-rubric-block">
+            <div class="kun-rubric-header">
+              <div>
+                <div class="kun-rubric-title">${rub.sarlavha}</div>
+                <div class="kun-rubric-subtitle">${rub.izoh}</div>
+              </div>
+              <span class="badge-pill" style="background:var(--bg-tertiary); color:var(--accent-primary);">
+                ${sahifalar.length} ta bo'lim
+              </span>
+            </div>
+            <div class="grid-3">
+              ${sahifalar.map(s => `
+                <a href="${self.sahifaManziliniOlish(s.fayl)}" class="card card-interactive" style="display:flex; flex-direction:column; justify-content:space-between;">
+                  <div>
+                    <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:0.85rem;">
+                      <span class="mundarija-item-num">${s.raqam}</span>
+                      <span style="font-size:1.75rem;">${s.ikonka}</span>
+                    </div>
+                    <h3 style="font-size:1.08rem; font-weight:800; margin-bottom:0.35rem; line-height:1.35;">${s.nomi}</h3>
+                    <div style="font-size:0.75rem; color:var(--accent-primary); font-weight:700; margin-bottom:0.55rem;">📂 ${s.papka}/${s.fayl}</div>
+                    <p style="font-size:0.89rem; color:var(--text-secondary); margin-bottom:1.15rem;">${s.tavsif}</p>
+                  </div>
+                  <div style="font-weight:800; font-size:0.86rem; color:var(--accent-primary); padding-top:0.65rem; border-top:1px solid var(--border-color); display:flex; align-items:center; justify-content:space-between;">
+                    <span>Bo'limga o'tish</span>
+                    <span>→</span>
+                  </div>
+                </a>
+              `).join("")}
+            </div>
+          </div>
+        `;
+      }).join("");
+    },
+
+    // KUN.UZ uslubidagi 2 qavatli yuqori navigatsiya, Breadcrumb va Mundarija oynasini chizish
     navigatsiyaniChizish: function (faolSahifaId) {
       if (typeof document === "undefined") return;
 
@@ -222,127 +339,210 @@
       const baza = global.UmumiyHolatVaBazalar.holatniYuklash();
       const foydalanuvchi = baza.joriyFoydalanuvchi;
       const joriyTil = global.TilVaTarjimalar.joriyTilniOlish();
-      const bayroqHtml = global.TilVaTarjimalar.bayroqHtmlOlish(joriyTil);
       const vaqtMatn = global.OlmoslarVaVaqtTizimi.vaqtniFormatlash(baza.bugungiIshlanganSekundlar || 0);
+      const joriySahifa = SAHIFALAR_MUNDARIJASI.find(s => s.id === faolSahifaId) || SAHIFALAR_MUNDARIJASI[0];
 
-      // Yuqori barda eng asosiy va yangi bo'limlar ko'rinib turadi, qolgan barchasi Mundarija tugmasida ham bor
+      // 2-qavatdagi rubrikalar tartibi (eng ko'p ishlatiladigan tartibda)
+      const rubrikaTartibi = [
+        "home", "learn", "tests", "certificate", "graph",
+        "duel", "streak", "classroom", "mistakes", "shop",
+        "pricing", "verify", "search", "profile", "settings", "login", "admin"
+      ];
+      const tartiblanganSahifalar = rubrikaTartibi
+        .map(id => SAHIFALAR_MUNDARIJASI.find(s => s.id === id))
+        .filter(Boolean);
+      const shuRubrikaSahifalari = SAHIFALAR_MUNDARIJASI.filter(
+        s => s.kategoriyaId === joriySahifa.kategoriyaId
+      );
+
       const headerEl = document.getElementById("umumiy-navigatsiya-joyi");
       if (headerEl) {
         headerEl.innerHTML = `
         <header class="top-navbar">
-          <div class="navbar-container">
-            <a href="${this.sahifaManziliniOlish("Asosiy_sahifa.html")}" class="brand-logo">
-              <span class="brand-logo-icon">∑</span>
-              <div>
-                <div style="line-height:1.1;">AlgeMath <span style="color:var(--accent-primary);">UZ</span></div>
-                <div style="font-size:0.72rem; font-weight:600; color:var(--text-muted);">
-                  ${foydalanuvchi.obunaTarifi && foydalanuvchi.obunaTarifi !== "Bepul" ? `👑 ${foydalanuvchi.obunaTarifi}` : "Matematika & Algebra"}
+          <!-- 1-QAVAT: KUN.UZ YUQORI KO'K PANELI (BREND, TILLAR, SOZLAMALAR, PROFIL VA STATISTIKA) -->
+          <div class="kun-header-top">
+            <div class="navbar-container">
+              <div style="display:flex; align-items:center; gap:1.1rem; flex-wrap:wrap;">
+                <a href="${this.sahifaManziliniOlish("Asosiy_sahifa.html")}" class="brand-logo">
+                  <span class="brand-logo-icon">∑</span>
+                  <div>
+                    <div style="line-height:1.1;">ALGEMATH<span class="brand-logo-badge">UZ</span></div>
+                    <div style="font-size:0.71rem; font-weight:600; color:rgba(255,255,255,0.75); letter-spacing:0.3px;">
+                      ${foydalanuvchi.obunaTarifi && foydalanuvchi.obunaTarifi !== "Bepul" ? `👑 ${foydalanuvchi.obunaTarifi} PORTALI` : `<span data-i18n="portal_subtitle">${global.TilVaTarjimalar.matn("portal_subtitle", joriyTil)}</span>`}
+                    </div>
+                  </div>
+                </a>
+
+                <!-- KUN.UZ USLUBIDAGI TEZKOR TIL ALMASHTIRGICH (O'ZB | РУС | ENG) -->
+                <div class="kun-lang-switcher" role="group" aria-label="Sayt tilini tanlash">
+                  <button type="button" class="kun-lang-btn ${joriyTil === "uz" ? "active" : ""}" data-top-lang="uz" title="O'zbek tili">🇺🇿 O'ZB</button>
+                  <button type="button" class="kun-lang-btn ${joriyTil === "ru" ? "active" : ""}" data-top-lang="ru" title="Русский язык">🇷🇺 РУС</button>
+                  <button type="button" class="kun-lang-btn ${joriyTil === "en" ? "active" : ""}" data-top-lang="en" title="English">🇺🇸 ENG</button>
                 </div>
               </div>
-            </a>
 
-            <nav class="nav-links" aria-label="Asosiy sahifalar menyusi">
-              ${SAHIFALAR_MUNDARIJASI.map(s => `
-                <a href="${this.sahifaManziliniOlish(s.fayl)}"
-                   class="nav-link-item ${faolSahifaId === s.id ? "active" : ""}"
-                   title="${s.nomi}">
-                  <span>${s.ikonka}</span>
-                  <span>${s.nomi.replace(/^\d+\.\s*[^\s]+\s*/, "").split(" (")[0]}</span>
+              <div class="navbar-stats-bar">
+                <!-- OLOVLI STREAK -->
+                <a href="${this.sahifaManziliniOlish("Reyting_va_Turnir_sahifasi.html")}" class="stat-pill" title="Kunlik olovli zanjir (Streak)">
+                  <span>🔥</span>
+                  <span>${foydalanuvchi.kunlikZanjirSoni || 5} kun</span>
                 </a>
-              `).join("")}
-            </nav>
 
-            <div class="navbar-stats-bar">
-              <!-- MUNDARIJA TUGMASI -->
-              <button type="button" class="mundarija-toggle-btn" id="mundarija-ochish-btn" title="Barcha 17 ta sahifa mundarijasi">
-                <span>🧭</span>
-                <span>Mundarija (17)</span>
-              </button>
+                <!-- KUNLIK ISHLANGAN VAQT -->
+                <a href="${this.sahifaManziliniOlish("Profil_va_Olmoslar_sahifasi.html")}" class="stat-pill timer-pill" title="Bugun misol ishlagan vaqtingiz">
+                  <span>⏱️</span>
+                  <span data-live-study-time>${vaqtMatn}</span>
+                </a>
 
-              <!-- OLOVLI STREAK -->
-              <a href="${this.sahifaManziliniOlish("Reyting_va_Turnir_sahifasi.html")}" class="stat-pill" title="Kunlik olovli zanjir (Streak)" style="color:#ea580c; border-color:rgba(234,88,12,0.35);">
-                <span>🔥</span>
-                <span>${foydalanuvchi.kunlikZanjirSoni || 5} kun</span>
-              </a>
+                <!-- OLMOSLAR HISOBI -->
+                <a href="${this.sahifaManziliniOlish("Olmoslar_dukoni_sahifasi.html")}" class="stat-pill diamond-pill" title="Olmoslar do'koni va balans">
+                  <span>💎</span>
+                  <span data-live-diamonds>${foydalanuvchi.olmoslar || 0}</span>
+                </a>
 
-              <!-- KUNLIK ISHLANGAN VAQT -->
-              <a href="${this.sahifaManziliniOlish("Profil_va_Olmoslar_sahifasi.html")}" class="stat-pill timer-pill" title="Bugun misol ishlagan vaqtingiz">
-                <span>⏱️</span>
-                <span data-live-study-time>${vaqtMatn}</span>
-              </a>
+                <!-- SOZLAMALARGA TEZKOR O'TISH TUGMASI (HAR DOIM KO'RINIB TURADI) -->
+                <a href="${this.sahifaManziliniOlish("Sozlamalar_sahifasi.html")}"
+                   class="kun-settings-top-btn ${faolSahifaId === "settings" ? "active" : ""}"
+                   title="Sozlamalar: Tungi/Kunduzgi rejim, Tillar, Profil rasmi va BIO">
+                  <span>⚙️</span>
+                  <span data-i18n="nav_settings">${global.TilVaTarjimalar.matn("nav_settings", joriyTil)}</span>
+                </a>
 
-              <!-- OLMOSLAR HISOBI -->
-              <a href="${this.sahifaManziliniOlish("Olmoslar_dukoni_sahifasi.html")}" class="stat-pill diamond-pill" title="Olmoslar do'koni va balans">
-                ${global.RasmlarVaBelgilar ? global.RasmlarVaBelgilar.olmosBelgisi(18) : "💎"}
-                <span data-live-diamonds>${foydalanuvchi.olmoslar || 0}</span>
-              </a>
+                <!-- SHAXSIY PROFIL -->
+                <a href="${this.sahifaManziliniOlish("Profil_va_Olmoslar_sahifasi.html")}"
+                   class="stat-pill"
+                   title="Shaxsiy profil: ${foydalanuvchi.ism} ${foydalanuvchi.familiya}">
+                  <span>${foydalanuvchi.avatar || "👨‍🎓"}</span>
+                  <span>${foydalanuvchi.ism || "Profil"}</span>
+                </a>
 
-              <!-- TIL VA DAVLAT BAYROG'I -->
-              <a href="${this.sahifaManziliniOlish("Sozlamalar_sahifasi.html")}" class="stat-pill" title="Tilni o'zgartirish (Sozlamalar)">
-                ${bayroqHtml}
-                <span style="text-transform:uppercase;">${joriyTil}</span>
-              </a>
+                <!-- TUNGI / KUNDUZGI REJIM TUGMASI -->
+                <button type="button" class="theme-toggle-btn" id="tezkor-rejim-btn" title="Tungi yoki Kunduzgi rejimni almashtirish" aria-label="Mavzuni o'zgartirish">
+                  ${baza.tungiRejim ? "☀️" : "🌙"}
+                </button>
 
-              <!-- TUNGI / KUNDUZGI REJIM TUGMASI -->
-              <button type="button" class="theme-toggle-btn" id="tezkor-rejim-btn" title="Tungi yoki Kunduzgi rejimni almashtirish" aria-label="Mavzuni o'zgartirish">
-                ${baza.tungiRejim ? "☀️" : "🌙"}
-              </button>
+                <!-- MUNDARIJA TUGMASI -->
+                <button type="button" class="mundarija-toggle-btn" id="mundarija-ochish-btn" title="Barcha 17 ta sahifa mundarijasi">
+                  <span>🧭</span>
+                  <span data-i18n="btn_mundarija">${global.TilVaTarjimalar.matn("btn_mundarija", joriyTil)}</span>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- 2-QAVAT: KUN.UZ USLUBIDAGI TOZA BIR QATORLI RUBRIKALAR MENYUSI -->
+          <div class="kun-category-bar">
+            <div class="kun-category-container">
+              <nav class="nav-links" aria-label="Asosiy sahifalar menyusi">
+                ${tartiblanganSahifalar.map(s => `
+                  <a href="${this.sahifaManziliniOlish(s.fayl)}"
+                     class="nav-link-item ${faolSahifaId === s.id ? "active" : ""}"
+                     title="${s.nomi}">
+                    <span>${s.ikonka}</span>
+                    <span data-i18n="${s.i18nKalit}">${global.TilVaTarjimalar.matn(s.i18nKalit, joriyTil) || s.qisqaNomi}</span>
+                  </a>
+                `).join("")}
+              </nav>
+            </div>
+          </div>
+
+          <!-- 3-QAVAT: JORIY BO'LIM YO'L KO'RSATKICHI VA RUBRIKA BO'LIMLARI PILLARI -->
+          <div class="kun-subbar">
+            <div class="kun-subbar-inner">
+              <div class="kun-breadcrumb">
+                <a href="${this.sahifaManziliniOlish("Asosiy_sahifa.html")}" style="color:var(--accent-primary); font-weight:800;">
+                  🏠 <span data-i18n="subbar_home">${global.TilVaTarjimalar.matn("subbar_home", joriyTil)}</span>
+                </a>
+                <span>/</span>
+                <span data-i18n="rubric_${joriySahifa.kategoriyaId}">${global.TilVaTarjimalar.matn("rubric_" + joriySahifa.kategoriyaId, joriyTil)}</span>
+                <span>/</span>
+                <strong>${joriySahifa.ikonka} <span data-i18n="${joriySahifa.i18nKalit}">${global.TilVaTarjimalar.matn(joriySahifa.i18nKalit, joriyTil) || joriySahifa.nomi}</span></strong>
+              </div>
+
+              <div class="kun-rubric-sibling-pills" aria-label="Joriy yo'nalishdagi bo'limlar">
+                ${shuRubrikaSahifalari.map(sib => `
+                  <a href="${this.sahifaManziliniOlish(sib.fayl)}"
+                     class="kun-sibling-pill ${sib.id === faolSahifaId ? "active" : ""}"
+                     title="${sib.nomi}">
+                    <span>${sib.ikonka}</span>
+                    <span data-i18n="${sib.i18nKalit}">${global.TilVaTarjimalar.matn(sib.i18nKalit, joriyTil) || sib.qisqaNomi}</span>
+                  </a>
+                `).join("")}
+                <a href="${this.sahifaManziliniOlish("Qidiruv_va_Mundarija_sahifasi.html")}" class="kun-sibling-pill" style="color:var(--accent-primary); font-weight:800;">
+                  🔍 <span data-i18n="subbar_search">${global.TilVaTarjimalar.matn("subbar_search", joriyTil)}</span>
+                </a>
+                <a href="${this.sahifaManziliniOlish("Sozlamalar_sahifasi.html")}" class="kun-sibling-pill" style="color:var(--accent-primary); font-weight:800;">
+                  ⚙️ <span data-i18n="nav_settings">${global.TilVaTarjimalar.matn("nav_settings", joriyTil)}</span>
+                </a>
+              </div>
             </div>
           </div>
         </header>
 
-        <!-- MUNDARIJA (SAHIFALAR XARITASI) DRAWER OYNASI -->
+        <!-- MUNDARIJA (SAHIFALAR XARITASI) DRAWER OYNASI — 4 KATEGORIYAGA AJRATILGAN -->
         <div class="mundarija-drawer-backdrop" id="mundarija-oynasi">
           <aside class="mundarija-drawer" aria-label="Sayt Mundarijasi">
-            <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:1rem;">
-              <h2 style="font-size:1.2rem; font-weight:800;">🧭 Sayt Mundarijasi (17 ta Bo'lim)</h2>
-              <button type="button" class="btn btn-outline" id="mundarija-yopish-btn" style="padding:0.4rem 0.8rem;">✕</button>
+            <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:1rem; padding-bottom:0.85rem; border-bottom:2px solid var(--border-color);">
+              <div>
+                <h2 style="font-size:1.22rem; font-weight:900;">🧭 Barcha Bo'limlar Mundarijasi (17)</h2>
+                <div style="font-size:0.8rem; color:var(--text-muted);">Kun.uz uslubida 4 ta yo'nalishga tartiblangan</div>
+              </div>
+              <button type="button" class="btn btn-outline" id="mundarija-yopish-btn" style="padding:0.45rem 0.85rem;">✕</button>
             </div>
-            <p style="font-size:0.86rem; color:var(--text-muted); margin-bottom:1rem;">
-              Har bir modul alohida papka va sahifada joylashgan. 1 bosishda o'ting:
-            </p>
-            <div style="margin-bottom:1.1rem;">
-              <input type="search" id="mundarija-qidiruv-input" class="form-input" placeholder="Sahifa yoki modul nomini yozing..." />
+
+            <div style="margin-bottom:1.15rem;">
+              <input type="search" id="mundarija-qidiruv-input" class="form-input" placeholder="Bo'lim yoki sahifa nomini yozing (masalan: Sozlamalar, Duel)..." />
             </div>
+
             <div id="mundarija-royxat-konteyner">
-              ${SAHIFALAR_MUNDARIJASI.map(s => `
-                <a href="${this.sahifaManziliniOlish(s.fayl)}" class="mundarija-item-card" data-mundarija-text="${(s.nomi + " " + s.tavsif + " " + s.papka).toLowerCase()}">
-                  <div class="mundarija-item-num">${s.raqam}</div>
-                  <div>
-                    <div style="font-weight:800; font-size:0.94rem;">${s.ikonka} ${s.nomi}</div>
-                    <div style="font-size:0.74rem; color:var(--accent-primary); font-weight:700;">📂 ${s.papka}/${s.fayl}</div>
-                    <div style="font-size:0.78rem; color:var(--text-muted);">${s.tavsif}</div>
+              ${RUBRIKALAR_GURUHI.map(rub => {
+                const guruhSahifalari = SAHIFALAR_MUNDARIJASI.filter(s => s.kategoriyaId === rub.id);
+                return `
+                  <div class="mundarija-group-section">
+                    <div class="mundarija-group-title">${rub.sarlavha}</div>
+                    ${guruhSahifalari.map(s => `
+                      <a href="${this.sahifaManziliniOlish(s.fayl)}"
+                         class="mundarija-item-card"
+                         data-mundarija-text="${(s.nomi + " " + s.qisqaNomi + " " + s.tavsif + " " + s.papka).toLowerCase()}">
+                        <div class="mundarija-item-num">${s.raqam}</div>
+                        <div style="flex:1;">
+                          <div style="font-weight:800; font-size:0.95rem; margin-bottom:0.15rem;">${s.ikonka} ${s.nomi}</div>
+                          <div style="font-size:0.74rem; color:var(--accent-primary); font-weight:700; margin-bottom:0.2rem;">📂 ${s.papka}/${s.fayl}</div>
+                          <div style="font-size:0.8rem; color:var(--text-muted); line-height:1.45;">${s.tavsif}</div>
+                        </div>
+                      </a>
+                    `).join("")}
                   </div>
-                </a>
-              `).join("")}
+                `;
+              }).join("")}
             </div>
           </aside>
         </div>
         `;
       }
 
-      // Saytning pastki qismida alohida SERTIFIKAT OLISH BO'LIMI va Footer chizish
+      // Saytning pastki qismida alohida SERTIFIKAT OLISH BO'LIMI va Kun.uz uslubidagi Footer chizish
       const footerEl = document.getElementById("umumiy-pastki-qism-joyi");
       if (footerEl) {
         footerEl.innerHTML = `
         <section class="bottom-certificate-section" aria-label="Milliy Sertifikat olish bo'limi">
           <div class="bottom-certificate-card">
             <div style="max-width:740px;">
-              <div style="display:inline-flex; align-items:center; gap:0.5rem; background:rgba(251,191,36,0.2); color:#fde047; padding:0.35rem 0.85rem; border-radius:999px; font-weight:800; font-size:0.82rem; margin-bottom:0.75rem;">
+              <div style="display:inline-flex; align-items:center; gap:0.5rem; background:rgba(251,191,36,0.2); color:#fde047; padding:0.35rem 0.85rem; border-radius:6px; font-weight:800; font-size:0.82rem; margin-bottom:0.75rem;">
                 🏆 O'ZBEKISTON MILLIY SERTIFIKAT TIZIMI (A+, A, B+, B, C+, C)
               </div>
-              <h2 style="font-size:1.55rem; font-weight:900; margin-bottom:0.6rem;" data-i18n="bottom_cert_title">
+              <h2 style="font-size:1.55rem; font-weight:900; margin-bottom:0.65rem;" data-i18n="bottom_cert_title">
                 ${global.TilVaTarjimalar.matn("bottom_cert_title", joriyTil)}
               </h2>
-              <p style="opacity:0.9; font-size:0.96rem;" data-i18n="bottom_cert_desc">
+              <p style="opacity:0.92; font-size:0.96rem; line-height:1.65;" data-i18n="bottom_cert_desc">
                 ${global.TilVaTarjimalar.matn("bottom_cert_desc", joriyTil)}
               </p>
             </div>
-            <div style="display:flex; flex-direction:column; gap:0.65rem;">
-              <a href="${this.sahifaManziliniOlish("Sertifikat_olish_sahifasi.html")}" class="btn btn-amber" style="font-size:1.05rem; padding:0.95rem 1.75rem;">
+            <div style="display:flex; flex-direction:column; gap:0.75rem;">
+              <a href="${this.sahifaManziliniOlish("Sertifikat_olish_sahifasi.html")}" class="btn btn-amber" style="font-size:1.02rem; padding:0.95rem 1.75rem;">
                 <span data-i18n="bottom_cert_btn">${global.TilVaTarjimalar.matn("bottom_cert_btn", joriyTil)}</span>
               </a>
-              <a href="${this.sahifaManziliniOlish("Sertifikat_tekshirish_sahifasi.html")}" class="btn btn-white" style="font-size:0.9rem; padding:0.65rem 1.25rem;">
+              <a href="${this.sahifaManziliniOlish("Sertifikat_tekshirish_sahifasi.html")}" class="btn btn-white" style="font-size:0.9rem; padding:0.7rem 1.25rem;">
                 🔍 Sertifikat ID haqiqiyligini tekshirish
               </a>
             </div>
@@ -350,11 +550,12 @@
         </section>
 
         <footer class="site-footer">
-          <div style="max-width:1320px; margin:0 auto; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:1rem;">
+          <div style="max-width:1380px; margin:0 auto; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:1.25rem;">
             <div>
-              <strong>AlgeMath UZ Startup</strong> — 17 ta mustaqil moduldan iborat Matematika va Algebra ekotizimi.
+              <strong style="color:var(--text-primary); font-size:1rem;">ALGEMATH.UZ PORTALI</strong> — 17 ta mustaqil moduldan iborat Matematika, Algebra va Milliy Sertifikat platformasi.
             </div>
-            <div style="display:flex; gap:1rem; flex-wrap:wrap;">
+            <div style="display:flex; gap:1.25rem; flex-wrap:wrap;">
+              <a href="${this.sahifaManziliniOlish("Sozlamalar_sahifasi.html")}" style="font-weight:700; color:var(--accent-primary);">⚙️ Sozlamalar</a>
               <a href="${this.sahifaManziliniOlish("Olmoslar_dukoni_sahifasi.html")}" style="font-weight:700; color:var(--accent-primary);">💎 Olmoslar Do'koni</a>
               <a href="${this.sahifaManziliniOlish("Matematik_duel_sahifasi.html")}" style="font-weight:700; color:var(--accent-primary);">⚔️ 1v1 Duel</a>
               <a href="${this.sahifaManziliniOlish("Grafik_va_Formulalar_sahifasi.html")}" style="font-weight:700; color:var(--accent-primary);">📈 Grafik Chizuvchi</a>
@@ -365,7 +566,21 @@
         `;
       }
 
-      // Hodisalarni ulash
+      // Yuqori bardagi til almashtirish tugmalari
+      if (headerEl) {
+        headerEl.querySelectorAll("[data-top-lang]").forEach(btn => {
+          btn.addEventListener("click", () => {
+            const tanlanganTil = btn.getAttribute("data-top-lang");
+            global.TilVaTarjimalar.tilniOzgartirish(tanlanganTil);
+            this.navigatsiyaniChizish(faolSahifaId);
+            if (faolSahifaId === "settings" && global.SozlamalarVaProfil) {
+              global.SozlamalarVaProfil.sozlamalarSahifasiniChizish();
+            }
+          });
+        });
+      }
+
+      // Mundarija oynasi hodisalari
       const ochishBtn = document.getElementById("mundarija-ochish-btn");
       const yopishBtn = document.getElementById("mundarija-yopish-btn");
       const oyna = document.getElementById("mundarija-oynasi");
@@ -399,6 +614,9 @@
           rejimBtn.textContent = tungi ? "☀️" : "🌙";
           if (typeof window !== "undefined" && window.dispatchEvent) {
             window.dispatchEvent(new CustomEvent("rejimOzgardi", { detail: { tungiRejim: tungi } }));
+          }
+          if (faolSahifaId === "settings" && global.SozlamalarVaProfil) {
+            global.SozlamalarVaProfil.sozlamalarSahifasiniChizish();
           }
         });
       }

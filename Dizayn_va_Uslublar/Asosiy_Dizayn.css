@@ -1,59 +1,68 @@
 /* ==========================================================================
    FAYL NOMI: Dizayn_va_Uslublar/Asosiy_Dizayn.css
-   VAZIFASI: Platformaning barcha sahifalari uchun zamonaviy, jozibador dizayn,
-             Kunduzgi (Light) va Tungi (Dark) rejim ranglari, animatsiyalar
-             hamda adaptiv (mobil va kompyuter) maket uslublari.
+   VAZIFASI: Platformaning barcha 17 ta sahifasi uchun KUN.UZ portali uslubidagi
+             tartibli, keng (tiqilinch bo'lmagan), o'qishga qulay va zamonaviy
+             dizayn tizimi. Kunduzgi (Light) va Tungi (Dark) rejimlar hamda
+             mobil/kompyuter moslashuvchan maketi.
    ========================================================================== */
 
 :root {
-  /* Kunduzgi rejim (Light Mode) o'zgaruvchilari */
-  --bg-primary: #f4f7fe;
+  /* KUN.UZ uslubidagi Kunduzgi rejim (Light Mode) o'zgaruvchilari */
+  --bg-primary: #f0f3f8;
   --bg-secondary: #ffffff;
-  --bg-tertiary: #eef2ff;
-  --bg-glass: rgba(255, 255, 255, 0.88);
-  --text-primary: #1b254b;
-  --text-secondary: #4a5578;
-  --text-muted: #707eae;
-  --border-color: #e2e8f0;
-  --accent-primary: #4318ff;
-  --accent-secondary: #7551ff;
-  --accent-gradient: linear-gradient(135deg, #4318ff 0%, #868cff 100%);
-  --emerald-gradient: linear-gradient(135deg, #05cd99 0%, #00a878 100%);
-  --amber-gradient: linear-gradient(135deg, #ffb547 0%, #ff7a00 100%);
-  --rose-gradient: linear-gradient(135deg, #ff5b5b 0%, #e11d48 100%);
-  --diamond-gradient: linear-gradient(135deg, #00c6ff 0%, #0072ff 100%);
-  --cert-gold-gradient: linear-gradient(135deg, #fff8e7 0%, #fde68a 50%, #f59e0b 100%);
-  --success: #05cd99;
-  --warning: #ffb547;
-  --danger: #ee5d50;
-  --info: #3965ff;
-  --shadow-sm: 0 4px 12px rgba(112, 144, 176, 0.08);
-  --shadow-md: 0 12px 28px rgba(112, 144, 176, 0.14);
-  --shadow-lg: 0 20px 45px rgba(67, 24, 255, 0.18);
-  --radius-sm: 10px;
-  --radius-md: 16px;
-  --radius-lg: 24px;
-  --radius-xl: 32px;
-  --font-main: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+  --bg-tertiary: #e6edf7;
+  --bg-glass: rgba(255, 255, 255, 0.96);
+  --header-top-bg: #12295d;
+  --header-top-text: #ffffff;
+  --text-primary: #0f172a;
+  --text-secondary: #334155;
+  --text-muted: #64748b;
+  --border-color: #d8e1ee;
+  --border-strong: #b9c7dd;
+  --accent-primary: #183568;
+  --accent-secondary: #1d4ed8;
+  --accent-light: #eff6ff;
+  --accent-gradient: linear-gradient(135deg, #12295d 0%, #1d4ed8 100%);
+  --emerald-gradient: linear-gradient(135deg, #059669 0%, #10b981 100%);
+  --amber-gradient: linear-gradient(135deg, #d97706 0%, #f59e0b 100%);
+  --rose-gradient: linear-gradient(135deg, #e11d48 0%, #f43f5e 100%);
+  --diamond-gradient: linear-gradient(135deg, #0284c7 0%, #2563eb 100%);
+  --cert-gold-gradient: linear-gradient(135deg, #fffbeb 0%, #fde68a 50%, #f59e0b 100%);
+  --success: #059669;
+  --warning: #d97706;
+  --danger: #dc2626;
+  --info: #1d4ed8;
+  --shadow-sm: 0 2px 8px rgba(15, 23, 42, 0.05);
+  --shadow-md: 0 8px 24px rgba(15, 23, 42, 0.09);
+  --shadow-lg: 0 16px 36px rgba(18, 41, 93, 0.14);
+  --radius-sm: 8px;
+  --radius-md: 10px;
+  --radius-lg: 14px;
+  --radius-xl: 18px;
+  --font-main: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 }
 
 /* Tungi rejim (Dark Mode) o'zgaruvchilari */
 [data-theme="dark"],
 body.dark-mode {
-  --bg-primary: #0b1437;
-  --bg-secondary: #111c44;
-  --bg-tertiary: #1b254b;
-  --bg-glass: rgba(17, 28, 68, 0.90);
-  --text-primary: #ffffff;
+  --bg-primary: #0b1120;
+  --bg-secondary: #131c31;
+  --bg-tertiary: #1e293b;
+  --bg-glass: rgba(19, 28, 49, 0.96);
+  --header-top-bg: #070d19;
+  --header-top-text: #f8fafc;
+  --text-primary: #f8fafc;
   --text-secondary: #cbd5e1;
-  --text-muted: #a3aed0;
-  --border-color: #2b3674;
-  --accent-primary: #7551ff;
-  --accent-secondary: #9f7aea;
-  --accent-gradient: linear-gradient(135deg, #7551ff 0%, #3965ff 100%);
-  --shadow-sm: 0 4px 12px rgba(0, 0, 0, 0.25);
-  --shadow-md: 0 12px 28px rgba(0, 0, 0, 0.40);
-  --shadow-lg: 0 20px 45px rgba(0, 0, 0, 0.55);
+  --text-muted: #94a3b8;
+  --border-color: #24324d;
+  --border-strong: #334669;
+  --accent-primary: #3b82f6;
+  --accent-secondary: #60a5fa;
+  --accent-light: rgba(59, 130, 246, 0.14);
+  --accent-gradient: linear-gradient(135deg, #1e3a8a 0%, #2563eb 100%);
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.45);
+  --shadow-lg: 0 16px 36px rgba(0, 0, 0, 0.6);
 }
 
 * {
@@ -64,20 +73,18 @@ body.dark-mode {
 
 html {
   scroll-behavior: smooth;
+  font-size: 16px;
 }
 
 body {
   font-family: var(--font-main);
   background-color: var(--bg-primary);
   color: var(--text-primary);
-  line-height: 1.6;
+  line-height: 1.65;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  transition: background-color 0.25s ease, color 0.25s ease;
-  background-image:
-    radial-gradient(circle at 10% 15%, rgba(67, 24, 255, 0.06) 0%, transparent 35%),
-    radial-gradient(circle at 90% 80%, rgba(5, 205, 153, 0.06) 0%, transparent 35%);
+  transition: background-color 0.2s ease, color 0.2s ease;
 }
 
 a {
@@ -86,18 +93,23 @@ a {
 }
 
 /* ==========================================================================
-   YUQORI NAVIGATSIYA PANELI (HEADER) VA MUNDARIJA TUGMASI
+   KUN.UZ USLUBIDAGI 2 QAVATLI YUQORI NAVIGATSIYA PANELI (PORTAL HEADER)
    ========================================================================== */
 .top-navbar {
   position: sticky;
   top: 0;
   z-index: 1000;
-  background: var(--bg-glass);
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
+  background: var(--bg-secondary);
   border-bottom: 1px solid var(--border-color);
-  padding: 0.75rem 1.5rem;
   box-shadow: var(--shadow-sm);
+}
+
+/* 1-QAVAT: YUQORI KO'K BAR (BREND, TILLAR, SOZLAMALAR, PROFIL, STATISTIKA) */
+.kun-header-top {
+  background: var(--header-top-bg);
+  color: var(--header-top-text);
+  padding: 0.65rem 1.5rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .navbar-container {
@@ -106,63 +118,80 @@ a {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 1rem;
+  gap: 1.25rem;
   flex-wrap: wrap;
 }
 
 .brand-logo {
-  display: flex;
+  display: inline-flex;
   align-items: center;
   gap: 0.75rem;
-  font-weight: 800;
+  font-weight: 900;
   font-size: 1.35rem;
-  letter-spacing: -0.5px;
-  color: var(--text-primary);
+  letter-spacing: -0.4px;
+  color: #ffffff;
+  padding: 0.2rem 0;
 }
 
 .brand-logo-icon {
-  width: 42px;
-  height: 42px;
-  border-radius: 12px;
-  background: var(--accent-gradient);
+  width: 40px;
+  height: 40px;
+  border-radius: 9px;
+  background: #2563eb;
+  border: 2px solid rgba(255, 255, 255, 0.25);
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #fff;
+  color: #ffffff;
   font-weight: 900;
-  font-size: 1.2rem;
-  box-shadow: 0 6px 16px rgba(67, 24, 255, 0.3);
+  font-size: 1.25rem;
+  flex-shrink: 0;
 }
 
-.nav-links {
-  display: flex;
-  align-items: center;
-  gap: 0.35rem;
-  flex-wrap: wrap;
+.brand-logo-badge {
+  display: inline-block;
+  background: #2563eb;
+  color: #ffffff;
+  padding: 0.1rem 0.45rem;
+  border-radius: 5px;
+  font-size: 0.85rem;
+  margin-left: 0.2rem;
+  vertical-align: middle;
 }
 
-.nav-link-item {
-  padding: 0.5rem 0.85rem;
-  border-radius: var(--radius-sm);
-  font-size: 0.9rem;
-  font-weight: 600;
-  color: var(--text-secondary);
-  transition: all 0.2s ease;
+/* Yuqori bardagi til almashtirgich (Kun.uz O'zb | Рус | Eng uslubida) */
+.kun-lang-switcher {
   display: inline-flex;
   align-items: center;
-  gap: 0.4rem;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 8px;
+  padding: 0.2rem;
+  gap: 0.2rem;
 }
 
-.nav-link-item:hover,
-.nav-link-item.active {
-  background: var(--bg-tertiary);
-  color: var(--accent-primary);
+.kun-lang-btn {
+  border: none;
+  background: transparent;
+  color: rgba(255, 255, 255, 0.82);
+  font-size: 0.78rem;
+  font-weight: 700;
+  padding: 0.3rem 0.6rem;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.18s ease;
+  font-family: inherit;
 }
 
-.nav-link-item.active {
-  background: var(--accent-gradient);
+.kun-lang-btn:hover {
   color: #ffffff;
-  box-shadow: 0 4px 12px rgba(67, 24, 255, 0.25);
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.kun-lang-btn.active {
+  background: #ffffff;
+  color: #12295d;
+  font-weight: 800;
 }
 
 .navbar-stats-bar {
@@ -172,84 +201,221 @@ a {
   flex-wrap: wrap;
 }
 
-/* Olmos, Vaqt va Til vidjetlari */
+/* Olmos, Vaqt, Streak va Sozlamalar vidjetlari */
 .stat-pill {
   display: inline-flex;
   align-items: center;
   gap: 0.45rem;
   padding: 0.42rem 0.85rem;
-  border-radius: 999px;
-  font-size: 0.85rem;
+  border-radius: 8px;
+  font-size: 0.83rem;
   font-weight: 700;
-  background: var(--bg-secondary);
-  border: 1px solid var(--border-color);
-  box-shadow: var(--shadow-sm);
-  transition: transform 0.2s ease;
+  background: rgba(255, 255, 255, 0.11);
+  color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  transition: all 0.18s ease;
+  white-space: nowrap;
 }
 
 .stat-pill:hover {
-  transform: translateY(-2px);
+  background: rgba(255, 255, 255, 0.2);
+  transform: translateY(-1px);
+}
+
+/* Sahifa ichidagi (oq kartalar ustidagi) stat-pill uchun ranglar */
+main .stat-pill,
+.mundarija-drawer .stat-pill {
+  background: var(--bg-tertiary);
+  color: var(--text-primary);
+  border: 1px solid var(--border-color);
 }
 
 .stat-pill.diamond-pill {
-  background: linear-gradient(135deg, rgba(0, 198, 255, 0.14), rgba(0, 114, 255, 0.18));
-  border-color: rgba(0, 150, 255, 0.35);
+  background: rgba(56, 189, 248, 0.18);
+  border-color: rgba(56, 189, 248, 0.4);
+  color: #7dd3fc;
+}
+
+main .stat-pill.diamond-pill {
+  background: rgba(2, 132, 199, 0.1);
+  border-color: rgba(2, 132, 199, 0.3);
   color: #0284c7;
 }
 
-[data-theme="dark"] .stat-pill.diamond-pill {
+[data-theme="dark"] main .stat-pill.diamond-pill {
   color: #38bdf8;
 }
 
 .stat-pill.timer-pill {
-  background: linear-gradient(135deg, rgba(5, 205, 153, 0.12), rgba(0, 168, 120, 0.18));
-  border-color: rgba(5, 205, 153, 0.35);
+  background: rgba(16, 185, 129, 0.18);
+  border-color: rgba(16, 185, 129, 0.4);
+  color: #6ee7b7;
+}
+
+main .stat-pill.timer-pill {
+  background: rgba(5, 150, 105, 0.1);
+  border-color: rgba(5, 150, 105, 0.3);
   color: #059669;
 }
 
-[data-theme="dark"] .stat-pill.timer-pill {
+[data-theme="dark"] main .stat-pill.timer-pill {
   color: #34d399;
 }
 
+/* Sozlamalar tezkor tugmasi — har doim ko'zga tashlanib turadi */
+.kun-settings-top-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.44rem 0.9rem;
+  border-radius: 8px;
+  font-size: 0.84rem;
+  font-weight: 800;
+  background: rgba(255, 255, 255, 0.16);
+  color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  transition: all 0.18s ease;
+  white-space: nowrap;
+}
+
+.kun-settings-top-btn:hover,
+.kun-settings-top-btn.active {
+  background: #ffffff;
+  color: #12295d;
+  border-color: #ffffff;
+}
+
 .mundarija-toggle-btn {
-  background: var(--amber-gradient);
-  color: #fff;
+  background: #f59e0b;
+  color: #0f172a;
   border: none;
-  padding: 0.5rem 1rem;
-  border-radius: 999px;
-  font-weight: 700;
-  font-size: 0.88rem;
+  padding: 0.46rem 0.95rem;
+  border-radius: 8px;
+  font-weight: 800;
+  font-size: 0.84rem;
   cursor: pointer;
   display: inline-flex;
   align-items: center;
   gap: 0.45rem;
-  box-shadow: 0 4px 12px rgba(255, 122, 0, 0.28);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  transition: all 0.18s ease;
+  white-space: nowrap;
 }
 
 .mundarija-toggle-btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 18px rgba(255, 122, 0, 0.38);
+  background: #fbbf24;
+  transform: translateY(-1px);
 }
 
 .theme-toggle-btn {
-  background: var(--bg-secondary);
-  border: 1px solid var(--border-color);
-  color: var(--text-primary);
-  width: 38px;
-  height: 38px;
-  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.14);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  color: #ffffff;
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
   cursor: pointer;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.1rem;
-  transition: all 0.2s ease;
+  font-size: 1.05rem;
+  transition: all 0.18s ease;
 }
 
 .theme-toggle-btn:hover {
-  border-color: var(--accent-primary);
-  transform: rotate(12deg);
+  background: rgba(255, 255, 255, 0.25);
+}
+
+/* 2-QAVAT: KUN.UZ USLUBIDAGI RUBRIKALAR MENYUSI (TOZA, BIR QATORDA, TARTIBLI) */
+.kun-category-bar {
+  background: var(--bg-secondary);
+  border-bottom: 1px solid var(--border-color);
+  padding: 0 1.5rem;
+}
+
+.kun-category-container {
+  max-width: 1380px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  overflow-x: auto;
+  scrollbar-width: thin;
+}
+
+.kun-category-container::-webkit-scrollbar {
+  height: 4px;
+}
+
+.kun-category-container::-webkit-scrollbar-thumb {
+  background: var(--border-strong);
+  border-radius: 4px;
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 0.2rem;
+  flex-wrap: nowrap;
+  padding: 0.45rem 0;
+}
+
+.nav-link-item {
+  padding: 0.52rem 0.82rem;
+  border-radius: var(--radius-sm);
+  font-size: 0.86rem;
+  font-weight: 700;
+  color: var(--text-secondary);
+  transition: all 0.18s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  white-space: nowrap;
+  border-bottom: 2px solid transparent;
+}
+
+.nav-link-item:hover {
+  background: var(--bg-tertiary);
+  color: var(--accent-primary);
+}
+
+.nav-link-item.active {
+  background: var(--accent-light);
+  color: var(--accent-primary);
+  border-bottom-color: var(--accent-primary);
+  font-weight: 800;
+}
+
+/* 3-QAVAT: KUN.UZ BREADCRUMB / JORIY BO'LIM YO'L KO'RSATKICHI */
+.kun-subbar {
+  background: var(--bg-tertiary);
+  border-bottom: 1px solid var(--border-color);
+  padding: 0.55rem 1.5rem;
+  font-size: 0.84rem;
+}
+
+.kun-subbar-inner {
+  max-width: 1380px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.kun-breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  color: var(--text-secondary);
+  font-weight: 600;
+}
+
+.kun-breadcrumb strong {
+  color: var(--text-primary);
+  font-weight: 800;
 }
 
 /* ==========================================================================
@@ -258,7 +424,7 @@ a {
 .mundarija-drawer-backdrop {
   position: fixed;
   inset: 0;
-  background: rgba(11, 20, 55, 0.55);
+  background: rgba(15, 23, 42, 0.6);
   backdrop-filter: blur(4px);
   z-index: 2000;
   display: none;
@@ -271,14 +437,14 @@ a {
 }
 
 .mundarija-drawer {
-  width: min(440px, 92vw);
+  width: min(520px, 94vw);
   height: 100vh;
   background: var(--bg-secondary);
   border-left: 1px solid var(--border-color);
-  padding: 1.5rem;
+  padding: 1.75rem;
   overflow-y: auto;
   box-shadow: var(--shadow-lg);
-  animation: slideInRight 0.25s ease;
+  animation: slideInRight 0.22s ease;
 }
 
 @keyframes slideInRight {
@@ -286,31 +452,45 @@ a {
   to { transform: translateX(0); opacity: 1; }
 }
 
+.mundarija-group-title {
+  font-size: 0.82rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  color: var(--accent-primary);
+  padding: 0.55rem 0.75rem;
+  background: var(--bg-tertiary);
+  border-left: 4px solid var(--accent-primary);
+  border-radius: 6px;
+  margin: 1.25rem 0 0.75rem;
+}
+
 .mundarija-item-card {
   display: flex;
-  align-items: center;
-  gap: 0.9rem;
-  padding: 0.9rem 1rem;
+  align-items: flex-start;
+  gap: 0.95rem;
+  padding: 1rem 1.15rem;
   border-radius: var(--radius-md);
   background: var(--bg-primary);
   border: 1px solid var(--border-color);
-  margin-bottom: 0.7rem;
-  transition: all 0.2s ease;
+  margin-bottom: 0.75rem;
+  transition: all 0.18s ease;
 }
 
 .mundarija-item-card:hover {
   border-color: var(--accent-primary);
-  transform: translateX(4px);
-  box-shadow: var(--shadow-sm);
+  background: var(--bg-tertiary);
+  transform: translateX(3px);
 }
 
 .mundarija-item-num {
   width: 36px;
   height: 36px;
-  border-radius: 10px;
+  border-radius: 8px;
   background: var(--accent-gradient);
   color: #fff;
   font-weight: 800;
+  font-size: 0.88rem;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -318,29 +498,56 @@ a {
 }
 
 /* ==========================================================================
-   ASOSIY KONTEYNER VA KARTalar (CARDS & GRIDS)
+   ASOSIY KONTEYNER, KUN.UZ PORTAL MAKETI VA KARTALAR (CARDS & GRIDS)
    ========================================================================== */
 .main-container {
-  max-width: 1320px;
+  max-width: 1380px;
   width: 100%;
   margin: 0 auto;
-  padding: 2rem 1.5rem;
+  padding: 2.25rem 1.75rem 3.5rem;
   flex: 1;
+}
+
+@media (max-width: 768px) {
+  .main-container {
+    padding: 1.5rem 1rem 2.5rem;
+  }
+}
+
+/* Kun.uz uslubidagi asosiy vitrina (Chapda Bosh Mavzu, O'ngda Muhim Bo'limlar Lentasi) */
+.kun-portal-top-grid {
+  display: grid;
+  grid-template-columns: 1.65fr 1fr;
+  gap: 1.75rem;
+  margin-bottom: 2.25rem;
+  align-items: stretch;
+}
+
+@media (max-width: 1024px) {
+  .kun-portal-top-grid {
+    grid-template-columns: 1fr;
+  }
 }
 
 .hero-banner {
   background: var(--accent-gradient);
-  border-radius: var(--radius-xl);
+  border-radius: var(--radius-lg);
   padding: 2.5rem;
   color: #ffffff;
   position: relative;
   overflow: hidden;
-  box-shadow: var(--shadow-lg);
-  margin-bottom: 2rem;
+  box-shadow: var(--shadow-md);
+  margin-bottom: 2.25rem;
   display: grid;
-  grid-template-columns: 1.3fr 0.7fr;
+  grid-template-columns: 1.35fr 0.65fr;
   gap: 2rem;
   align-items: center;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+}
+
+.kun-portal-top-grid .hero-banner {
+  margin-bottom: 0;
+  height: 100%;
 }
 
 @media (max-width: 900px) {
@@ -354,48 +561,152 @@ a {
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
-  padding: 0.4rem 0.9rem;
-  background: rgba(255, 255, 255, 0.2);
-  border-radius: 999px;
-  font-size: 0.85rem;
-  font-weight: 700;
-  margin-bottom: 1rem;
-  backdrop-filter: blur(6px);
+  padding: 0.42rem 0.95rem;
+  background: rgba(255, 255, 255, 0.18);
+  border-radius: 6px;
+  font-size: 0.82rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  margin-bottom: 1.1rem;
 }
 
 .hero-title {
-  font-size: clamp(1.8rem, 3.2vw, 2.75rem);
+  font-size: clamp(1.65rem, 2.8vw, 2.35rem);
   font-weight: 900;
-  line-height: 1.2;
-  margin-bottom: 1rem;
+  line-height: 1.25;
+  margin-bottom: 1.1rem;
 }
 
 .hero-subtitle {
-  font-size: 1.05rem;
-  opacity: 0.92;
-  margin-bottom: 1.5rem;
+  font-size: 1.02rem;
+  opacity: 0.94;
+  margin-bottom: 1.75rem;
   max-width: 650px;
+  line-height: 1.65;
 }
 
 .hero-actions {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.85rem;
+  gap: 0.9rem;
 }
 
+/* Kun.uz o'ng ustun "Dolzarb Bo'limlar / So'nggi" lentasi */
+.kun-sidebar-lenta {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  padding: 1.6rem 1.75rem;
+  box-shadow: var(--shadow-sm);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.kun-lenta-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 0.85rem;
+  margin-bottom: 0.85rem;
+  border-bottom: 2px solid var(--accent-primary);
+}
+
+.kun-lenta-title {
+  font-size: 1.08rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--accent-primary);
+}
+
+.kun-lenta-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.85rem;
+  padding: 0.82rem 0.5rem;
+  border-bottom: 1px solid var(--border-color);
+  transition: all 0.16s ease;
+  border-radius: 6px;
+}
+
+.kun-lenta-item:last-child {
+  border-bottom: none;
+}
+
+.kun-lenta-item:hover {
+  background: var(--bg-tertiary);
+  padding-left: 0.75rem;
+}
+
+.kun-lenta-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  background: var(--bg-tertiary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.15rem;
+  flex-shrink: 0;
+}
+
+/* Kun.uz Rubrika bloki (Kategoriya ajratgichlari) */
+.kun-rubric-block {
+  margin-bottom: 2.5rem;
+}
+
+.kun-rubric-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+  padding: 0.9rem 1.25rem;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-left: 5px solid var(--accent-primary);
+  border-radius: var(--radius-md);
+  margin-bottom: 1.35rem;
+  box-shadow: var(--shadow-sm);
+}
+
+.kun-rubric-title {
+  font-size: 1.18rem;
+  font-weight: 900;
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.kun-rubric-subtitle {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  font-weight: 600;
+}
+
+/* ==========================================================================
+   TUGMALAR (BUTTONS)
+   ========================================================================== */
 .btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 0.5rem;
-  padding: 0.75rem 1.4rem;
+  gap: 0.55rem;
+  padding: 0.8rem 1.4rem;
   border-radius: var(--radius-md);
   font-weight: 700;
-  font-size: 0.95rem;
+  font-size: 0.94rem;
   cursor: pointer;
-  border: none;
-  transition: all 0.2s ease;
+  border: 1px solid transparent;
+  transition: all 0.18s ease;
   font-family: inherit;
+  line-height: 1.3;
 }
 
 .btn:disabled {
@@ -406,73 +717,170 @@ a {
 .btn-primary {
   background: var(--accent-gradient);
   color: #ffffff;
-  box-shadow: 0 8px 20px rgba(67, 24, 255, 0.28);
+  box-shadow: 0 4px 12px rgba(24, 53, 104, 0.22);
 }
 
 .btn-primary:hover:not(:disabled) {
-  transform: translateY(-2px);
-  box-shadow: 0 12px 26px rgba(67, 24, 255, 0.38);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 18px rgba(24, 53, 104, 0.32);
 }
 
 .btn-white {
   background: #ffffff;
-  color: #4318ff;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+  color: #12295d;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
 }
 
 .btn-white:hover:not(:disabled) {
-  transform: translateY(-2px);
+  transform: translateY(-1px);
   background: #f8fafc;
 }
 
 .btn-emerald {
   background: var(--emerald-gradient);
   color: #ffffff;
-  box-shadow: 0 8px 20px rgba(5, 205, 153, 0.28);
+  box-shadow: 0 4px 12px rgba(5, 150, 105, 0.24);
 }
 
 .btn-amber {
   background: var(--amber-gradient);
   color: #ffffff;
-  box-shadow: 0 8px 20px rgba(255, 181, 71, 0.28);
+  box-shadow: 0 4px 12px rgba(217, 119, 6, 0.24);
 }
 
 .btn-outline {
-  background: transparent;
-  border: 2px solid var(--border-color);
+  background: var(--bg-secondary);
+  border: 1.5px solid var(--border-strong);
   color: var(--text-primary);
 }
 
 .btn-outline:hover:not(:disabled) {
   border-color: var(--accent-primary);
   color: var(--accent-primary);
+  background: var(--bg-tertiary);
 }
 
+/* ==========================================================================
+   GRID TIZIMI VA KARTALAR (KENG MASOFA — TIQILINCH BO'LMASLIGI UCHUN)
+   ========================================================================== */
 .grid-2 {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-  gap: 1.5rem;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.75rem;
 }
 
 .grid-3 {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 1.5rem;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1.65rem;
 }
 
 .grid-4 {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
-  gap: 1.25rem;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 1.5rem;
+}
+
+@media (max-width: 1080px) {
+  .grid-4 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .grid-3 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .grid-2 .grid-3 {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 768px) {
+  .grid-2,
+  .grid-3,
+  .grid-4,
+  .grid-2 .grid-3,
+  .grid-2 .grid-4 {
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+  }
+}
+
+/* Kun.uz uslubidagi har bir modulning yuqori vitrina-sarlavha bloki */
+.kun-page-banner {
+  background: linear-gradient(135deg, #0f2147 0%, #183568 58%, #1d4ed8 100%);
+  color: #ffffff;
+  border-radius: var(--radius-lg);
+  padding: 2.1rem 2.35rem;
+  margin-bottom: 2rem;
+  box-shadow: var(--shadow-md);
+  border-left: 6px solid #f59e0b;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+}
+
+.kun-filter-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.85rem;
+  padding: 1.1rem 1.4rem;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-left: 4px solid var(--accent-primary);
+  border-radius: var(--radius-md);
+  margin-bottom: 1.75rem;
+  box-shadow: var(--shadow-sm);
+}
+
+.kun-rubric-sibling-pills {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  flex-wrap: wrap;
+}
+
+.kun-sibling-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.28rem 0.68rem;
+  border-radius: 6px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  background: var(--bg-secondary);
+  color: var(--text-secondary);
+  border: 1px solid var(--border-color);
+  transition: all 0.16s ease;
+  white-space: nowrap;
+}
+
+.kun-sibling-pill:hover {
+  border-color: var(--accent-primary);
+  color: var(--accent-primary);
+}
+
+.kun-sibling-pill.active {
+  background: var(--accent-primary);
+  color: #ffffff;
+  border-color: var(--accent-primary);
 }
 
 .card {
   background: var(--bg-secondary);
   border: 1px solid var(--border-color);
   border-radius: var(--radius-lg);
-  padding: 1.5rem;
+  padding: 1.85rem 2rem;
   box-shadow: var(--shadow-sm);
-  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+  transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
+}
+
+@media (max-width: 640px) {
+  .card {
+    padding: 1.35rem 1.25rem;
+  }
 }
 
 .card:hover {
@@ -480,7 +888,7 @@ a {
 }
 
 .card-interactive:hover {
-  transform: translateY(-4px);
+  transform: translateY(-3px);
   border-color: var(--accent-primary);
 }
 
@@ -488,17 +896,92 @@ a {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 1rem;
-  margin-bottom: 1.25rem;
+  gap: 1.25rem;
+  margin-bottom: 1.6rem;
+  padding-bottom: 0.9rem;
+  border-bottom: 2px solid var(--border-color);
   flex-wrap: wrap;
 }
 
 .section-title {
   font-size: 1.45rem;
-  font-weight: 800;
+  font-weight: 900;
   display: flex;
   align-items: center;
-  gap: 0.6rem;
+  gap: 0.65rem;
+  border-left: 5px solid var(--accent-primary);
+  padding-left: 0.85rem;
+  line-height: 1.3;
+}
+
+/* ==========================================================================
+   SOZLAMALAR SAHIFASI MAXSUS TARTIBLI USLUBLARI (KUN.UZ KABI TOZA VA KENG)
+   ========================================================================== */
+.kun-settings-layout {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.kun-settings-nav-pills {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  padding: 1rem 1.25rem;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+}
+
+.kun-settings-nav-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.6rem 1.1rem;
+  border-radius: var(--radius-sm);
+  background: var(--bg-primary);
+  border: 1px solid var(--border-color);
+  font-weight: 700;
+  font-size: 0.88rem;
+  color: var(--text-secondary);
+  transition: all 0.18s ease;
+}
+
+.kun-settings-nav-link:hover {
+  border-color: var(--accent-primary);
+  color: var(--accent-primary);
+  background: var(--bg-tertiary);
+}
+
+.kun-settings-section-card {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-top: 4px solid var(--accent-primary);
+  border-radius: var(--radius-lg);
+  padding: 2rem 2.25rem;
+  box-shadow: var(--shadow-sm);
+}
+
+@media (max-width: 640px) {
+  .kun-settings-section-card {
+    padding: 1.4rem 1.25rem;
+  }
+}
+
+.kun-settings-step-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.3rem 0.75rem;
+  border-radius: 6px;
+  background: var(--bg-tertiary);
+  color: var(--accent-primary);
+  font-weight: 800;
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 0.5rem;
 }
 
 /* ==========================================================================
@@ -509,9 +992,9 @@ a {
   align-items: center;
   justify-content: center;
   padding: 0.35rem 0.85rem;
-  border-radius: 999px;
+  border-radius: 6px;
   font-weight: 800;
-  font-size: 0.85rem;
+  font-size: 0.84rem;
 }
 
 .grade-C { background: rgba(100, 116, 139, 0.16); color: #475569; }
@@ -519,7 +1002,7 @@ a {
 .grade-B { background: rgba(16, 185, 129, 0.16); color: #059669; }
 .grade-Bplus { background: rgba(139, 92, 246, 0.16); color: #7c3aed; }
 .grade-A { background: rgba(245, 158, 11, 0.18); color: #d97706; }
-.grade-Aplus { background: linear-gradient(135deg, #f59e0b, #ef4444); color: #ffffff; box-shadow: 0 4px 12px rgba(245, 158, 11, 0.35); }
+.grade-Aplus { background: linear-gradient(135deg, #f59e0b, #ef4444); color: #ffffff; box-shadow: 0 3px 10px rgba(245, 158, 11, 0.3); }
 
 [data-theme="dark"] .grade-C { color: #cbd5e1; }
 [data-theme="dark"] .grade-Cplus { color: #38bdf8; }
@@ -532,49 +1015,53 @@ a {
    ========================================================================== */
 .question-card {
   background: var(--bg-secondary);
-  border: 2px solid var(--border-color);
+  border: 1.5px solid var(--border-color);
+  border-left: 5px solid var(--accent-primary);
   border-radius: var(--radius-lg);
-  padding: 1.75rem;
-  margin-bottom: 1.25rem;
+  padding: 2rem 2.25rem;
+  margin-bottom: 1.65rem;
   position: relative;
+  box-shadow: var(--shadow-sm);
 }
 
 .question-meta {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 0.75rem;
-  margin-bottom: 1rem;
+  gap: 0.85rem;
+  margin-bottom: 1.15rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid var(--border-color);
   flex-wrap: wrap;
 }
 
 .question-text {
   font-size: 1.18rem;
   font-weight: 700;
-  margin-bottom: 1.25rem;
-  line-height: 1.5;
+  margin-bottom: 1.4rem;
+  line-height: 1.6;
 }
 
 .options-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-  gap: 0.85rem;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.05rem;
 }
 
 .option-btn {
   display: flex;
   align-items: center;
-  gap: 0.8rem;
-  padding: 0.95rem 1.15rem;
+  gap: 0.9rem;
+  padding: 1.05rem 1.25rem;
   border-radius: var(--radius-md);
-  border: 2px solid var(--border-color);
+  border: 1.5px solid var(--border-color);
   background: var(--bg-primary);
   color: var(--text-primary);
   font-weight: 600;
-  font-size: 1rem;
+  font-size: 0.98rem;
   cursor: pointer;
   text-align: left;
-  transition: all 0.18s ease;
+  transition: all 0.16s ease;
 }
 
 .option-btn:hover:not(:disabled) {
@@ -584,26 +1071,26 @@ a {
 
 .option-btn.selected {
   border-color: var(--accent-primary);
-  background: rgba(67, 24, 255, 0.12);
-  box-shadow: 0 0 0 3px rgba(67, 24, 255, 0.15);
+  background: var(--accent-light);
+  box-shadow: 0 0 0 3px rgba(29, 78, 216, 0.14);
 }
 
 .option-btn.correct {
   border-color: var(--success);
-  background: rgba(5, 205, 153, 0.15);
+  background: rgba(5, 150, 105, 0.14);
 }
 
 .option-btn.wrong {
   border-color: var(--danger);
-  background: rgba(238, 93, 80, 0.15);
+  background: rgba(220, 38, 38, 0.14);
 }
 
 .option-letter {
-  width: 32px;
-  height: 32px;
-  border-radius: 8px;
+  width: 34px;
+  height: 34px;
+  border-radius: 7px;
   background: var(--bg-secondary);
-  border: 1px solid var(--border-color);
+  border: 1px solid var(--border-strong);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -613,21 +1100,22 @@ a {
 
 /* 0 dan o'rganish bo'limidagi YORDAM / MEMORY qutisi (aniq javobsiz!) */
 .memory-hint-box {
-  margin-top: 1.1rem;
+  margin-top: 1.35rem;
   border-radius: var(--radius-md);
-  background: linear-gradient(135deg, rgba(255, 181, 71, 0.12), rgba(67, 24, 255, 0.08));
+  background: linear-gradient(135deg, rgba(245, 158, 11, 0.1), rgba(24, 53, 104, 0.06));
+  border: 1px solid rgba(245, 158, 11, 0.3);
   border-left: 4px solid var(--warning);
-  padding: 1rem 1.25rem;
+  padding: 1.15rem 1.4rem;
 }
 
 .memory-hint-title {
   font-weight: 800;
-  font-size: 0.9rem;
-  color: #d97706;
+  font-size: 0.92rem;
+  color: #b45309;
   display: flex;
   align-items: center;
-  gap: 0.45rem;
-  margin-bottom: 0.35rem;
+  gap: 0.5rem;
+  margin-bottom: 0.4rem;
 }
 
 [data-theme="dark"] .memory-hint-title {
@@ -635,8 +1123,9 @@ a {
 }
 
 .memory-hint-text {
-  font-size: 0.93rem;
+  font-size: 0.94rem;
   color: var(--text-secondary);
+  line-height: 1.6;
 }
 
 /* ==========================================================================
@@ -647,11 +1136,11 @@ a {
   color: #1e293b;
   border: 8px double #d97706;
   border-radius: var(--radius-lg);
-  padding: 2.5rem;
+  padding: 2.75rem;
   position: relative;
-  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.2);
-  max-width: 860px;
-  margin: 1.5rem auto;
+  box-shadow: 0 20px 45px rgba(0, 0, 0, 0.18);
+  max-width: 880px;
+  margin: 1.75rem auto;
   text-align: center;
 }
 
@@ -666,7 +1155,7 @@ a {
   align-items: center;
   justify-content: center;
   font-weight: 900;
-  margin: 0 auto 1rem;
+  margin: 0 auto 1.1rem;
   border: 4px solid #fde68a;
   box-shadow: 0 8px 20px rgba(180, 83, 9, 0.35);
 }
@@ -675,38 +1164,38 @@ a {
    PASTKI MILLIY SERTIFIKAT MAXSUS BLOKI (FOOTER CTA)
    ========================================================================== */
 .bottom-certificate-section {
-  max-width: 1320px;
-  margin: 2rem auto 1.5rem;
-  padding: 0 1.5rem;
+  max-width: 1380px;
+  margin: 2.5rem auto 2rem;
+  padding: 0 1.75rem;
   width: 100%;
 }
 
 .bottom-certificate-card {
-  background: linear-gradient(135deg, #1e1b4b 0%, #312e81 55%, #4318ff 100%);
+  background: linear-gradient(135deg, #0f172a 0%, #12295d 55%, #1d4ed8 100%);
   color: #ffffff;
-  border-radius: var(--radius-xl);
-  padding: 2.25rem;
+  border-radius: var(--radius-lg);
+  padding: 2.5rem;
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 2rem;
   flex-wrap: wrap;
   box-shadow: var(--shadow-lg);
-  border: 2px solid rgba(251, 191, 36, 0.45);
+  border-left: 6px solid #f59e0b;
 }
 
 /* ==========================================================================
-   FORM ELEMENTLARI (INPUT, SELECT, TABS, BAYROQLAR)
+   FORM ELEMENTLARI (INPUT, SELECT, TABS, BAYROQLAR) — KENG VA TARTIBLI
    ========================================================================== */
 .form-group {
-  margin-bottom: 1.15rem;
+  margin-bottom: 1.4rem;
 }
 
 .form-label {
   display: block;
   font-weight: 700;
-  font-size: 0.9rem;
-  margin-bottom: 0.45rem;
+  font-size: 0.92rem;
+  margin-bottom: 0.55rem;
   color: var(--text-secondary);
 }
 
@@ -714,14 +1203,14 @@ a {
 .form-select,
 .form-textarea {
   width: 100%;
-  padding: 0.8rem 1rem;
+  padding: 0.9rem 1.15rem;
   border-radius: var(--radius-md);
-  border: 2px solid var(--border-color);
+  border: 1.5px solid var(--border-strong);
   background: var(--bg-primary);
   color: var(--text-primary);
   font-size: 0.96rem;
   font-family: inherit;
-  transition: border-color 0.2s ease;
+  transition: border-color 0.18s ease, box-shadow 0.18s ease;
 }
 
 .form-input:focus,
@@ -729,52 +1218,63 @@ a {
 .form-textarea:focus {
   outline: none;
   border-color: var(--accent-primary);
+  box-shadow: 0 0 0 3px rgba(24, 53, 104, 0.12);
+  background: var(--bg-secondary);
 }
 
 .language-flag-option {
   display: flex;
   align-items: center;
-  gap: 0.85rem;
-  padding: 0.9rem 1.15rem;
+  gap: 1rem;
+  padding: 1.15rem 1.35rem;
   border-radius: var(--radius-md);
-  border: 2px solid var(--border-color);
+  border: 1.5px solid var(--border-color);
   background: var(--bg-primary);
+  color: var(--text-primary);
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all 0.18s ease;
   font-weight: 700;
+  font-family: inherit;
+  text-align: left;
+  width: 100%;
 }
 
-.language-flag-option.active,
 .language-flag-option:hover {
   border-color: var(--accent-primary);
   background: var(--bg-tertiary);
 }
 
+.language-flag-option.active {
+  border-color: var(--accent-primary);
+  border-width: 2px;
+  background: var(--accent-light);
+  box-shadow: var(--shadow-sm);
+}
+
 .flag-svg-wrapper {
-  width: 36px;
-  height: 24px;
-  border-radius: 4px;
+  width: 40px;
+  height: 28px;
+  border-radius: 5px;
   overflow: hidden;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.15);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.16);
   flex-shrink: 0;
 }
 
 .site-footer {
   background: var(--bg-secondary);
-  border-top: 1px solid var(--border-color);
-  padding: 1.5rem;
-  text-align: center;
+  border-top: 2px solid var(--border-color);
+  padding: 2rem 1.75rem;
   color: var(--text-muted);
   font-size: 0.9rem;
   margin-top: auto;
 }
 
 .badge-pill {
-  padding: 0.28rem 0.7rem;
-  border-radius: 999px;
+  padding: 0.32rem 0.78rem;
+  border-radius: 6px;
   font-size: 0.78rem;
   font-weight: 700;
 }
@@ -786,18 +1286,87 @@ a {
   z-index: 3000;
   background: var(--bg-secondary);
   color: var(--text-primary);
+  border: 1px solid var(--border-color);
   border-left: 5px solid var(--accent-primary);
-  padding: 1rem 1.35rem;
+  padding: 1.1rem 1.45rem;
   border-radius: var(--radius-md);
   box-shadow: var(--shadow-lg);
   display: flex;
   align-items: center;
-  gap: 0.75rem;
+  gap: 0.85rem;
   font-weight: 700;
   animation: fadeInUp 0.25s ease;
 }
 
 @keyframes fadeInUp {
-  from { transform: translateY(20px); opacity: 0; }
+  from { transform: translateY(16px); opacity: 0; }
   to { transform: translateY(0); opacity: 1; }
+}
+
+/* ==========================================================================
+   KICHIK MOBIL EKRANLAR (<640px VA <400px) UCHUN MAXSUS MOSLASHUVCHAN QOIDALAR
+   ========================================================================== */
+@media (max-width: 640px) {
+  .kun-header-top {
+    padding: 0.55rem 0.85rem;
+  }
+  .kun-category-bar {
+    padding: 0 0.85rem;
+  }
+  .kun-subbar {
+    padding: 0.5rem 0.85rem;
+  }
+  .kun-page-banner {
+    padding: 1.4rem 1.25rem;
+  }
+  .question-card {
+    padding: 1.35rem 1.15rem;
+  }
+  .options-grid {
+    grid-template-columns: 1fr;
+    gap: 0.85rem;
+  }
+  .certificate-diploma {
+    padding: 1.5rem 1rem;
+    border-width: 5px;
+  }
+  .bottom-certificate-section {
+    padding: 0 1rem;
+  }
+  .bottom-certificate-card {
+    padding: 1.5rem 1.25rem;
+  }
+  .toast-notification {
+    left: 12px;
+    right: 12px;
+    bottom: 12px;
+  }
+}
+
+@media (max-width: 400px) {
+  .brand-logo {
+    font-size: 1.12rem;
+    gap: 0.5rem;
+  }
+  .brand-logo-icon {
+    width: 34px;
+    height: 34px;
+    font-size: 1.05rem;
+  }
+  .navbar-stats-bar {
+    gap: 0.4rem;
+  }
+  .stat-pill,
+  .kun-settings-top-btn,
+  .mundarija-toggle-btn {
+    padding: 0.35rem 0.6rem;
+    font-size: 0.76rem;
+  }
+  .card,
+  .kun-settings-section-card {
+    padding: 1.1rem 0.95rem;
+  }
+  .section-title {
+    font-size: 1.2rem;
+  }
 }

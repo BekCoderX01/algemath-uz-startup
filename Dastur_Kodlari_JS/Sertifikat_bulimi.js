@@ -114,37 +114,39 @@
       return `
         <div class="grid-2" style="align-items:start;">
           <!-- CHAP TOMON: ISM FAMILIYA KIRITISH VA IMTIHONNI BOSHLASH -->
-          <div class="card">
-            <div style="display:inline-flex; align-items:center; gap:0.5rem; padding:0.35rem 0.85rem; border-radius:999px; background:rgba(245,158,11,0.16); color:#d97706; font-weight:800; font-size:0.82rem; margin-bottom:0.75rem;">
-              🏆 O'ZBEKISTON MILLIY SERTIFIKAT STANDARTI
+          <div class="kun-settings-section-card">
+            <div class="section-header">
+              <div>
+                <span class="kun-settings-step-badge">🏆 O'ZBEKISTON MILLIY SERTIFIKAT STANDARTI</span>
+                <h1 class="section-title">
+                  Matematika va Algebradan 45 talik Sertifikat Imtihoni
+                </h1>
+              </div>
             </div>
-            <h1 style="font-size:1.65rem; font-weight:900; margin-bottom:0.65rem;">
-              Matematika va Algebradan 45 talik Sertifikat Imtihoni
-            </h1>
-            <p style="color:var(--text-secondary); font-size:0.95rem; margin-bottom:1.25rem;">
+            <p style="color:var(--text-secondary); font-size:0.95rem; margin-bottom:1.5rem;">
               Sertifikat olish uchun avval <strong>Ism va Familiyangizni</strong> kiriting. Imtihon 3 bosqichli <strong>45 ta savoldan</strong> iborat (bu bo'limda yordam/xotira eslatmalari berilmaydi):
             </p>
 
-            <div class="grid-3" style="gap:0.75rem; margin-bottom:1.35rem;">
-              <div style="padding:0.85rem; border-radius:var(--radius-md); background:var(--bg-primary); border-left:4px solid var(--success);">
+            <div class="grid-3" style="margin-bottom:1.65rem;">
+              <div style="padding:1.1rem; border-radius:var(--radius-md); background:var(--bg-primary); border:1px solid var(--border-color); border-left:4px solid var(--success);">
                 <div style="font-weight:900; font-size:1.1rem;">1–15 savollar</div>
-                <div style="font-size:0.85rem; font-weight:700; color:var(--success);">15 ta Oson (o'ylantiradigan)</div>
-                <div style="font-size:0.78rem; color:var(--text-muted);">Har biri 1.5 balldan</div>
+                <div style="font-size:0.86rem; font-weight:700; color:var(--success); margin:0.2rem 0;">15 ta Oson (o'ylantiradigan)</div>
+                <div style="font-size:0.8rem; color:var(--text-muted);">Har biri 1.5 balldan</div>
               </div>
-              <div style="padding:0.85rem; border-radius:var(--radius-md); background:var(--bg-primary); border-left:4px solid var(--warning);">
+              <div style="padding:1.1rem; border-radius:var(--radius-md); background:var(--bg-primary); border:1px solid var(--border-color); border-left:4px solid var(--warning);">
                 <div style="font-weight:900; font-size:1.1rem;">16–30 savollar</div>
-                <div style="font-size:0.85rem; font-weight:700; color:#d97706;">15 ta O'rtacha</div>
-                <div style="font-size:0.78rem; color:var(--text-muted);">Har biri 2.2 balldan</div>
+                <div style="font-size:0.86rem; font-weight:700; color:#d97706; margin:0.2rem 0;">15 ta O'rtacha</div>
+                <div style="font-size:0.8rem; color:var(--text-muted);">Har biri 2.2 balldan</div>
               </div>
-              <div style="padding:0.85rem; border-radius:var(--radius-md); background:var(--bg-primary); border-left:4px solid var(--danger);">
+              <div style="padding:1.1rem; border-radius:var(--radius-md); background:var(--bg-primary); border:1px solid var(--border-color); border-left:4px solid var(--danger);">
                 <div style="font-weight:900; font-size:1.1rem;">31–45 savollar</div>
-                <div style="font-size:0.85rem; font-weight:700; color:var(--danger);">15 ta Qiyin (Olimpiada/A+)</div>
-                <div style="font-size:0.78rem; color:var(--text-muted);">Har biri ~2.97 balldan</div>
+                <div style="font-size:0.86rem; font-weight:700; color:var(--danger); margin:0.2rem 0;">15 ta Qiyin (Olimpiada/A+)</div>
+                <div style="font-size:0.8rem; color:var(--text-muted);">Har biri ~2.97 balldan</div>
               </div>
             </div>
 
             <form id="sertifikat-boshlash-formasi">
-              <div class="grid-2" style="gap:1rem;">
+              <div class="grid-2">
                 <div class="form-group">
                   <label class="form-label" for="cert-ism-input">Ismingiz (Sertifikatga yoziladi) *</label>
                   <input type="text" id="cert-ism-input" class="form-input" value="${this.nomzodIsm}" placeholder="Masalan: Sardorbek" required />
@@ -163,57 +165,62 @@
                 </select>
               </div>
 
-              <div id="cert-xato-xabar" style="display:none; color:var(--danger); font-weight:700; margin-bottom:0.85rem;"></div>
+              <div id="cert-xato-xabar" style="display:none; color:var(--danger); font-weight:700; margin-bottom:1rem;"></div>
 
-              <button type="submit" class="btn btn-primary" style="width:100%; font-size:1.08rem; padding:1rem;">
+              <button type="submit" class="btn btn-primary" style="width:100%; font-size:1.08rem; padding:1.05rem;">
                 ✍️ Ism-familiyani tasdiqlash va 45 talik Testni Boshlash
               </button>
             </form>
           </div>
 
           <!-- O'NG TOMON: MILLIY SERTIFIKAT BAHOLASH SHKALASI VA MEZONLARI -->
-          <div class="card">
-            <h2 style="font-size:1.25rem; font-weight:900; margin-bottom:0.85rem;">
-              📊 Milliy Sertifikat Darajalari va Baholash Tizimi
-            </h2>
-            <p style="font-size:0.88rem; color:var(--text-secondary); margin-bottom:1rem;">
+          <div class="kun-settings-section-card">
+            <div class="section-header">
+              <div>
+                <span class="kun-settings-step-badge">📊 RASMIY BAHOLASH SHKALASI VA REESTR</span>
+                <h2 class="section-title">
+                  Milliy Sertifikat Darajalari va Baholash Tizimi
+                </h2>
+              </div>
+            </div>
+            <p style="font-size:0.92rem; color:var(--text-secondary); margin-bottom:1.25rem;">
               O'zbekistondagi Milliy Sertifikat baholash mezoniga mos ravishda 45 ta savoldan to'plangan natijangiz quyidagicha baholanadi:
             </p>
 
-            <div style="display:flex; flex-direction:column; gap:0.6rem; margin-bottom:1.4rem;">
-              <div style="display:flex; align-items:center; justify-content:space-between; padding:0.7rem 1rem; border-radius:var(--radius-sm); background:var(--bg-primary);">
+            <div style="display:flex; flex-direction:column; gap:0.8rem; margin-bottom:1.65rem;">
+              <div style="display:flex; align-items:center; justify-content:space-between; padding:0.85rem 1.15rem; border-radius:var(--radius-sm); background:var(--bg-primary); border:1px solid var(--border-color);">
                 <span><span class="grade-badge grade-Aplus">A+</span> <strong>Eng yuqori imtiyozli daraja</strong></span>
                 <span style="font-weight:800;">39 – 45 ta to'g'ri (≥86%) • +100 💎</span>
               </div>
-              <div style="display:flex; align-items:center; justify-content:space-between; padding:0.7rem 1rem; border-radius:var(--radius-sm); background:var(--bg-primary);">
+              <div style="display:flex; align-items:center; justify-content:space-between; padding:0.85rem 1.15rem; border-radius:var(--radius-sm); background:var(--bg-primary); border:1px solid var(--border-color);">
                 <span><span class="grade-badge grade-A">A</span> <strong>Maksimal imtiyozli daraja</strong></span>
                 <span style="font-weight:800;">35 – 38 ta to'g'ri (78–85%) • +70 💎</span>
               </div>
-              <div style="display:flex; align-items:center; justify-content:space-between; padding:0.7rem 1rem; border-radius:var(--radius-sm); background:var(--bg-primary);">
+              <div style="display:flex; align-items:center; justify-content:space-between; padding:0.85rem 1.15rem; border-radius:var(--radius-sm); background:var(--bg-primary); border:1px solid var(--border-color);">
                 <span><span class="grade-badge grade-Bplus">B+</span> <strong>Yuqori proporsional daraja</strong></span>
                 <span style="font-weight:800;">31 – 34 ta to'g'ri (70–77%) • +50 💎</span>
               </div>
-              <div style="display:flex; align-items:center; justify-content:space-between; padding:0.7rem 1rem; border-radius:var(--radius-sm); background:var(--bg-primary);">
+              <div style="display:flex; align-items:center; justify-content:space-between; padding:0.85rem 1.15rem; border-radius:var(--radius-sm); background:var(--bg-primary); border:1px solid var(--border-color);">
                 <span><span class="grade-badge grade-B">B</span> <strong>Yaxshi daraja</strong></span>
                 <span style="font-weight:800;">27 – 30 ta to'g'ri (60–69%) • +35 💎</span>
               </div>
-              <div style="display:flex; align-items:center; justify-content:space-between; padding:0.7rem 1rem; border-radius:var(--radius-sm); background:var(--bg-primary);">
+              <div style="display:flex; align-items:center; justify-content:space-between; padding:0.85rem 1.15rem; border-radius:var(--radius-sm); background:var(--bg-primary); border:1px solid var(--border-color);">
                 <span><span class="grade-badge grade-Cplus">C+</span> <strong>O'rta-tayanch daraja</strong></span>
                 <span style="font-weight:800;">25 – 26 ta to'g'ri (55–59%) • +25 💎</span>
               </div>
-              <div style="display:flex; align-items:center; justify-content:space-between; padding:0.7rem 1rem; border-radius:var(--radius-sm); background:var(--bg-primary);">
+              <div style="display:flex; align-items:center; justify-content:space-between; padding:0.85rem 1.15rem; border-radius:var(--radius-sm); background:var(--bg-primary); border:1px solid var(--border-color);">
                 <span><span class="grade-badge grade-C">C</span> <strong>Boshlang'ich sertifikat darajasi</strong></span>
                 <span style="font-weight:800;">21 – 24 ta to'g'ri (46–54%) • +15 💎</span>
               </div>
             </div>
 
-            <h3 style="font-size:1rem; font-weight:800; margin-bottom:0.6rem;">📜 Oxirgi berilgan sertifikatlar reestri:</h3>
-            <div style="display:flex; flex-direction:column; gap:0.5rem;">
+            <h3 style="font-size:1.05rem; font-weight:800; margin-bottom:0.8rem;">📜 Oxirgi berilgan sertifikatlar reestri:</h3>
+            <div style="display:flex; flex-direction:column; gap:0.75rem;">
               ${arxiv.slice(0, 3).map(item => `
-                <div style="padding:0.65rem 0.9rem; border-radius:var(--radius-sm); background:var(--bg-tertiary); display:flex; align-items:center; justify-content:space-between; font-size:0.86rem;">
+                <div style="padding:0.85rem 1.1rem; border-radius:var(--radius-sm); background:var(--bg-tertiary); border:1px solid var(--border-color); display:flex; align-items:center; justify-content:space-between; font-size:0.88rem;">
                   <div>
                     <strong>${item.ismFamiliya}</strong> (${item.rol})
-                    <div style="font-size:0.76rem; color:var(--text-muted);">ID: ${item.sertifikatId} • ${item.sana}</div>
+                    <div style="font-size:0.78rem; color:var(--text-muted); margin-top:0.15rem;">ID: ${item.sertifikatId} • ${item.sana}</div>
                   </div>
                   <span class="grade-badge grade-${item.daraja.replace("+", "plus")}">${item.daraja} (${item.togriSoni}/45)</span>
                 </div>
@@ -267,7 +274,7 @@
       });
 
       return `
-        <div class="card" style="margin-bottom:1.25rem; position:sticky; top:74px; z-index:900; background:var(--bg-glass); backdrop-filter:blur(12px);">
+        <div class="card" style="margin-bottom:1.75rem; border-top:4px solid var(--accent-primary); background:var(--bg-secondary);">
           <div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:1rem;">
             <div>
               <div style="font-size:0.84rem; color:var(--text-muted); font-weight:700;">

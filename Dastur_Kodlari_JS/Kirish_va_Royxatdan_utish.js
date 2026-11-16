@@ -27,33 +27,36 @@
       konteyner.innerHTML = `
         <div class="grid-2" style="align-items:start;">
           <!-- CHAP TOMON: 4 XIL USULDA KIRISH FORMASI -->
-          <div class="card">
-            <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:1rem; flex-wrap:wrap; gap:0.5rem;">
-              <h1 style="font-size:1.5rem; font-weight:900;">🔐 Tizimga Kirish va Ro'yxatdan O'tish</h1>
-              <span class="badge-pill" style="background:rgba(5,205,153,0.15); color:var(--success);">+5 💎 Kunlik bonus</span>
+          <div class="kun-settings-section-card">
+            <div class="section-header">
+              <div>
+                <span class="kun-settings-step-badge">1-BO'LIM • AVTORIZATSIYA VA RO'YXATDAN O'TISH</span>
+                <h1 class="section-title">🔐 Tizimga Kirish va Ro'yxatdan O'tish</h1>
+              </div>
+              <span class="badge-pill" style="background:rgba(5,150,105,0.15); color:var(--success);">+5 💎 Kunlik bonus</span>
             </div>
-            <p style="color:var(--text-secondary); margin-bottom:1.25rem; font-size:0.94rem;">
+            <p style="color:var(--text-secondary); margin-bottom:1.5rem; font-size:0.95rem;">
               O'zingizga qulay usulni tanlang: <strong>Telefon raqam</strong>, <strong>Google</strong>, <strong>Email</strong> yoki <strong>Instagram</strong> orqali bir zumda kiring.
             </p>
 
             <!-- 4 TA KIRISH USULI TABLARI -->
-            <div class="grid-4" style="gap:0.6rem; margin-bottom:1.4rem;">
-              <button type="button" class="btn ${this.tanlanganUsul === "telefon" ? "btn-primary" : "btn-outline"}" data-auth-tab="telefon" style="padding:0.65rem;">
+            <div class="grid-4" style="margin-bottom:1.65rem;">
+              <button type="button" class="btn ${this.tanlanganUsul === "telefon" ? "btn-primary" : "btn-outline"}" data-auth-tab="telefon" style="padding:0.75rem;">
                 📱 Telefon
               </button>
-              <button type="button" class="btn ${this.tanlanganUsul === "google" ? "btn-primary" : "btn-outline"}" data-auth-tab="google" style="padding:0.65rem;">
+              <button type="button" class="btn ${this.tanlanganUsul === "google" ? "btn-primary" : "btn-outline"}" data-auth-tab="google" style="padding:0.75rem;">
                 🌐 Google
               </button>
-              <button type="button" class="btn ${this.tanlanganUsul === "email" ? "btn-primary" : "btn-outline"}" data-auth-tab="email" style="padding:0.65rem;">
+              <button type="button" class="btn ${this.tanlanganUsul === "email" ? "btn-primary" : "btn-outline"}" data-auth-tab="email" style="padding:0.75rem;">
                 ✉️ Email
               </button>
-              <button type="button" class="btn ${this.tanlanganUsul === "instagram" ? "btn-primary" : "btn-outline"}" data-auth-tab="instagram" style="padding:0.65rem;">
+              <button type="button" class="btn ${this.tanlanganUsul === "instagram" ? "btn-primary" : "btn-outline"}" data-auth-tab="instagram" style="padding:0.75rem;">
                 📸 Instagram
               </button>
             </div>
 
             <form id="kirish-formasi">
-              <div class="grid-2" style="gap:1rem;">
+              <div class="grid-2">
                 <div class="form-group">
                   <label class="form-label" for="auth-ism">Ismingiz *</label>
                   <input type="text" id="auth-ism" class="form-input" value="${joriy.ism || ""}" placeholder="Masalan: Sardorbek" required />
@@ -64,7 +67,7 @@
                 </div>
               </div>
 
-              <div class="grid-2" style="gap:1rem;">
+              <div class="grid-2">
                 <div class="form-group">
                   <label class="form-label" for="auth-rol">Maqomingizni tanlang</label>
                   <select id="auth-rol" class="form-select">
@@ -83,47 +86,68 @@
               </div>
 
               <!-- TANLANGAN USULGA MOS MAYDON -->
-              <div id="auth-usul-maydoni" style="margin-bottom:1.25rem; padding:1.1rem; border-radius:var(--radius-md); background:var(--bg-tertiary); border:1px solid var(--border-color);">
+              <div id="auth-usul-maydoni" style="margin-bottom:1.5rem; padding:1.35rem; border-radius:var(--radius-md); background:var(--bg-tertiary); border:1px solid var(--border-color);">
                 ${this.usulMaydoniniOlish(this.tanlanganUsul, joriy)}
               </div>
 
-              <button type="submit" class="btn btn-primary" style="width:100%; font-size:1.05rem; padding:0.95rem;">
+              <button type="submit" class="btn btn-primary" style="width:100%; font-size:1.05rem; padding:1rem;">
                 🚀 Tizimga kirish va +5 💎 Kunlik Olmos olish
               </button>
             </form>
           </div>
 
           <!-- O'NG TOMON: JORIY PROFIL HOLATI VA TEZKOR AKKAUNTLAR -->
-          <div class="card">
-            <h2 style="font-size:1.25rem; font-weight:800; margin-bottom:1rem;">👤 Joriy Faol Akkaunt</h2>
-            <div style="display:flex; align-items:center; gap:1rem; padding:1.1rem; border-radius:var(--radius-md); background:var(--bg-primary); border:1px solid var(--border-color); margin-bottom:1.25rem;">
-              <div style="width:64px; height:64px; border-radius:50%; background:var(--accent-gradient); color:#fff; display:flex; align-items:center; justify-content:center; font-size:2rem; overflow:hidden; flex-shrink:0;">
+          <div class="kun-settings-section-card">
+            <div class="section-header">
+              <div>
+                <span class="kun-settings-step-badge">2-BO'LIM • FAOL PROFIL VA DEMO AKKAUNTLAR</span>
+                <h2 class="section-title">👤 Joriy Faol Akkaunt</h2>
+              </div>
+            </div>
+            <div style="display:flex; align-items:center; gap:1.25rem; padding:1.35rem; border-radius:var(--radius-md); background:var(--bg-primary); border:1px solid var(--border-color); margin-bottom:1.65rem;">
+              <div style="width:68px; height:68px; border-radius:50%; background:var(--accent-gradient); color:#fff; display:flex; align-items:center; justify-content:center; font-size:2.1rem; overflow:hidden; flex-shrink:0;">
                 ${joriy.avatarRasmUrl ? `<img src="${joriy.avatarRasmUrl}" alt="Profil" style="width:100%;height:100%;object-fit:cover;"/>` : (joriy.avatar || "👨‍🎓")}
               </div>
               <div>
-                <div style="font-weight:900; font-size:1.15rem;">${joriy.ism} ${joriy.familiya}</div>
-                <div style="font-size:0.86rem; color:var(--text-secondary);">
+                <div style="font-weight:900; font-size:1.2rem;">${joriy.ism} ${joriy.familiya}</div>
+                <div style="font-size:0.88rem; color:var(--text-secondary); margin:0.2rem 0;">
                   Maqom: <strong>${joriy.rol}</strong> • Jins: <strong>${joriy.jins}</strong>
                 </div>
-                <div style="font-size:0.82rem; color:var(--accent-primary); font-weight:700; margin-top:0.2rem;">
+                <div style="font-size:0.84rem; color:var(--accent-primary); font-weight:700;">
                   Kirish usuli: ${joriy.kirishUsuli || "Telefon raqam"}
                 </div>
               </div>
             </div>
 
-            <h3 style="font-size:1rem; font-weight:800; margin-bottom:0.75rem;">⚡ Sinov uchun 1-bosishda tayyor profilga o'tish:</h3>
-            <div style="display:flex; flex-direction:column; gap:0.65rem;">
-              <button type="button" class="btn btn-outline" data-demo-login="student" style="justify-content:flex-start;">
-                📱 <strong>O'quvchi (Telefon orqali):</strong> Sardorbek Alimov (+998 90 123-45-67)
+            <h3 style="font-size:1.05rem; font-weight:800; margin-bottom:0.9rem;">⚡ Sinov uchun 1-bosishda tayyor profilga o'tish:</h3>
+            <div style="display:flex; flex-direction:column; gap:0.85rem;">
+              <button type="button" class="language-flag-option" data-demo-login="student">
+                <span style="font-size:1.5rem;">📱</span>
+                <div>
+                  <div style="font-weight:900;">O'quvchi (Telefon orqali): Sardorbek Alimov</div>
+                  <div style="font-size:0.82rem; color:var(--text-muted);">+998 90 123-45-67 • B daraja</div>
+                </div>
               </button>
-              <button type="button" class="btn btn-outline" data-demo-login="teacher" style="justify-content:flex-start;">
-                🌐 <strong>Ustoz (Google orqali):</strong> Dilnoza Karimova (A+ Sertifikat ustozi)
+              <button type="button" class="language-flag-option" data-demo-login="teacher">
+                <span style="font-size:1.5rem;">🌐</span>
+                <div>
+                  <div style="font-weight:900;">Ustoz (Google orqali): Dilnoza Karimova</div>
+                  <div style="font-size:0.82rem; color:var(--text-muted);">A+ Milliy Sertifikat ustozi • dilnoza.math@gmail.com</div>
+                </div>
               </button>
-              <button type="button" class="btn btn-outline" data-demo-login="instagram" style="justify-content:flex-start;">
-                📸 <strong>Instagram orqali:</strong> Javohir Tursunov (@javohir_algebra)
+              <button type="button" class="language-flag-option" data-demo-login="instagram">
+                <span style="font-size:1.5rem;">📸</span>
+                <div>
+                  <div style="font-weight:900;">Instagram orqali: Javohir Tursunov</div>
+                  <div style="font-size:0.82rem; color:var(--text-muted);">@javohir_algebra • Olimpiada A daraja</div>
+                </div>
               </button>
-              <button type="button" class="btn btn-outline" data-demo-login="admin" style="justify-content:flex-start;">
-                🛡️ <strong>Admin Panel (Email orqali):</strong> Bosh Administrator (admin@algemath.uz)
+              <button type="button" class="language-flag-option" data-demo-login="admin">
+                <span style="font-size:1.5rem;">🛡️</span>
+                <div>
+                  <div style="font-weight:900;">Admin Panel (Email orqali): Bosh Administrator</div>
+                  <div style="font-size:0.82rem; color:var(--text-muted);">admin@algemath.uz • Tizim boshqaruvchisi</div>
+                </div>
               </button>
             </div>
           </div>

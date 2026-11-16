@@ -6,6 +6,7 @@
 # ==========================================================================
 
 import sys
+sys.dont_write_bytecode = True
 import os
 import unittest
 
@@ -28,6 +29,8 @@ from Sertifikat_baholash_tizimi import (
     milliy_sertifikat_darajasini_hisoblash
 )
 from Olmoslar_hisoboti import kunlik_olmos_bonusini_berish, adolatli_test_olmosini_hisoblash
+from Foydalanuvchi_va_Profil import profil_sozlamalarini_yangilash, kirish_usulini_tekshirish
+from Test_bulimi import daraja_testlarini_saralash, test_natijasini_tekshirish
 from Olmoslar_dukoni_moduli import mahsulot_xarid_qilish
 from Matematik_duel_moduli import duel_natijasini_hisoblash
 from Grafik_tahlil_moduli import kvadrat_funksiyani_tahlil_qilish
@@ -94,6 +97,17 @@ class BarchaPythonModullarTesti(unittest.TestCase):
         self.assertEqual(milliy_sertifikat_darajasini_hisoblash(15, 15, 13)["daraja"], "A+")
         u = {"olmoslar": 10, "oxirgiKunlikBonusSana": "2026-11-10"}
         self.assertEqual(kunlik_olmos_bonusini_berish(u, "2026-11-16")["jami"], 15)
+        self.assertEqual(adolatli_test_olmosini_hisoblash(10, 10, "A+"), 35)
+
+    def test_profil_va_test_saralash_modullari(self):
+        p = profil_sozlamalarini_yangilash({}, "Sardorbek", "Alimov", "Erkak", "A+ maqsad")
+        self.assertEqual(p["ism"], "Sardorbek")
+        self.assertTrue(kirish_usulini_tekshirish("telefon", "+998901234567")["muvaffaqiyat"])
+        savollar = [{"id": "q1", "daraja": "A+", "togriIndex": 0}, {"id": "q2", "daraja": "B", "togriIndex": 1}]
+        saralangan = daraja_testlarini_saralash(savollar, "O'quvchi", "A+")
+        self.assertEqual(len(saralangan), 1)
+        natija = test_natijasini_tekshirish(saralangan, {"q1": 0})
+        self.assertEqual(natija["foiz"], 100.0)
 
 
 if __name__ == "__main__":
