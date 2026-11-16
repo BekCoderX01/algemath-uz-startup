@@ -34,6 +34,10 @@ const MundarijaVaNavigatsiya = require("../Dastur_Kodlari_JS/Mundarija_va_Naviga
 const QidiruvBulimi = require("../Dastur_Kodlari_JS/Qidiruv_bulimi.js");
 const SertifikatBulimi = require("../Dastur_Kodlari_JS/Sertifikat_bulimi.js");
 const SozlamalarVaProfil = require("../Dastur_Kodlari_JS/Sozlamalar_va_Profil.js");
+const NoldanUrganishBulimi = require("../Dastur_Kodlari_JS/Noldan_urganish_bulimi.js");
+const TestBulimi = require("../Dastur_Kodlari_JS/Test_bulimi.js");
+const KirishVaRoyxatdanUtish = require("../Dastur_Kodlari_JS/Kirish_va_Royxatdan_utish.js");
+const AdminPaneli = require("../Dastur_Kodlari_JS/Admin_paneli.js");
 
 // 8 ta yangi maxsus papkadagi modullar:
 const OlmoslarDukoniMantiqi = require("../1_Olmoslar_Dukoni_Bulimi/Olmoslar_dukoni_mantiqi.js");
@@ -348,6 +352,19 @@ function httpGet(url) {
       "global-qidiruv-input",
       "global-qidiruv-tur",
       "global-qidiruv-natijalari",
+      "noldan-urganish-konteyner",
+      "test-yechish-konteyner",
+      "sertifikat-asosiy-konteyner",
+      "kirish-asosiy-konteyner",
+      "admin-asosiy-konteyner",
+      "olmoslar-dukoni-konteyner",
+      "matematik-duel-konteyner",
+      "grafik-va-formulalar-konteyner",
+      "reyting-va-turnir-konteyner",
+      "ustoz-sinfxonasi-konteyner",
+      "xatolar-daftari-konteyner",
+      "sertifikat-tekshirish-konteyner",
+      "obuna-va-tolov-konteyner",
     ].forEach((id) => {
       elements[id] = makeEl(id);
     });
@@ -362,6 +379,7 @@ function httpGet(url) {
     global.window = {
       location: { pathname: "/Sahifalar/Sozlamalar_sahifasi.html", search: "" },
       dispatchEvent() {},
+      addEventListener() {},
     };
 
     try {
@@ -369,6 +387,21 @@ function httpGet(url) {
       assert.ok(elements["umumiy-navigatsiya-joyi"].innerHTML.includes("kun-header-top"));
       assert.ok(elements["umumiy-navigatsiya-joyi"].innerHTML.includes("kun-category-bar"));
       assert.ok(elements["umumiy-navigatsiya-joyi"].innerHTML.includes("kun-settings-top-btn"));
+      assert.ok(elements["umumiy-navigatsiya-joyi"].innerHTML.includes("kun-rubric-sibling-pills"));
+
+      // Rus va Ingliz tilida yuqori menyu va rubrikalar tarjima qilinishini tekshirish
+      TilVaTarjimalar.tilniOzgartirish("ru");
+      MundarijaVaNavigatsiya.navigatsiyaniChizish("settings");
+      assert.ok(elements["umumiy-navigatsiya-joyi"].innerHTML.includes("Настройки"));
+      assert.ok(elements["umumiy-navigatsiya-joyi"].innerHTML.includes("Магазин Алмазов"));
+
+      TilVaTarjimalar.tilniOzgartirish("en");
+      MundarijaVaNavigatsiya.navigatsiyaniChizish("settings");
+      assert.ok(elements["umumiy-navigatsiya-joyi"].innerHTML.includes("Settings"));
+      assert.ok(elements["umumiy-navigatsiya-joyi"].innerHTML.includes("Diamond Shop"));
+
+      TilVaTarjimalar.tilniOzgartirish("uz");
+      MundarijaVaNavigatsiya.navigatsiyaniChizish("settings");
 
       SozlamalarVaProfil.sozlamalarSahifasiniChizish();
       assert.ok(elements["sozlamalar-asosiy-konteyner"].innerHTML.includes("settings-sec-theme"));
@@ -381,6 +414,47 @@ function httpGet(url) {
 
       QidiruvBulimi.sahifaniIshgaTushirish();
       assert.ok(elements["qidiruv-va-mundarija-konteyner"].innerHTML.includes("kun-rubric-block"));
+
+      // Qolgan barcha 12 ta bo'limning Kun.uz uslubida chizilishini tekshirish
+      NoldanUrganishBulimi.sahifaniIshgaTushirish();
+      assert.ok(elements["noldan-urganish-konteyner"].innerHTML.includes("kun-settings-section-card"));
+
+      TestBulimi.sahifaniIshgaTushirish();
+      assert.ok(elements["test-yechish-konteyner"].innerHTML.includes("kun-settings-section-card"));
+
+      SertifikatBulimi.sahifaniIshgaTushirish();
+      assert.ok(elements["sertifikat-asosiy-konteyner"].innerHTML.includes("kun-settings-section-card"));
+
+      KirishVaRoyxatdanUtish.sahifaniIshgaTushirish();
+      assert.ok(elements["kirish-asosiy-konteyner"].innerHTML.includes("kun-settings-section-card"));
+
+      AdminPaneli.sahifaniIshgaTushirish();
+      assert.ok(elements["admin-asosiy-konteyner"].innerHTML.includes("kun-settings-section-card"));
+
+      OlmoslarDukoniMantiqi.sahifaniIshgaTushirish();
+      assert.ok(elements["olmoslar-dukoni-konteyner"].innerHTML.includes("kun-page-banner"));
+
+      MatematikDuelMantiqi.holat = "kutish";
+      MatematikDuelMantiqi.sahifaniIshgaTushirish();
+      assert.ok(elements["matematik-duel-konteyner"].innerHTML.includes("kun-page-banner"));
+
+      GrafikVaFormulalarMantiqi.sahifaniIshgaTushirish();
+      assert.ok(elements["grafik-va-formulalar-konteyner"].innerHTML.includes("kun-settings-section-card"));
+
+      KunlikZanjirVaTurnirMantiqi.sahifaniIshgaTushirish();
+      assert.ok(elements["reyting-va-turnir-konteyner"].innerHTML.includes("kun-page-banner"));
+
+      UstozSinfxonasiMantiqi.sahifaniIshgaTushirish();
+      assert.ok(elements["ustoz-sinfxonasi-konteyner"].innerHTML.includes("kun-page-banner"));
+
+      XatolarDaftariMantiqi.sahifaniIshgaTushirish();
+      assert.ok(elements["xatolar-daftari-konteyner"].innerHTML.includes("kun-page-banner"));
+
+      SertifikatTekshirishMantiqi.sahifaniIshgaTushirish();
+      assert.ok(elements["sertifikat-tekshirish-konteyner"].innerHTML.includes("kun-settings-section-card"));
+
+      ObunaVaTolovMantiqi.sahifaniIshgaTushirish();
+      assert.ok(elements["obuna-va-tolov-konteyner"].innerHTML.includes("kun-page-banner"));
     } finally {
       if (typeof OlmoslarVaVaqtTizimi.kunlikTaymerniToxtatish === "function") {
         OlmoslarVaVaqtTizimi.kunlikTaymerniToxtatish();

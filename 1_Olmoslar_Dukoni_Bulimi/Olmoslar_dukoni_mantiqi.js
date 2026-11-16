@@ -145,43 +145,44 @@
 
       konteyner.innerHTML = `
         <!-- DO'KON BOSH BANNERI -->
-        <div class="card" style="margin-bottom:1.5rem; background:linear-gradient(135deg, #0f172a 0%, #1e3a8a 55%, #0284c7 100%); color:#fff;">
-          <div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:1.5rem;">
-            <div>
-              <span class="badge-pill" style="background:rgba(255,255,255,0.2); color:#38bdf8; margin-bottom:0.5rem; display:inline-block;">
-                🛒 1-MAXSUS MODUL • OLMOSLAR DO'KONI
-              </span>
-              <h1 style="font-size:1.75rem; font-weight:900; margin-bottom:0.4rem;">
-                💎 Olmoslar Do'koni (Diamond Shop)
-              </h1>
-              <p style="opacity:0.92; max-width:660px; font-size:0.95rem;">
-                Har kungi kirishdan (+5 💎), darslar va testlardan yig'gan olmoslaringizni PDF formula kitobchalar, faxriy unvonlar va profil ramkalariga almashtiring!
-              </p>
+        <div class="kun-page-banner">
+          <div>
+            <span class="badge-pill" style="background:rgba(255,255,255,0.2); color:#38bdf8; margin-bottom:0.5rem; display:inline-block;">
+              🛒 1-MAXSUS MODUL • OLMOSLAR DO'KONI
+            </span>
+            <h1 style="font-size:1.75rem; font-weight:900; margin-bottom:0.4rem;">
+              💎 Olmoslar Do'koni (Diamond Shop)
+            </h1>
+            <p style="opacity:0.92; max-width:660px; font-size:0.95rem;">
+              Har kungi kirishdan (+5 💎), darslar va testlardan yig'gan olmoslaringizni PDF formula kitobchalar, faxriy unvonlar va profil ramkalariga almashtiring!
+            </p>
+          </div>
+          <div style="background:rgba(255,255,255,0.14); padding:1.1rem 1.5rem; border-radius:var(--radius-lg); text-align:center; backdrop-filter:blur(8px);">
+            <div style="font-size:0.82rem; opacity:0.85;">Mening hamyonim:</div>
+            <div style="font-size:2rem; font-weight:900; color:#38bdf8;">
+              <span data-live-diamonds>${u.olmoslar || 0}</span> 💎
             </div>
-            <div style="background:rgba(255,255,255,0.14); padding:1.1rem 1.5rem; border-radius:var(--radius-lg); text-align:center; backdrop-filter:blur(8px);">
-              <div style="font-size:0.82rem; opacity:0.85;">Mening hamyonim:</div>
-              <div style="font-size:2rem; font-weight:900; color:#38bdf8;">
-                <span data-live-diamonds>${u.olmoslar || 0}</span> 💎
-              </div>
-              <div style="font-size:0.78rem; margin-top:0.2rem;">Faol unvon: <strong>${u.faolUnvon || "Yo'q"}</strong></div>
-            </div>
+            <div style="font-size:0.78rem; margin-top:0.2rem;">Faol unvon: <strong>${u.faolUnvon || "Yo'q"}</strong></div>
           </div>
         </div>
 
         <!-- KATEGORIYA FILTRLARI -->
-        <div style="display:flex; gap:0.65rem; flex-wrap:wrap; margin-bottom:1.25rem;">
-          <button type="button" class="btn ${this.tanlanganKategoriya === "barchasi" ? "btn-primary" : "btn-outline"}" data-shop-cat="barchasi">
-            🛍️ Barcha mahsulotlar (${DUKON_MAHSULOTLARI.length})
-          </button>
-          <button type="button" class="btn ${this.tanlanganKategoriya === "qollanma" ? "btn-primary" : "btn-outline"}" data-shop-cat="qollanma">
-            📚 PDF Formula Shpargalkalar
-          </button>
-          <button type="button" class="btn ${this.tanlanganKategoriya === "unvon" ? "btn-primary" : "btn-outline"}" data-shop-cat="unvon">
-            👑 Faxriy Unvonlar
-          </button>
-          <button type="button" class="btn ${this.tanlanganKategoriya === "ramka" ? "btn-primary" : "btn-outline"}" data-shop-cat="ramka">
-            🖼️ Profil Ramkalari
-          </button>
+        <div class="kun-filter-bar">
+          <div style="font-weight:800; color:var(--accent-primary);">📂 Mahsulot toifalari:</div>
+          <div style="display:flex; gap:0.65rem; flex-wrap:wrap;">
+            <button type="button" class="btn ${this.tanlanganKategoriya === "barchasi" ? "btn-primary" : "btn-outline"}" data-shop-cat="barchasi">
+              🛍️ Barcha mahsulotlar (${DUKON_MAHSULOTLARI.length})
+            </button>
+            <button type="button" class="btn ${this.tanlanganKategoriya === "qollanma" ? "btn-primary" : "btn-outline"}" data-shop-cat="qollanma">
+              📚 PDF Formula Shpargalkalar
+            </button>
+            <button type="button" class="btn ${this.tanlanganKategoriya === "unvon" ? "btn-primary" : "btn-outline"}" data-shop-cat="unvon">
+              👑 Faxriy Unvonlar
+            </button>
+            <button type="button" class="btn ${this.tanlanganKategoriya === "ramka" ? "btn-primary" : "btn-outline"}" data-shop-cat="ramka">
+              🖼️ Profil Ramkalari
+            </button>
+          </div>
         </div>
 
         ${this.ochiqQollanma ? `

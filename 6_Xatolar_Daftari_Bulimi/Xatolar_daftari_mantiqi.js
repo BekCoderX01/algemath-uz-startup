@@ -59,20 +59,23 @@
       });
 
       konteyner.innerHTML = `
-        <div class="card" style="margin-bottom:1.5rem; background:linear-gradient(135deg, #881337 0%, #e11d48 55%, #f43f5e 100%); color:#fff;">
-          <span class="badge-pill" style="background:rgba(255,255,255,0.2); color:#fff; margin-bottom:0.5rem; display:inline-block;">
-            📓 6-MAXSUS MODUL • AQLLI XATOLAR DAFTARI
-          </span>
-          <h1 style="font-size:1.75rem; font-weight:900; margin-bottom:0.4rem;">
-            📸 Xatolar Ustida Ishlash (Smart Mistakes Notebook)
-          </h1>
-          <p style="opacity:0.92; max-width:700px;">
-            Testlarda xato qilgan har bir misolingiz bu yerga avtomatik yoziladi. Aniq javobsiz <strong>Yordam / Memory</strong> eslatmasi yordamida xatongizni tuzating va har bir tuzatilgan misol uchun <strong>+3 💎 Olmos</strong> oling!
-          </p>
+        <div class="kun-page-banner">
+          <div>
+            <span class="badge-pill" style="background:rgba(255,255,255,0.2); color:#fde047; margin-bottom:0.5rem; display:inline-block;">
+              📓 6-MAXSUS MODUL • AQLLI XATOLAR DAFTARI
+            </span>
+            <h1 style="font-size:1.75rem; font-weight:900; margin-bottom:0.4rem;">
+              📸 Xatolar Ustida Ishlash (Smart Mistakes Notebook)
+            </h1>
+            <p style="opacity:0.92; max-width:700px;">
+              Testlarda xato qilgan har bir misolingiz bu yerga avtomatik yoziladi. Aniq javobsiz <strong>Yordam / Memory</strong> eslatmasi yordamida xatongizni tuzating va har bir tuzatilgan misol uchun <strong>+3 💎 Olmos</strong> oling!
+            </p>
+          </div>
         </div>
 
-        <div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:1rem; margin-bottom:1.25rem;">
-          <div style="display:flex; gap:0.6rem; flex-wrap:wrap;">
+        <div class="kun-filter-bar">
+          <div style="font-weight:800; color:var(--accent-primary);">📂 Xatolar filtri:</div>
+          <div style="display:flex; gap:0.65rem; flex-wrap:wrap;">
             <button type="button" class="btn ${this.tanlanganFiltr === "faol" ? "btn-primary" : "btn-outline"}" data-err-filter="faol">
               ⏳ Tuzatilishi kerak (${faolSoni})
             </button>

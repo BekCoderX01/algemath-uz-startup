@@ -112,8 +112,8 @@
       const u = baza.joriyFoydalanuvchi;
 
       konteyner.innerHTML = `
-        <div class="card" style="margin-bottom:1.5rem; background:linear-gradient(135deg, #1e1b4b 0%, #3730a3 55%, #4f46e5 100%); color:#fff;">
-          <div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:1.5rem;">
+        <div class="kun-settings-layout">
+          <div class="kun-page-banner">
             <div>
               <span class="badge-pill" style="background:rgba(255,255,255,0.2); color:#fde047; margin-bottom:0.5rem; display:inline-block;">
                 💰 8-MAXSUS MODUL • STARTUP MONETIZATSIYASI VA PRO OBUNA
@@ -125,83 +125,88 @@
                 Milliy to'lov tizimlari (Click, Payme, Uzum Bank) orqali yoki o'z bilimingiz bilan to'plagan <strong>💎 Olmoslaringiz</strong> evaziga PRO obunani bepul faollashtiring!
               </p>
             </div>
-            <div style="background:rgba(255,255,255,0.14); padding:1rem 1.4rem; border-radius:var(--radius-lg); text-align:center;">
+            <div style="background:rgba(255,255,255,0.14); padding:1.1rem 1.5rem; border-radius:var(--radius-lg); text-align:center;">
               <div style="font-size:0.8rem; opacity:0.85;">Joriy tarifingiz:</div>
               <div style="font-size:1.45rem; font-weight:900; color:#fde047;">👑 ${u.obunaTarifi || "Bepul"}</div>
             </div>
           </div>
-        </div>
 
-        <!-- TO'LOV USULINI TANLASH -->
-        <div class="card" style="margin-bottom:1.5rem;">
-          <h2 style="font-size:1.15rem; font-weight:800; margin-bottom:0.75rem;">
-            💳 1-qadam: Qulay to'lov usulini tanlang:
-          </h2>
-          <div class="grid-4">
-            ${[
-              { kod: "Click", nomi: "💙 CLICK Evolution", tavsif: "UZCARD / HUMO tezkor to'lov" },
-              { kod: "Payme", nomi: "🩵 Payme Business", tavsif: "Avtomatik elektron chek bilan" },
-              { kod: "Uzum", nomi: "💜 Uzum Bank", tavsif: "Keshbek va tezkor o'tkazma" },
-              { kod: "Olmos", nomi: "💎 Olmoslar evaziga (Bepul!)", tavsif: `Balansingiz: ${u.olmoslar || 0} 💎` }
-            ].map(m => `
-              <button type="button"
-                      class="language-flag-option ${this.tanlanganTolovUsuli === m.kod ? "active" : ""}"
-                      data-pay-method="${m.kod}"
-                      style="flex-direction:column; align-items:flex-start; gap:0.25rem;">
-                <div style="font-size:1rem; font-weight:900;">${m.nomi}</div>
-                <div style="font-size:0.78rem; color:var(--text-muted);">${m.tavsif}</div>
-              </button>
-            `).join("")}
-          </div>
-        </div>
-
-        ${this.oxirgiChek ? `
-          <div class="card" style="margin-bottom:1.5rem; border:2px solid var(--success); background:var(--bg-tertiary);">
-            <h3 style="font-size:1.25rem; font-weight:900; color:var(--success); margin-bottom:0.4rem;">
-              🧾 Rasmiy Elektron To'lov Cheki (${this.oxirgiChek.chekId})
-            </h3>
-            <div style="font-size:0.92rem; display:flex; gap:1.5rem; flex-wrap:wrap;">
-              <span>👤 Foydalanuvchi: <strong>${this.oxirgiChek.foydalanuvchi}</strong></span>
-              <span>📦 Tarif: <strong>${this.oxirgiChek.tarifNomi}</strong></span>
-              <span>💳 Usul: <strong>${this.oxirgiChek.tolovUsuli}</strong></span>
-              <span>💰 Qiymat: <strong>${this.oxirgiChek.summa}</strong></span>
-              <span>🕒 Sana: <strong>${this.oxirgiChek.sana}</strong></span>
+          <!-- TO'LOV USULINI TANLASH -->
+          <div class="kun-settings-section-card">
+            <div class="section-header">
+              <div>
+                <span class="kun-settings-step-badge">1-BO'LIM • TO'LOV OPERATORINI TANLASH</span>
+                <h2 class="section-title">
+                  💳 Qulay to'lov usulini tanlang:
+                </h2>
+              </div>
+            </div>
+            <div class="grid-4">
+              ${[
+                { kod: "Click", nomi: "💙 CLICK Evolution", tavsif: "UZCARD / HUMO tezkor to'lov" },
+                { kod: "Payme", nomi: "🩵 Payme Business", tavsif: "Avtomatik elektron chek bilan" },
+                { kod: "Uzum", nomi: "💜 Uzum Bank", tavsif: "Keshbek va tezkor o'tkazma" },
+                { kod: "Olmos", nomi: "💎 Olmoslar evaziga (Bepul!)", tavsif: `Balansingiz: ${u.olmoslar || 0} 💎` }
+              ].map(m => `
+                <button type="button"
+                        class="language-flag-option ${this.tanlanganTolovUsuli === m.kod ? "active" : ""}"
+                        data-pay-method="${m.kod}"
+                        style="flex-direction:column; align-items:flex-start; gap:0.35rem;">
+                  <div style="font-size:1rem; font-weight:900;">${m.nomi}</div>
+                  <div style="font-size:0.82rem; color:var(--text-muted);">${m.tavsif}</div>
+                </button>
+              `).join("")}
             </div>
           </div>
-        ` : ""}
 
-        <!-- 3 TA TARIF KARTALARI -->
-        <div class="grid-3">
-          ${OBUNA_TARIFLARI.map(t => {
-            const faol = u.obunaTarifi === t.nomi;
-            return `
-              <div class="card card-interactive" style="display:flex; flex-direction:column; justify-content:space-between; border-width:2px; border-color:${faol ? "var(--success)" : "var(--border-color)"};">
-                <div>
-                  <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:0.65rem;">
-                    <span class="badge-pill" style="background:var(--bg-tertiary); color:var(--accent-primary);">${t.nomi}</span>
-                    ${faol ? `<span class="badge-pill" style="background:rgba(5,205,153,0.18); color:var(--success);">✅ Faol tarif</span>` : ""}
-                  </div>
-                  <h3 style="font-size:1.3rem; font-weight:900; margin-bottom:0.35rem;">${t.sarlavha}</h3>
-                  <div style="font-size:1.55rem; font-weight:900; color:var(--accent-primary); margin-bottom:0.2rem;">
-                    ${this.tanlanganTolovUsuli === "Olmos" && t.narxOlmos > 0 ? `${t.narxOlmos} 💎 Olmos` : t.narxSom}
-                  </div>
-                  <div style="font-size:0.8rem; color:var(--text-muted); margin-bottom:1rem;">
-                    Yoki ${t.narxOlmos} 💎 Olmos evaziga bepul aktivlashtirish
-                  </div>
-                  <div style="display:flex; flex-direction:column; gap:0.5rem; margin-bottom:1.4rem; font-size:0.9rem;">
-                    ${t.imkoniyatlar.map(imk => `<div>${imk}</div>`).join("")}
-                  </div>
-                </div>
-
-                <button type="button"
-                        class="btn ${faol ? "btn-emerald" : "btn-primary"}"
-                        data-activate-plan="${t.id}"
-                        style="width:100%;">
-                  ${faol ? "✅ Sizning joriy tarifingiz" : `🚀 ${this.tanlanganTolovUsuli} orqali faollashtirish`}
-                </button>
+          ${this.oxirgiChek ? `
+            <div class="card" style="border:2px solid var(--success); background:var(--bg-tertiary);">
+              <h3 style="font-size:1.25rem; font-weight:900; color:var(--success); margin-bottom:0.4rem;">
+                🧾 Rasmiy Elektron To'lov Cheki (${this.oxirgiChek.chekId})
+              </h3>
+              <div style="font-size:0.92rem; display:flex; gap:1.5rem; flex-wrap:wrap;">
+                <span>👤 Foydalanuvchi: <strong>${this.oxirgiChek.foydalanuvchi}</strong></span>
+                <span>📦 Tarif: <strong>${this.oxirgiChek.tarifNomi}</strong></span>
+                <span>💳 Usul: <strong>${this.oxirgiChek.tolovUsuli}</strong></span>
+                <span>💰 Qiymat: <strong>${this.oxirgiChek.summa}</strong></span>
+                <span>🕒 Sana: <strong>${this.oxirgiChek.sana}</strong></span>
               </div>
-            `;
-          }).join("")}
+            </div>
+          ` : ""}
+
+          <!-- 3 TA TARIF KARTALARI -->
+          <div class="grid-3">
+            ${OBUNA_TARIFLARI.map(t => {
+              const faol = u.obunaTarifi === t.nomi;
+              return `
+                <div class="card card-interactive" style="display:flex; flex-direction:column; justify-content:space-between; border-width:2px; border-color:${faol ? "var(--success)" : "var(--border-color)"};">
+                  <div>
+                    <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:0.8rem;">
+                      <span class="badge-pill" style="background:var(--bg-tertiary); color:var(--accent-primary);">${t.nomi}</span>
+                      ${faol ? `<span class="badge-pill" style="background:rgba(5,150,105,0.18); color:var(--success);">✅ Faol tarif</span>` : ""}
+                    </div>
+                    <h3 style="font-size:1.3rem; font-weight:900; margin-bottom:0.45rem;">${t.sarlavha}</h3>
+                    <div style="font-size:1.6rem; font-weight:900; color:var(--accent-primary); margin-bottom:0.25rem;">
+                      ${this.tanlanganTolovUsuli === "Olmos" && t.narxOlmos > 0 ? `${t.narxOlmos} 💎 Olmos` : t.narxSom}
+                    </div>
+                    <div style="font-size:0.84rem; color:var(--text-muted); margin-bottom:1.15rem;">
+                      Yoki ${t.narxOlmos} 💎 Olmos evaziga bepul aktivlashtirish
+                    </div>
+                    <div style="display:flex; flex-direction:column; gap:0.75rem; margin-bottom:1.65rem; font-size:0.92rem;">
+                      ${t.imkoniyatlar.map(imk => `<div>${imk}</div>`).join("")}
+                    </div>
+                  </div>
+
+                  <button type="button"
+                          class="btn ${faol ? "btn-emerald" : "btn-primary"}"
+                          data-activate-plan="${t.id}"
+                          style="width:100%;">
+                    ${faol ? "✅ Sizning joriy tarifingiz" : `🚀 ${this.tanlanganTolovUsuli} orqali faollashtirish`}
+                  </button>
+                </div>
+              `;
+            }).join("")}
+          </div>
         </div>
       `;
 

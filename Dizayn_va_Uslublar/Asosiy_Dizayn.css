@@ -799,7 +799,7 @@ main .stat-pill.timer-pill {
   .grid-4,
   .grid-2 .grid-3,
   .grid-2 .grid-4 {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
     gap: 1.25rem;
   }
 }
@@ -874,6 +874,8 @@ main .stat-pill.timer-pill {
   border-radius: var(--radius-lg);
   padding: 1.85rem 2rem;
   box-shadow: var(--shadow-sm);
+  min-width: 0;
+  overflow-wrap: anywhere;
   transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
 }
 

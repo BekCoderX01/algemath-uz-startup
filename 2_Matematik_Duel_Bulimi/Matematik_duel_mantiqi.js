@@ -184,64 +184,73 @@
       }
 
       konteyner.innerHTML = `
-        <div class="card" style="margin-bottom:1.5rem; background:linear-gradient(135deg, #4c1d95 0%, #7c3aed 55%, #ec4899 100%); color:#fff;">
-          <span class="badge-pill" style="background:rgba(255,255,255,0.2); color:#fff; margin-bottom:0.5rem; display:inline-block;">
-            ⚔️ 2-MAXSUS MODUL • 1 GA 1 MATEMATIK DUEL
-          </span>
-          <h1 style="font-size:1.8rem; font-weight:900; margin-bottom:0.4rem;">
-            ⚔️ 1 ga 1 Matematik Duel Arenasi (60 Soniyalik Bellashuv)
-          </h1>
-          <p style="opacity:0.92; max-width:680px;">
-            Raqib darajasini tanlang, 60 soniya ichida 5 ta algebra misolini tez va aniq yechib, tikilgan olmoslarni yutib oling!
-          </p>
-        </div>
-
-        ${this.holat === "yakun" && this.oxirgiDuelNatija ? `
-          <div class="card" style="margin-bottom:1.5rem; border:2px solid var(--accent-primary); text-align:center;">
-            <h2 style="font-size:1.6rem; font-weight:900; margin-bottom:0.4rem;">
-              ${this.oxirgiDuelNatija.natija === "G'alaba" ? "🏆 G'ALABA QOZONDINGIZ!" : (this.oxirgiDuelNatija.natija === "Durang" ? "🤝 DURANG NATIJA!" : "💪 KEYINGI SAFAR ALBATTA YUTASIZ!")}
-            </h2>
-            <p style="font-size:1.15rem; font-weight:800; margin-bottom:0.75rem;">
-              Hisob: ${this.oxirgiDuelNatija.hisob} (${this.oxirgiDuelNatija.raqib} ga qarshi) •
-              Olmos natijasi: ${this.oxirgiDuelNatija.yutuqOlmos >= 0 ? "+" + this.oxirgiDuelNatija.yutuqOlmos : this.oxirgiDuelNatija.yutuqOlmos} 💎
-            </p>
-          </div>
-        ` : ""}
-
-        <div class="grid-3" style="margin-bottom:1.5rem;">
-          ${DUEL_RAQIBLARI.map(r => `
-            <div class="card card-interactive" style="display:flex; flex-direction:column; justify-content:space-between;">
-              <div>
-                <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:0.65rem;">
-                  <span class="grade-badge grade-${r.daraja}">${r.daraja} daraja</span>
-                  <span class="stat-pill diamond-pill">Tikish: ${r.tikishOlmos} 💎</span>
-                </div>
-                <h3 style="font-size:1.12rem; font-weight:900; margin-bottom:0.4rem;">${r.nomi}</h3>
-                <p style="font-size:0.88rem; color:var(--text-secondary); margin-bottom:1.1rem;">
-                  5 ta tezkor savol • 60 soniya vaqt • G'alaba mukofoti: <strong>+${r.tikishOlmos} 💎 sof olmos</strong>
-                </p>
-              </div>
-              <button type="button" class="btn btn-primary" data-start-duel="${r.id}" style="width:100%;">
-                ⚔️ Duelga chorlash (${r.tikishOlmos} 💎)
-              </button>
+        <div class="kun-settings-layout">
+          <div class="kun-page-banner">
+            <div>
+              <span class="badge-pill" style="background:rgba(255,255,255,0.2); color:#fde047; margin-bottom:0.5rem; display:inline-block;">
+                ⚔️ 2-MAXSUS MODUL • 1 GA 1 MATEMATIK DUEL
+              </span>
+              <h1 style="font-size:1.8rem; font-weight:900; margin-bottom:0.4rem;">
+                ⚔️ 1 ga 1 Matematik Duel Arenasi (60 Soniyalik Bellashuv)
+              </h1>
+              <p style="opacity:0.92; max-width:680px;">
+                Raqib darajasini tanlang, 60 soniya ichida 5 ta algebra misolini tez va aniq yechib, tikilgan olmoslarni yutib oling!
+              </p>
             </div>
-          `).join("")}
-        </div>
+          </div>
 
-        <div class="card">
-          <h2 style="font-size:1.25rem; font-weight:900; margin-bottom:0.85rem;">📜 Sizning Duellar Tarixingiz</h2>
-          <div style="display:flex; flex-direction:column; gap:0.6rem;">
-            ${tarix.map(d => `
-              <div style="display:flex; align-items:center; justify-content:space-between; padding:0.75rem 1rem; border-radius:var(--radius-sm); background:var(--bg-primary); border:1px solid var(--border-color);">
+          ${this.holat === "yakun" && this.oxirgiDuelNatija ? `
+            <div class="card" style="border:2px solid var(--accent-primary); text-align:center;">
+              <h2 style="font-size:1.6rem; font-weight:900; margin-bottom:0.4rem;">
+                ${this.oxirgiDuelNatija.natija === "G'alaba" ? "🏆 G'ALABA QOZONDINGIZ!" : (this.oxirgiDuelNatija.natija === "Durang" ? "🤝 DURANG NATIJA!" : "💪 KEYINGI SAFAR ALBATTA YUTASIZ!")}
+              </h2>
+              <p style="font-size:1.15rem; font-weight:800; margin-bottom:0.75rem;">
+                Hisob: ${this.oxirgiDuelNatija.hisob} (${this.oxirgiDuelNatija.raqib} ga qarshi) •
+                Olmos natijasi: ${this.oxirgiDuelNatija.yutuqOlmos >= 0 ? "+" + this.oxirgiDuelNatija.yutuqOlmos : this.oxirgiDuelNatija.yutuqOlmos} 💎
+              </p>
+            </div>
+          ` : ""}
+
+          <div class="grid-3">
+            ${DUEL_RAQIBLARI.map(r => `
+              <div class="card card-interactive" style="display:flex; flex-direction:column; justify-content:space-between;">
                 <div>
-                  <strong>${d.raqib}</strong> • Hisob: <strong>${d.hisob}</strong>
-                  <div style="font-size:0.76rem; color:var(--text-muted);">${d.sana}</div>
+                  <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:0.85rem;">
+                    <span class="grade-badge grade-${r.daraja}">${r.daraja} daraja</span>
+                    <span class="stat-pill diamond-pill">Tikish: ${r.tikishOlmos} 💎</span>
+                  </div>
+                  <h3 style="font-size:1.15rem; font-weight:900; margin-bottom:0.5rem;">${r.nomi}</h3>
+                  <p style="font-size:0.92rem; color:var(--text-secondary); margin-bottom:1.35rem;">
+                    5 ta tezkor savol • 60 soniya vaqt • G'alaba mukofoti: <strong>+${r.tikishOlmos} 💎 sof olmos</strong>
+                  </p>
                 </div>
-                <span class="badge-pill" style="background:${d.natija === "G'alaba" ? "rgba(5,205,153,0.16)" : "rgba(255,181,71,0.16)"}; color:${d.natija === "G'alaba" ? "var(--success)" : "#d97706"};">
-                  ${d.natija} (${d.yutuqOlmos >= 0 ? "+" + d.yutuqOlmos : d.yutuqOlmos} 💎)
-                </span>
+                <button type="button" class="btn btn-primary" data-start-duel="${r.id}" style="width:100%;">
+                  ⚔️ Duelga chorlash (${r.tikishOlmos} 💎)
+                </button>
               </div>
             `).join("")}
+          </div>
+
+          <div class="kun-settings-section-card">
+            <div class="section-header">
+              <div>
+                <span class="kun-settings-step-badge">📜 BELLASHUVLAR ARXIVI</span>
+                <h2 class="section-title">Sizning Duellar Tarixingiz</h2>
+              </div>
+            </div>
+            <div style="display:flex; flex-direction:column; gap:0.85rem;">
+              ${tarix.map(d => `
+                <div style="display:flex; align-items:center; justify-content:space-between; padding:0.95rem 1.2rem; border-radius:var(--radius-sm); background:var(--bg-primary); border:1px solid var(--border-color);">
+                  <div>
+                    <strong>${d.raqib}</strong> • Hisob: <strong>${d.hisob}</strong>
+                    <div style="font-size:0.8rem; color:var(--text-muted); margin-top:0.15rem;">${d.sana}</div>
+                  </div>
+                  <span class="badge-pill" style="background:${d.natija === "G'alaba" ? "rgba(5,150,105,0.16)" : "rgba(217,119,6,0.16)"}; color:${d.natija === "G'alaba" ? "var(--success)" : "#d97706"};">
+                    ${d.natija} (${d.yutuqOlmos >= 0 ? "+" + d.yutuqOlmos : d.yutuqOlmos} 💎)
+                  </span>
+                </div>
+              `).join("")}
+            </div>
           </div>
         </div>
       `;

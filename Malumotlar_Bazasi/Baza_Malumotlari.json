@@ -18,10 +18,10 @@
     "tanlanganDaraja": "B",
     "maqsadDaraja": "A+",
     "olmoslar": 70,
-    "oxirgiKunlikBonusSana": "2026-11-15",
+    "oxirgiKunlikBonusSana": "2026-11-16",
     "olmoslarTarixi": [
       {
-        "sana": "2026-11-15 00:34",
+        "sana": "2026-11-16 10:45",
         "miqdor": 5,
         "sabab": "Kunlik saytga kirish bonusi (+5 💎)"
       },
@@ -96,10 +96,10 @@
       }
     ]
   },
-  "tungiRejim": true,
+  "tungiRejim": false,
   "til": "uz",
-  "bugungiIshlanganSekundlar": 1106,
-  "oxirgiVaqtSana": "2026-11-15",
+  "bugungiIshlanganSekundlar": 940,
+  "oxirgiVaqtSana": "2026-11-16",
   "foydalanuvchilarRoyxati": [
     {
       "id": "user_default_1",
@@ -117,14 +117,9 @@
       "viloyat": "Toshkent shahri",
       "tanlanganDaraja": "B",
       "maqsadDaraja": "A+",
-      "olmoslar": 70,
-      "oxirgiKunlikBonusSana": "2026-11-15",
+      "olmoslar": 65,
+      "oxirgiKunlikBonusSana": "",
       "olmoslarTarixi": [
-        {
-          "sana": "2026-11-15 00:34",
-          "miqdor": 5,
-          "sabab": "Kunlik saytga kirish bonusi (+5 💎)"
-        },
         {
           "sana": "2026-11-15 09:00",
           "miqdor": 50,

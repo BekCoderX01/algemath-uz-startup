@@ -173,98 +173,112 @@
       }
 
       konteyner.innerHTML = `
-        <div class="card" style="margin-bottom:1.5rem; background:linear-gradient(135deg, #064e3b 0%, #059669 55%, #10b981 100%); color:#fff;">
-          <span class="badge-pill" style="background:rgba(255,255,255,0.2); color:#fff; margin-bottom:0.5rem; display:inline-block;">
-            👨‍🏫 5-MAXSUS MODUL • USTOZ SINFXONASI VA UYGA VAZIFA
-          </span>
-          <h1 style="font-size:1.75rem; font-weight:900; margin-bottom:0.4rem;">
-            👨‍🏫 Ustoz Xonasi — Sinf Kodi va Uyga Vazifa Boshqaruvi
-          </h1>
-          <p style="opacity:0.92; max-width:700px;">
-            Ustozlar 6 xonali kod bilan yangi sinf va uyga vazifa ochadi. O'quvchilar esa shu kod orqali guruhga qo'shilib, vazifalarni bajaradi va olmos oladi!
-          </p>
-        </div>
-
-        <div class="grid-2" style="align-items:start; margin-bottom:1.5rem;">
-          <!-- CHAP TOMON: O'QUVCHI SINFGA QO'SHILISHI -->
-          <div class="card">
-            <h2 style="font-size:1.25rem; font-weight:900; margin-bottom:0.65rem;">🎓 O'quvchi: Sinf Kodini Kiritish</h2>
-            <p style="font-size:0.88rem; color:var(--text-secondary); margin-bottom:1rem;">
-              Ustozingiz bergan 6 xonali sinf kodini kiriting (masalan: <strong>MATH-77</strong>):
-            </p>
-            <div style="display:flex; gap:0.65rem;">
-              <input type="text" id="inp-join-code" class="form-input" value="${u.qoShilganSinfKodi || "MATH-77"}" placeholder="MATH-77" />
-              <button type="button" class="btn btn-primary" id="btn-join-class">Qo'shilish</button>
+        <div class="kun-settings-layout">
+          <div class="kun-page-banner">
+            <div>
+              <span class="badge-pill" style="background:rgba(255,255,255,0.2); color:#6ee7b7; margin-bottom:0.5rem; display:inline-block;">
+                👨‍🏫 5-MAXSUS MODUL • USTOZ SINFXONASI VA UYGA VAZIFA
+              </span>
+              <h1 style="font-size:1.75rem; font-weight:900; margin-bottom:0.4rem;">
+                👨‍🏫 Ustoz Xonasi — Sinf Kodi va Uyga Vazifa Boshqaruvi
+              </h1>
+              <p style="opacity:0.92; max-width:700px;">
+                Ustozlar 6 xonali kod bilan yangi sinf va uyga vazifa ochadi. O'quvchilar esa shu kod orqali guruhga qo'shilib, vazifalarni bajaradi va olmos oladi!
+              </p>
             </div>
           </div>
 
-          <!-- O'NG TOMON: USTOZ YANGI SINF OCHISHI -->
-          <div class="card">
-            <h2 style="font-size:1.25rem; font-weight:900; margin-bottom:0.65rem;">👨‍🏫 Ustoz: Yangi Sinf va Vazifa Yaratish</h2>
-            <form id="form-create-class">
-              <div class="grid-2" style="gap:0.75rem;">
-                <div class="form-group">
-                  <label class="form-label" for="cls-name">Guruh / Sinf nomi *</label>
-                  <input type="text" id="cls-name" class="form-input" placeholder="11-A Olimpiada Guruhi" required />
-                </div>
-                <div class="form-group">
-                  <label class="form-label" for="cls-level">Vazifa darajasi</label>
-                  <select id="cls-level" class="form-select">
-                    <option value="C">C daraja</option>
-                    <option value="C+">C+ daraja</option>
-                    <option value="B">B daraja</option>
-                    <option value="B+" selected>B+ daraja</option>
-                    <option value="A">A daraja</option>
-                    <option value="A+">A+ daraja</option>
-                  </select>
-                </div>
-              </div>
-              <div class="form-group">
-                <label class="form-label" for="cls-topic">Uyga vazifa mavzusi *</label>
-                <input type="text" id="cls-topic" class="form-input" placeholder="Logarifmik va ko'rsatkichli tenglamalar (5 ta misol)" required />
-              </div>
-              <button type="submit" class="btn btn-emerald" style="width:100%;">
-                ➕ 6 Xonali Sinf Kodi Yaratish va Vazifa E'lon Qilish
-              </button>
-            </form>
-          </div>
-        </div>
-
-        <!-- FAOL SINFXONALAR VA JURNAL -->
-        <div style="display:flex; flex-direction:column; gap:1.25rem;">
-          ${sinflar.map(s => `
-            <div class="card">
+          <div class="grid-2" style="align-items:start;">
+            <!-- CHAP TOMON: O'QUVCHI SINFGA QO'SHILISHI -->
+            <div class="kun-settings-section-card">
               <div class="section-header">
                 <div>
-                  <div style="display:flex; align-items:center; gap:0.6rem; flex-wrap:wrap; margin-bottom:0.35rem;">
-                    <span class="badge-pill" style="background:var(--accent-primary); color:#fff; font-size:0.9rem;">🔑 Kod: ${s.sinfKodi}</span>
-                    <span class="grade-badge grade-${s.daraja.replace("+", "plus")}">${s.daraja} daraja</span>
-                    <span class="stat-pill diamond-pill">+${s.mukofotOlmos} 💎 mukofot</span>
-                  </div>
-                  <h3 style="font-size:1.3rem; font-weight:900;">${s.sinfNomi}</h3>
-                  <div style="font-size:0.88rem; color:var(--text-secondary);">
-                    👨‍🏫 Ustoz: <strong>${s.ustozIsmi}</strong> • 📚 Vazifa: <strong>${s.vazifaMavzusi}</strong>
-                  </div>
+                  <span class="kun-settings-step-badge">1-BO'LIM • O'QUVCHI KIRISH KODI</span>
+                  <h2 class="section-title">🎓 O'quvchi: Sinf Kodini Kiritish</h2>
                 </div>
-                <button type="button" class="btn btn-primary" data-do-hw="${s.sinfKodi}">
-                  ✍️ Uyga vazifani ishlash (+${s.mukofotOlmos} 💎)
-                </button>
               </div>
-
-              <h4 style="font-size:0.95rem; font-weight:800; margin-bottom:0.6rem;">📊 Sinf Jurnali (O'quvchilar natijalari):</h4>
-              <div style="display:flex; flex-direction:column; gap:0.5rem;">
-                ${s.oquvchilarNatijalari.map(o => `
-                  <div style="display:flex; align-items:center; justify-content:space-between; padding:0.65rem 1rem; border-radius:var(--radius-sm); background:var(--bg-primary); border:1px solid var(--border-color);">
-                    <div><strong>🎓 ${o.ismFamiliya}</strong></div>
-                    <div style="display:flex; gap:1rem; align-items:center; font-size:0.86rem;">
-                      <span>Holat: <strong>${o.holat}</strong></span>
-                      <span>Natija: <strong style="color:var(--accent-primary);">${o.ball}</strong></span>
-                    </div>
-                  </div>
-                `).join("")}
+              <p style="font-size:0.92rem; color:var(--text-secondary); margin-bottom:1.15rem;">
+                Ustozingiz bergan 6 xonali sinf kodini kiriting (masalan: <strong>MATH-77</strong>):
+              </p>
+              <div style="display:flex; gap:0.85rem;">
+                <input type="text" id="inp-join-code" class="form-input" value="${u.qoShilganSinfKodi || "MATH-77"}" placeholder="MATH-77" />
+                <button type="button" class="btn btn-primary" id="btn-join-class">Qo'shilish</button>
               </div>
             </div>
-          `).join("")}
+
+            <!-- O'NG TOMON: USTOZ YANGI SINF OCHISHI -->
+            <div class="kun-settings-section-card">
+              <div class="section-header">
+                <div>
+                  <span class="kun-settings-step-badge">2-BO'LIM • USTOZ VAZIFA PANELI</span>
+                  <h2 class="section-title">👨‍🏫 Ustoz: Yangi Sinf va Vazifa Yaratish</h2>
+                </div>
+              </div>
+              <form id="form-create-class">
+                <div class="grid-2">
+                  <div class="form-group">
+                    <label class="form-label" for="cls-name">Guruh / Sinf nomi *</label>
+                    <input type="text" id="cls-name" class="form-input" placeholder="11-A Olimpiada Guruhi" required />
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label" for="cls-level">Vazifa darajasi</label>
+                    <select id="cls-level" class="form-select">
+                      <option value="C">C daraja</option>
+                      <option value="C+">C+ daraja</option>
+                      <option value="B">B daraja</option>
+                      <option value="B+" selected>B+ daraja</option>
+                      <option value="A">A daraja</option>
+                      <option value="A+">A+ daraja</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="cls-topic">Uyga vazifa mavzusi *</label>
+                  <input type="text" id="cls-topic" class="form-input" placeholder="Logarifmik va ko'rsatkichli tenglamalar (5 ta misol)" required />
+                </div>
+                <button type="submit" class="btn btn-emerald" style="width:100%;">
+                  ➕ 6 Xonali Sinf Kodi Yaratish va Vazifa E'lon Qilish
+                </button>
+              </form>
+            </div>
+          </div>
+
+          <!-- FAOL SINFXONALAR VA JURNAL -->
+          <div style="display:flex; flex-direction:column; gap:1.5rem;">
+            ${sinflar.map(s => `
+              <div class="kun-settings-section-card">
+                <div class="section-header">
+                  <div>
+                    <div style="display:flex; align-items:center; gap:0.65rem; flex-wrap:wrap; margin-bottom:0.45rem;">
+                      <span class="badge-pill" style="background:var(--accent-primary); color:#fff; font-size:0.9rem;">🔑 Kod: ${s.sinfKodi}</span>
+                      <span class="grade-badge grade-${s.daraja.replace("+", "plus")}">${s.daraja} daraja</span>
+                      <span class="stat-pill diamond-pill">+${s.mukofotOlmos} 💎 mukofot</span>
+                    </div>
+                    <h3 style="font-size:1.35rem; font-weight:900;">${s.sinfNomi}</h3>
+                    <div style="font-size:0.9rem; color:var(--text-secondary); margin-top:0.2rem;">
+                      👨‍🏫 Ustoz: <strong>${s.ustozIsmi}</strong> • 📚 Vazifa: <strong>${s.vazifaMavzusi}</strong>
+                    </div>
+                  </div>
+                  <button type="button" class="btn btn-primary" data-do-hw="${s.sinfKodi}">
+                    ✍️ Uyga vazifani ishlash (+${s.mukofotOlmos} 💎)
+                  </button>
+                </div>
+
+                <h4 style="font-size:0.98rem; font-weight:800; margin-bottom:0.8rem;">📊 Sinf Jurnali (O'quvchilar natijalari):</h4>
+                <div style="display:flex; flex-direction:column; gap:0.75rem;">
+                  ${s.oquvchilarNatijalari.map(o => `
+                    <div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:0.75rem; padding:0.85rem 1.15rem; border-radius:var(--radius-sm); background:var(--bg-primary); border:1px solid var(--border-color);">
+                      <div><strong>🎓 ${o.ismFamiliya}</strong></div>
+                      <div style="display:flex; gap:1.25rem; align-items:center; font-size:0.88rem; flex-wrap:wrap;">
+                        <span>Holat: <strong>${o.holat}</strong></span>
+                        <span>Natija: <strong style="color:var(--accent-primary);">${o.ball}</strong></span>
+                      </div>
+                    </div>
+                  `).join("")}
+                </div>
+              </div>
+            `).join("")}
+          </div>
         </div>
       `;
 

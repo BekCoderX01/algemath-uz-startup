@@ -182,7 +182,7 @@
           <text x="${cx + 8}" y="18" fill="#64748b" font-size="12" font-weight="800">y</text>
 
           <!-- Funksiya egri chizig'i -->
-          <polyline fill="none" stroke="#4318ff" stroke-width="3.5" stroke-linecap="round" points="${points.join(" ")}"/>
+          <polyline fill="none" stroke="#1d4ed8" stroke-width="3.5" stroke-linecap="round" points="${points.join(" ")}"/>
 
           <!-- Ildiz nuqtalari (Ox bilan kesishish) -->
           ${rootCircles}
@@ -209,94 +209,99 @@
       const tahlil = this.kvadratFunksiyaniTahlilQilish(this.koeffA, this.koeffB, this.koeffC);
 
       konteyner.innerHTML = `
-        <div class="card" style="margin-bottom:1.5rem;">
-          <div class="section-header">
-            <div>
-              <span class="badge-pill" style="background:var(--bg-tertiary); color:var(--accent-primary); margin-bottom:0.4rem; display:inline-block;">
-                📈 3-MAXSUS MODUL • GRAFIK KALKULYATOR VA FORMULALAR
-              </span>
-              <h1 style="font-size:1.65rem; font-weight:900;">
-                📈 Interaktiv Grafik Chizuvchi va Oltin Formulalar Doskasi
-              </h1>
-              <p style="color:var(--text-secondary); font-size:0.94rem;">
-                <strong>y = ax² + bx + c</strong> funksiya koeffitsiyentlarini o'zgartiring — grafik, parabola cho'qqisi, diskriminant va ildizlar jonli chiziladi!
-              </p>
+        <div class="kun-settings-layout">
+          <div class="kun-settings-section-card">
+            <div class="section-header">
+              <div>
+                <span class="kun-settings-step-badge">📈 3-MAXSUS MODUL • GRAFIK KALKULYATOR VA FORMULALAR</span>
+                <h1 class="section-title">
+                  Interaktiv Grafik Chizuvchi va Oltin Formulalar Doskasi
+                </h1>
+                <p style="color:var(--text-secondary); font-size:0.95rem; margin-top:0.35rem;">
+                  <strong>y = ax² + bx + c</strong> funksiya koeffitsiyentlarini o'zgartiring — grafik, parabola cho'qqisi, diskriminant va ildizlar jonli chiziladi!
+                </p>
+              </div>
+            </div>
+
+            <div class="grid-2" style="align-items:start;">
+              <!-- CHAP TOMON: GRAFIK KOORDINATA TEKISLIGI -->
+              <div>
+                ${this.svgGrafikChizish(this.koeffA, this.koeffB, this.koeffC)}
+                <div style="display:flex; gap:1rem; flex-wrap:wrap; justify-content:center; margin-top:0.85rem; font-size:0.85rem; font-weight:700;">
+                  <span style="color:var(--accent-primary);">━━ y = (${this.koeffA})x² + (${this.koeffB})x + (${this.koeffC})</span>
+                  <span style="color:#ef4444;">● Uchi: (${tahlil.x0}; ${tahlil.y0})</span>
+                  <span style="color:#059669;">● Ox kesishish ildizlari</span>
+                </div>
+              </div>
+
+              <!-- O'NG TOMON: KOEFFITSIYENTLAR VA MATEMATIK TAHLIL -->
+              <div class="card" style="background:var(--bg-primary);">
+                <h2 style="font-size:1.2rem; font-weight:800; margin-bottom:1.1rem;">⚙️ Koeffitsiyentlarni kiriting:</h2>
+                <div class="grid-3" style="margin-bottom:1.25rem;">
+                  <div>
+                    <label class="form-label" for="inp-graph-a">a (x² oldida)</label>
+                    <input type="number" step="0.5" id="inp-graph-a" class="form-input" value="${this.koeffA}" />
+                  </div>
+                  <div>
+                    <label class="form-label" for="inp-graph-b">b (x oldida)</label>
+                    <input type="number" step="0.5" id="inp-graph-b" class="form-input" value="${this.koeffB}" />
+                  </div>
+                  <div>
+                    <label class="form-label" for="inp-graph-c">c (ozod had)</label>
+                    <input type="number" step="0.5" id="inp-graph-c" class="form-input" value="${this.koeffC}" />
+                  </div>
+                </div>
+
+                <div style="display:flex; gap:0.65rem; flex-wrap:wrap; margin-bottom:1.35rem;">
+                  <button type="button" class="btn btn-primary" id="btn-draw-graph">📈 Grafikni yangilash</button>
+                  <button type="button" class="btn btn-outline" data-preset-fn="1,-2,-3">y = x² - 2x - 3</button>
+                  <button type="button" class="btn btn-outline" data-preset-fn="-1,4,0">y = -x² + 4x</button>
+                  <button type="button" class="btn btn-outline" data-preset-fn="0.5,0,-4">y = 0.5x² - 4</button>
+                </div>
+
+                <div style="padding:1.25rem; border-radius:var(--radius-md); background:var(--bg-secondary); border:1px solid var(--border-color); border-left:4px solid var(--accent-primary);">
+                  <h3 style="font-size:1.02rem; font-weight:800; margin-bottom:0.75rem; color:var(--accent-primary);">
+                    🧮 Avtomatik Matematik Tahlil:
+                  </h3>
+                  <div style="display:flex; flex-direction:column; gap:0.6rem; font-size:0.92rem;">
+                    <div>📌 <strong>Turi:</strong> ${tahlil.tur} (${tahlil.yonalish})</div>
+                    <div>📌 <strong>Diskriminant (D = b² - 4ac):</strong> <code>${tahlil.diskriminant !== null ? tahlil.diskriminant : "—"}</code></div>
+                    <div>📌 <strong>Parabola uchi (x₀; y₀):</strong> <code>(${tahlil.x0}; ${tahlil.y0})</code></div>
+                    <div>📌 <strong>Tenglama ildizlari (y = 0):</strong> <code>${tahlil.ildizlarMatni}</code></div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
 
-          <div class="grid-2" style="align-items:start;">
-            <!-- CHAP TOMON: GRAFIK KOORDINATA TEKISLIGI -->
-            <div>
-              ${this.svgGrafikChizish(this.koeffA, this.koeffB, this.koeffC)}
-              <div style="display:flex; gap:1rem; justify-content:center; margin-top:0.65rem; font-size:0.82rem; font-weight:700;">
-                <span style="color:#4318ff;">━━ y = (${this.koeffA})x² + (${this.koeffB})x + (${this.koeffC})</span>
-                <span style="color:#ef4444;">● Uchi: (${tahlil.x0}; ${tahlil.y0})</span>
-                <span style="color:#05cd99;">● Ox kesishish ildizlari</span>
+          <!-- OLTIN FORMULALAR DOSKASI -->
+          <div class="kun-settings-section-card">
+            <div class="section-header">
+              <div>
+                <span class="kun-settings-step-badge">📋 6 TA ASOSIY BO'LIM BO'YICHA OLTIIN FORMULALAR</span>
+                <h2 class="section-title">
+                  Matematika va Algebra Oltin Formulalar Doskasi (0 dan A+ gacha)
+                </h2>
+                <p style="color:var(--text-secondary); font-size:0.94rem; margin-top:0.35rem;">
+                  Test va Milliy Sertifikat masalalarini yechishda eng ko'p ishlatiladigan asosiy formulalar jamlanmasi:
+                </p>
               </div>
             </div>
 
-            <!-- O'NG TOMON: KOEFFITSIYENTLAR VA MATEMATIK TAHLIL -->
-            <div class="card" style="background:var(--bg-primary);">
-              <h2 style="font-size:1.2rem; font-weight:800; margin-bottom:0.9rem;">⚙️ Koeffitsiyentlarni kiriting:</h2>
-              <div class="grid-3" style="gap:0.75rem; margin-bottom:1rem;">
-                <div>
-                  <label class="form-label" for="inp-graph-a">a (x² oldida)</label>
-                  <input type="number" step="0.5" id="inp-graph-a" class="form-input" value="${this.koeffA}" />
+            <div class="grid-3">
+              ${OLTIN_FORMULALAR_DOSKASI.map(blok => `
+                <div class="card" style="background:var(--bg-primary); border-top:4px solid ${blok.rang};">
+                  <h3 style="font-size:1.08rem; font-weight:800; margin-bottom:0.9rem;">${blok.boLim}</h3>
+                  <div style="display:flex; flex-direction:column; gap:0.65rem;">
+                    ${blok.formulalar.map(f => `
+                      <div style="padding:0.65rem 0.85rem; background:var(--bg-secondary); border-radius:8px; font-family:monospace; font-weight:700; font-size:0.88rem; border:1px solid var(--border-color);">
+                        ${f}
+                      </div>
+                    `).join("")}
+                  </div>
                 </div>
-                <div>
-                  <label class="form-label" for="inp-graph-b">b (x oldida)</label>
-                  <input type="number" step="0.5" id="inp-graph-b" class="form-input" value="${this.koeffB}" />
-                </div>
-                <div>
-                  <label class="form-label" for="inp-graph-c">c (ozod had)</label>
-                  <input type="number" step="0.5" id="inp-graph-c" class="form-input" value="${this.koeffC}" />
-                </div>
-              </div>
-
-              <div style="display:flex; gap:0.5rem; flex-wrap:wrap; margin-bottom:1.15rem;">
-                <button type="button" class="btn btn-primary" id="btn-draw-graph">📈 Grafikni yangilash</button>
-                <button type="button" class="btn btn-outline" data-preset-fn="1,-2,-3">y = x² - 2x - 3</button>
-                <button type="button" class="btn btn-outline" data-preset-fn="-1,4,0">y = -x² + 4x</button>
-                <button type="button" class="btn btn-outline" data-preset-fn="0.5,0,-4">y = 0.5x² - 4</button>
-              </div>
-
-              <div style="padding:1rem; border-radius:var(--radius-md); background:var(--bg-secondary); border:1px solid var(--border-color);">
-                <h3 style="font-size:1rem; font-weight:800; margin-bottom:0.65rem; color:var(--accent-primary);">
-                  🧮 Avtomatik Matematik Tahlil:
-                </h3>
-                <div style="display:flex; flex-direction:column; gap:0.45rem; font-size:0.9rem;">
-                  <div>📌 <strong>Turi:</strong> ${tahlil.tur} (${tahlil.yonalish})</div>
-                  <div>📌 <strong>Diskriminant (D = b² - 4ac):</strong> <code>${tahlil.diskriminant !== null ? tahlil.diskriminant : "—"}</code></div>
-                  <div>📌 <strong>Parabola uchi (x₀; y₀):</strong> <code>(${tahlil.x0}; ${tahlil.y0})</code></div>
-                  <div>📌 <strong>Tenglama ildizlari (y = 0):</strong> <code>${tahlil.ildizlarMatni}</code></div>
-                </div>
-              </div>
+              `).join("")}
             </div>
-          </div>
-        </div>
-
-        <!-- OLTIN FORMULALAR DOSKASI -->
-        <div class="card">
-          <h2 style="font-size:1.4rem; font-weight:900; margin-bottom:0.5rem;">
-            📋 Matematika va Algebra Oltin Formulalar Doskasi (0 dan A+ gacha)
-          </h2>
-          <p style="color:var(--text-secondary); font-size:0.92rem; margin-bottom:1.25rem;">
-            Test va Milliy Sertifikat masalalarini yechishda eng ko'p ishlatiladigan asosiy formulalar jamlanmasi:
-          </p>
-
-          <div class="grid-3">
-            ${OLTIN_FORMULALAR_DOSKASI.map(blok => `
-              <div class="card" style="background:var(--bg-primary); border-top:4px solid ${blok.rang};">
-                <h3 style="font-size:1.05rem; font-weight:800; margin-bottom:0.75rem;">${blok.boLim}</h3>
-                <div style="display:flex; flex-direction:column; gap:0.45rem;">
-                  ${blok.formulalar.map(f => `
-                    <div style="padding:0.45rem 0.65rem; background:var(--bg-secondary); border-radius:8px; font-family:monospace; font-weight:700; font-size:0.86rem; border:1px solid var(--border-color);">
-                      ${f}
-                    </div>
-                  `).join("")}
-                </div>
-              </div>
-            `).join("")}
           </div>
         </div>
       `;
