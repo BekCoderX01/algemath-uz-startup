@@ -84,7 +84,10 @@
       role_teacher: "Ustoz (O'qituvchi)",
       role_admin: "Administrator",
       save_btn: "O'zgarishlarni saqlash",
-      search_placeholder: "Mavzu, formula, daraja (A+, B...) yoki sahifa nomini qidiring..."
+      search_placeholder: "Mavzu, formula, daraja (A+, B...) yoki sahifa nomini qidiring...",
+      footer_creator_role: "Sayt asoschisi va Bosh dasturchisi:",
+      footer_github_btn: "GitHub profil",
+      footer_rights: "Barcha huquqlar himoyalangan."
     },
     ru: {
       app_name: "AlgeMath UZ",
@@ -139,7 +142,10 @@
       role_teacher: "Учитель (Преподаватель)",
       role_admin: "Администратор",
       save_btn: "Сохранить изменения",
-      search_placeholder: "Поиск тем, формул, уровней (A+, B...) или страниц..."
+      search_placeholder: "Поиск тем, формул, уровней (A+, B...) или страниц...",
+      footer_creator_role: "Основатель и главный разработчик:",
+      footer_github_btn: "Профиль GitHub",
+      footer_rights: "Все права защищены."
     },
     en: {
       app_name: "AlgeMath UZ",
@@ -194,7 +200,10 @@
       role_teacher: "Teacher / Instructor",
       role_admin: "Administrator",
       save_btn: "Save Changes",
-      search_placeholder: "Search lessons, formulas, grades (A+, B...) or pages..."
+      search_placeholder: "Search lessons, formulas, grades (A+, B...) or pages...",
+      footer_creator_role: "Founder & Lead Developer:",
+      footer_github_btn: "GitHub Profile",
+      footer_rights: "All rights reserved."
     }
   };
 

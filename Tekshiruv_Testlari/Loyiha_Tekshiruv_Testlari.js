@@ -389,19 +389,24 @@ function httpGet(url) {
       assert.ok(elements["umumiy-navigatsiya-joyi"].innerHTML.includes("kun-settings-top-btn"));
       assert.ok(elements["umumiy-navigatsiya-joyi"].innerHTML.includes("kun-rubric-sibling-pills"));
 
-      // Rus va Ingliz tilida yuqori menyu va rubrikalar tarjima qilinishini tekshirish
+      // Rus va Ingliz tilida yuqori menyu, rubrikalar va pastki yaratuvchi blokini tekshirish
       TilVaTarjimalar.tilniOzgartirish("ru");
       MundarijaVaNavigatsiya.navigatsiyaniChizish("settings");
       assert.ok(elements["umumiy-navigatsiya-joyi"].innerHTML.includes("Настройки"));
       assert.ok(elements["umumiy-navigatsiya-joyi"].innerHTML.includes("Магазин Алмазов"));
+      assert.ok(elements["umumiy-pastki-qism-joyi"].innerHTML.includes("Основатель и главный разработчик:"));
+      assert.ok(elements["umumiy-pastki-qism-joyi"].innerHTML.includes("@BekCoderX01"));
 
       TilVaTarjimalar.tilniOzgartirish("en");
       MundarijaVaNavigatsiya.navigatsiyaniChizish("settings");
       assert.ok(elements["umumiy-navigatsiya-joyi"].innerHTML.includes("Settings"));
       assert.ok(elements["umumiy-navigatsiya-joyi"].innerHTML.includes("Diamond Shop"));
+      assert.ok(elements["umumiy-pastki-qism-joyi"].innerHTML.includes("Founder & Lead Developer:"));
 
       TilVaTarjimalar.tilniOzgartirish("uz");
       MundarijaVaNavigatsiya.navigatsiyaniChizish("settings");
+      assert.ok(elements["umumiy-pastki-qism-joyi"].innerHTML.includes("Sayt asoschisi va Bosh dasturchisi:"));
+      assert.ok(elements["umumiy-pastki-qism-joyi"].innerHTML.includes("@BekCoderX01"));
 
       SozlamalarVaProfil.sozlamalarSahifasiniChizish();
       assert.ok(elements["sozlamalar-asosiy-konteyner"].innerHTML.includes("settings-sec-theme"));

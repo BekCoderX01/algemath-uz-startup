@@ -562,6 +562,24 @@
               <a href="${this.sahifaManziliniOlish("Obuna_va_Tolov_sahifasi.html")}" style="font-weight:700; color:var(--accent-primary);">💰 PRO Obuna</a>
             </div>
           </div>
+
+          <div class="footer-creator-bar">
+            <div class="footer-creator-info">
+              <span>© 2026 <strong>AlgeMath UZ</strong></span>
+              <span class="footer-dot">•</span>
+              <span data-i18n="footer_creator_role">${global.TilVaTarjimalar.matn("footer_creator_role", joriyTil)}</span>
+              <a href="https://github.com/BekCoderX01" target="_blank" rel="noopener noreferrer" class="footer-creator-badge">
+                👨‍💻 @BekCoderX01
+              </a>
+            </div>
+            <div class="footer-creator-links">
+              <span data-i18n="footer_rights">${global.TilVaTarjimalar.matn("footer_rights", joriyTil)}</span>
+              <a href="https://github.com/BekCoderX01/algemath-uz-startup" target="_blank" rel="noopener noreferrer" class="footer-github-link">
+                <span>🔗</span>
+                <span data-i18n="footer_github_btn">${global.TilVaTarjimalar.matn("footer_github_btn", joriyTil)}</span>
+              </a>
+            </div>
+          </div>
         </footer>
         `;
       }
